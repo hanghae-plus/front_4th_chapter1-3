@@ -14,7 +14,7 @@ export function useMemo<T>(
   // 3. 의존성이 변경된 경우 factory 함수 실행 및 결과 저장
   // 4. 메모이제이션된 값 반환
 
-  const prevDeps = useRef<DependencyList | null>(null);
+  const prevDeps = useRef<DependencyList | null>([null]);
   const prevValue = useRef<T | null>(null);
 
   const sholudRecompute = !prevDeps || !_equals(prevDeps.current, _deps);
