@@ -21,12 +21,15 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+      "prettier/prettier": [
+        "error",
+        {
+          endOfLine: "auto", // Windows 작업 시 LF/CRLF 문제 해결
+        },
       ],
     },
   },
   eslintPluginPrettier,
-  eslintConfigPrettier,
+  eslintConfigPrettier
 );
