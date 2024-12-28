@@ -55,7 +55,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-gray-800 text-white p-4">
+    <header className="bg-gray-800 text-white p-4" ref={}>
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-2xl font-bold">샘플 애플리케이션</h1>
         <div className="flex items-center">
