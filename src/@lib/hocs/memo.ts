@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { shallowEquals } from "../equalities";
-import React, { ComponentType } from "react";
+import React, { ComponentType, ReactElement } from "react";
 import { useRef } from "../hooks";
 
 // 1. 이전 props를 저장할 ref 생성
@@ -16,17 +16,17 @@ export function memo<P extends object>(
   const memoizationComponent = (props: P) => {
     //재렌더링 방지
     const prevPropsRef = useRef<P | null>(null);
-    let render = null;
+    const prevRender = useRef<ReactElement | null>(null);
 
     const shouldRender =
       !prevPropsRef.current || !_equals(prevPropsRef.current, props);
 
     if (shouldRender) {
       prevPropsRef.current = props; // 업데이트된 props 저장
-      render = React.createElement(Component, props); // 새로 렌더링
+      prevRender.current = React.createElement(Component, props); // 새로 렌더링
     }
 
-    return render;
+    return prevRender.current;
   };
 
   return memoizationComponent;
