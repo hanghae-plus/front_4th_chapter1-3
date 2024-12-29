@@ -8,8 +8,13 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   }, []);
 
+  const contextValue: ThemeContextType = {
+    theme,
+    toggleTheme,
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
