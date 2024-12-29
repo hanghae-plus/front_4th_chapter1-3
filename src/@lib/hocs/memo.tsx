@@ -8,7 +8,7 @@ export function memo<P extends object>(
   _equals = shallowEquals,
 ) {
   if (!isFucntionalComponent<P>(Component)) {
-    throw Error("Component passed to memo should be a function.");
+    throw new Error("Component passed to memo should be a function.");
   }
 
   return (props: P) => {
@@ -17,13 +17,12 @@ export function memo<P extends object>(
 
     if (!memoizedComponent.current || !_equals(props, prevProps.current)) {
       prevProps.current = props;
-      memoizedComponent.current = Component(props);
+      memoizedComponent.current = <Component {...props} />;
     }
 
     return memoizedComponent.current;
   };
 }
-
-const isFucntionalComponent = <P>(
+const isFucntionalComponent = <P,>(
   Component: ComponentType<P>,
 ): Component is FunctionComponent<P> => typeof Component === "function";
