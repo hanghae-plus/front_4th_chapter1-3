@@ -2,12 +2,6 @@ import { ComponentType, createElement } from "react";
 import { shallowEquals } from "../equalities";
 import { useRef } from "../hooks";
 
-type StaticComponentProperties =
-  | "propTypes"
-  | "contextTypes"
-  | "defaultProps"
-  | "displayName";
-
 /**
  * 컴포넌트를 메모이제이션하는 함수
  * @param Component
@@ -18,7 +12,7 @@ export function memo<P extends object>(
   Component: ComponentType<P>,
   _equals = shallowEquals,
 ) {
-  const MemoizedComponent = ((props: P) => {
+  const MemoizedComponent = (props: P) => {
     const prevPropsRef = useRef<P | null>(null);
     const renderRef = useRef<React.ReactElement | null>(null);
 
@@ -29,20 +23,7 @@ export function memo<P extends object>(
     }
 
     return renderRef.current;
-  }) as typeof Component;
-
-  (Object.keys(Component) as Array<keyof typeof Component>)
-    .filter((key): key is StaticComponentProperties =>
-      ["propTypes", "contextTypes", "defaultProps", "displayName"].includes(
-        key,
-      ),
-    )
-    .forEach((key) => {
-      const descriptor = Object.getOwnPropertyDescriptor(Component, key);
-      if (descriptor) {
-        Object.defineProperty(MemoizedComponent, key, descriptor);
-      }
-    });
+  };
 
   return MemoizedComponent;
 }

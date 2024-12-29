@@ -620,26 +620,6 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
         rerender(<MemoizedComponent value={2} style={DEFAULT_STYLE} />);
         expect(TestComponent).toHaveBeenCalledTimes(5);
       });
-
-      it("should preserve static properties", () => {
-        // 테스트용 컴포넌트 생성
-        const TestComponent = (props: { value: number }) => (
-          <div>{props.value}</div>
-        );
-
-        // 정적 프로퍼티 추가
-        TestComponent.defaultProps = { value: 0 };
-        TestComponent.displayName = "TestComponent";
-
-        // memo로 래핑
-        const MemoizedComponent = memo(TestComponent);
-
-        // 정적 프로퍼티 유지 여부 확인
-        expect(MemoizedComponent.defaultProps).toEqual(
-          TestComponent.defaultProps,
-        );
-        expect(MemoizedComponent.displayName).toBe(TestComponent.displayName);
-      });
     });
 
     describe("deepMemo HOC", () => {
