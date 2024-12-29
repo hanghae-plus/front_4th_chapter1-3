@@ -1,11 +1,8 @@
-import { createContext, useContext } from "react";
-
+import { createContext } from "react";
 import { Notification } from "../types/Notification";
 import { User } from "../types/User";
 
 export interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
@@ -15,11 +12,3 @@ export interface AppContextType {
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
-
-export const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
-  return context;
-};
