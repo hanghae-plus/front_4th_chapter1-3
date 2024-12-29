@@ -1,3 +1,8 @@
+import React from "react";
+import { useAuthContext, useCallback, useThemeContext } from "../hooks";
+import { memo } from "../hocs";
+import { renderLog } from "../../utils";
+
 export const Header: React.FC = memo(() => {
   renderLog("Header rendered");
   const { user, login, logout } = useAuthContext();

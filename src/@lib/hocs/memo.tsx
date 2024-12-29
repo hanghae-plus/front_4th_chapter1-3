@@ -12,11 +12,10 @@ export function memo<P extends object>(
   }
 
   return (props: P) => {
+    // 의문: 여기는 함수형 컴포넌트 내부가 아니고, 내부에서 호출되는 hook도 아닌데 useRef를 사용해도 괜찮을까? (일단.. 돌아는 감)
     const prevProps = useRef<P | null>(null);
     const memoizedComponent = useRef<ReactNode | null>(null);
 
-    console.log(!memoizedComponent.current);
-    console.log(!_equals(props, prevProps.current));
     if (!memoizedComponent.current || !_equals(props, prevProps.current)) {
       prevProps.current = props;
       memoizedComponent.current = <Component {...props} />;
