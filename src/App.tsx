@@ -107,7 +107,6 @@ export const ItemList: React.FC<{
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
 
   const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
-
   return (
     <div className="mt-8">
       <div className="flex justify-between items-center mb-4">
