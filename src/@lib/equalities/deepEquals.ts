@@ -1,16 +1,9 @@
-export function deepEquals<T>(objA: T, objB: T): boolean {
+import { validObject } from "./utils/validObject.ts";
+
+export function deepEquals<T extends object>(objA: T, objB: T): boolean {
   //1. 기본 타입이거나 null인 경우 처리
-
-  if (objA === objB) return true;
-
-  if (
-    typeof objA !== "object" ||
-    objA === null ||
-    typeof objB !== "object" ||
-    objB === null
-  ) {
-    return false;
-  }
+  const objectTypeCheck = validObject(objA, objB);
+  if (objectTypeCheck !== null) return objectTypeCheck;
 
   //2. 둘 다 객체인 경우
   if (Array.isArray(objA) && Array.isArray(objB)) {
@@ -26,15 +19,12 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
     return true;
   }
 
-  const Keys1 = Object.keys(objA);
-  const Keys2 = Object.keys(objB);
-
-  if (Keys1.length !== Keys2.length) {
-    return false;
-  }
-
-  for (const key of Keys1) {
-    if (!objB.hasOwnProperty(key) || !deepEquals(objA[key], objB[key])) {
+  const objAMap = new Map(Object.entries(objA));
+  const objBMap = new Map(Object.entries(objB));
+  if (objAMap.size !== objBMap.size) return false;
+  for (const [key, valueA] of objAMap) {
+    const valueB = objBMap.get(key);
+    if (!valueB || !deepEquals(valueA, valueB)) {
       return false;
     }
   }
