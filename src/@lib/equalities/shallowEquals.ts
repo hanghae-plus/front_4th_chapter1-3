@@ -12,19 +12,20 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
     return false;
   }
 
+  const aKeys = Object.keys(objA);
+  const bKeys = Object.keys(objB);
+
   // 3. 객체의 키 개수가 다른 경우 처리
-  if (Object.keys(objA).length !== Object.keys(objB).length) {
+  if (aKeys.length !== bKeys.length) {
     return false;
   }
 
   // 4. 모든 키에 대해 얕은 비교 수행
-  if (Array.isArray(objA) && Array.isArray(objB)) {
-    return Object.keys(objA).every((v, i) => objA[i] === objB[i]);
+  for (const key in objA) {
+    if (objA[key] !== objB[key]) {
+      return false;
+    }
   }
 
-  if (!Array.isArray(objA) && !Array.isArray(objB)) {
-    return Object.keys(objA).every((v) => objA[v] === objB[v]);
-  }
-
-  return false;
+  return true;
 }
