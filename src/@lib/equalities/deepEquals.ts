@@ -1,3 +1,6 @@
+import { isNullOrPrimitive } from "../validation/isNullOrPrimitive";
+import { isRecord } from "../validation/isRecord";
+
 /**
  * 두 값의 깊은 비교를 수행하는 함수
  * @param objA
@@ -8,10 +11,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   if (objA === objB) {
     return true;
   }
-  if (objA == null || objB == null) {
-    return false;
-  }
-  if (typeof objA !== "object" || typeof objB !== "object") {
+  if (isNullOrPrimitive(objA) || isNullOrPrimitive(objB)) {
     return false;
   }
 
@@ -29,8 +29,11 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   }
 
   // 객체 비교
-  const keysA = Object.keys(objA) as Array<keyof T>;
-  const keysB = Object.keys(objB) as Array<keyof T>;
+  if (!isRecord(objA) || !isRecord(objB)) {
+    return false;
+  }
+  const keysA = Object.keys(objA);
+  const keysB = Object.keys(objB);
   if (keysA.length !== keysB.length) {
     return false;
   }
