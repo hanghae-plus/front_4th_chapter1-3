@@ -24,7 +24,8 @@ export function shallowEquals<T extends object>(objA: T, objB: T): boolean {
 
   // 4. 모든 키에 대해 얕은 비교 수행
   for (const key of keysA) {
-    if (!objB.hasOwnProperty(key) || objA[key] !== objB[key]) {
+    // Q. hasOwn에 에러가 발생합니다. 어떻게 수정해야 좋을까요?
+    if (!Object.hasOwn(objB, key) || objA[key] !== objB[key]) {
       return false;
     }
   }
