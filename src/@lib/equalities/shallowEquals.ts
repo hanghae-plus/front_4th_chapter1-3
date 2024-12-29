@@ -13,15 +13,12 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
   }
   // 객체 안에 얕은 비교
   if (objA && objB && !Array.isArray(objA) && !Array.isArray(objB)) {
-    let isShallowEqual = false;
     for (const key in objA) {
       if (objA[key] !== objB[key]) {
-        isShallowEqual = false;
-      } else {
-        isShallowEqual = true;
+        return false;
       }
     }
-    return isShallowEqual;
+    return true;
   }
   // 배열 안에 얕은 비교
   if (Array.isArray(objA) && Array.isArray(objB)) {
