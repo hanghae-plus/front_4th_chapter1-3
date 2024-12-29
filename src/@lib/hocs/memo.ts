@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { shallowEquals } from "../equalities";
-import { ComponentType } from "react";
+import React, { ComponentType } from "react";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,
@@ -13,20 +12,14 @@ export function memo<P extends object>(
   let memoizedResult = null;
 
   // 3. equals 함수를 사용하여 props 비교
-  return function(props) {
+  return function (props) {
     if (prevProps === null || !_equals(prevProps, props)) {
       console.log("Props changed, re-rendering");
-      memoizedResult = Component(props);
-    }
-    else {
+      memoizedResult = React.createElement(Component, props);
+    } else {
       console.log("Props unchanged, using memoized result");
     }
     prevProps = props;
     return memoizedResult;
-  }
-
-  // 4. props가 변경된 경우에만 새로운 렌더링 수행
-
-
-  return Component;
+  };
 }
