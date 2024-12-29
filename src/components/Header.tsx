@@ -1,13 +1,13 @@
 import React from "react";
 
-import { AppContext } from "../context/AppContext";
 import { ThemeContext } from "../context/ThemeContext";
 import { useContextValue } from "../context/useContextValue";
+import { UserContext } from "../context/UserContext";
 import { renderLog } from "../utils";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { user, login, logout } = useContextValue(AppContext);
+  const { user, login, logout } = useContextValue(UserContext);
   const { theme, toggleTheme } = useContextValue(ThemeContext);
 
   const handleLogin = () => {
