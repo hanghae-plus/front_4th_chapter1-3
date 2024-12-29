@@ -1,4 +1,14 @@
-export function useRef<T>(initialValue: T): { current: T } {
+import { useState } from "react";
+
+interface MutableRefObject<T> {
+  current: T;
+}
+
+export function useRef<T = undefined>(): MutableRefObject<T | undefined>;
+export function useRef<T>(initialValue: T): MutableRefObject<T>;
+export function useRef<T>(
+  initialValue?: T,
+): MutableRefObject<T | undefined> | MutableRefObject<T> {
   // React의 useState를 이용해서 만들어보세요.
-  return { current: initialValue };
+  return useState(() => ({ current: initialValue }))[0];
 }
