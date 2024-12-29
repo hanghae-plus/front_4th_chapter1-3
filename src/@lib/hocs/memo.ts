@@ -1,25 +1,27 @@
 import { shallowEquals } from "../equalities";
 import React, { ComponentType } from "react";
+import { useRef } from "../hooks";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,
   _equals = shallowEquals,
 ) {
-  // 1. 이전 props를 저장할 ref 생성
-  let prevProps = null;
+  return function MemoizedComponent(props: P) {
+    // 1. 이전 props를 저장할 ref 생성
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const prevPropsRef = useRef<P | null>(null);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const memorizedResultRef = useRef<React.ReactElement | null>(null);
 
-  // 2. 메모이제이션된 컴포넌트 생성
-  let memoizedResult = null;
-
-  // 3. equals 함수를 사용하여 props 비교
-  return function (props) {
-    if (prevProps === null || !_equals(prevProps, props)) {
-      console.log("Props changed, re-rendering");
-      memoizedResult = React.createElement(Component, props);
-    } else {
-      console.log("Props unchanged, using memoized result");
+    // 3. equals 함수를 사용하여 props 비교
+    if (
+      prevPropsRef.current === null ||
+      !_equals(prevPropsRef.current, props)
+    ) {
+      memorizedResultRef.current = React.createElement(Component, props);
     }
-    prevProps = props;
-    return memoizedResult;
+
+    prevPropsRef.current = props;
+    return memorizedResultRef.current;
   };
 }

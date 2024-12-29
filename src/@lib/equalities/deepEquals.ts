@@ -24,25 +24,22 @@ export function deepEquals<T extends object>(objA: T, objB: T): boolean {
   }
 
   // 3. 객체인 경우
-  const keysA = Object.keys(objA);
-  const keysB = Object.keys(objB);
+  const objAkeys = new Map(
+    Object.entries(objA).map(([key, value]) => [key, value]),
+  );
+  const objBkeys = new Map(
+    Object.entries(objA).map(([key, value]) => [key, value]),
+  );
 
-  if (keysA.length !== keysB.length) {
+  if (objAkeys.size !== objBkeys.size) {
     return false;
   }
 
-  // 객체를 Map으로 변환하여 비교
-  const mapA = new Map(
-    Object.entries(objA).map(([key, value]) => [key, value]),
-  );
-  const mapB = new Map(
-    Object.entries(objB).map(([key, value]) => [key, value]),
-  );
-  for (const key of keysA) {
-    if (!mapB.has(key) || !deepEquals(mapA.get(key), mapB.get(key))) {
+  for (const [key, valueA] of objAkeys) {
+    const valueB = objBkeys.get(key);
+    if (!valueB || !deepEquals(valueA, valueB)) {
       return false;
     }
   }
-
   return true;
 }
