@@ -18,11 +18,9 @@ export function memo<P extends object>(
     const prevPropsRef = useRef<P | null>(null);
 
     if (prevPropsRef.current || _equals(prevPropsRef.current, props)) {
-      // 이전 props와 동일하면 렌더링을 건너뜀
-      return null;
+      prevPropsRef.current = props;
     }
 
-    prevPropsRef.current = props; // 현재 props를 저장
     return React.createElement(Component, props);
   };
 
