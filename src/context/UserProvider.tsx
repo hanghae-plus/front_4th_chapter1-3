@@ -1,29 +1,25 @@
-import { PropsWithChildren, useCallback, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { User } from "../types/User";
-import { NotificationContext } from "./NotificationContext";
 import { UserContext } from "./UserContext";
-import { useContextValue } from "./useContextValue";
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const { addNotification } = useContextValue(NotificationContext);
 
-  const login = useCallback(
-    (email: string) => {
-      setUser({ id: 1, name: "홍길동", email });
-      addNotification("성공적으로 로그인되었습니다", "success");
-    },
-    [addNotification],
-  );
+  const login = (email: string) => {
+    setUser({ id: 1, name: "홍길동", email });
+  };
 
-  const logout = useCallback(() => {
+  const logout = () => {
     setUser(null);
-    addNotification("로그아웃되었습니다", "info");
-  }, [addNotification]);
+  };
+
+  const contextValue = {
+    user,
+    login,
+    logout,
+  };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 };
