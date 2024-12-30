@@ -17,7 +17,11 @@ export function useMemo<T>(
   const prevProps = useRef<T | null>(null); // 이전 생성된 값 저장, 초기값은 null
 
   // 현재 의존성과 이전 의존성 비교
-  if (!prevPropsRef || !_equals(prevPropsRef.current, _deps)) {
+  if (
+    prevPropsRef.current ||
+    prevProps.current ||
+    !_equals(prevPropsRef.current, _deps)
+  ) {
     prevPropsRef.current = _deps;
     prevProps.current = factory();
   }
