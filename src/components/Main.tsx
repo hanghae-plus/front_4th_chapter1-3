@@ -5,8 +5,9 @@ import ComplexForm from './ComplexForm';
 import NotificationSystem from './NotificationSystem';
 import { generateItems } from '../utils';
 import { useThemeContext } from '../@lib/hooks/useThemeContext';
+import { memo } from '../@lib';
 
-const Main = () => {
+const Main = memo(() => {
   const [items, setItems] = useState(generateItems(1000));
   const addItems = () => {
     setItems((prevItems) => [
@@ -33,6 +34,6 @@ const Main = () => {
       <NotificationSystem />
     </div>
   );
-};
+});
 
 export default Main;

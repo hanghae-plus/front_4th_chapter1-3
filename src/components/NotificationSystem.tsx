@@ -1,10 +1,11 @@
 // NotificationSystem 컴포넌트
 
+import { memo } from '../@lib';
 import useNotificationContext from '../@lib/hooks/useNotificationContext';
 
 import { renderLog } from '../utils';
 
-const NotificationSystem: React.FC = () => {
+const NotificationSystem: React.FC = memo(() => {
   renderLog('NotificationSystem rendered');
   const { notifications, removeNotification } = useNotificationContext();
 
@@ -34,6 +35,6 @@ const NotificationSystem: React.FC = () => {
       ))}
     </div>
   );
-};
+});
 
 export default NotificationSystem;

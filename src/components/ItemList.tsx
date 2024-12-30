@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Item } from '../@lib/type/type';
 import { renderLog } from '../utils';
 import { useThemeContext } from '../@lib/hooks/useThemeContext';
+import { memo } from '../@lib';
 
 // ItemList 컴포넌트
 export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+}> = memo(({ items, onAddItemsClick }) => {
   renderLog('ItemList rendered');
   const [filter, setFilter] = useState('');
   const { theme } = useThemeContext();
@@ -60,6 +61,6 @@ export const ItemList: React.FC<{
       </ul>
     </div>
   );
-};
+});
 
 export default ItemList;
