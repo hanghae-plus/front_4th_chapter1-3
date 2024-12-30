@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { renderLog } from "../../utils";
-import { useGetTheme } from "../../contexts/theme-context/useThemeContext";
 
-interface Item {
+import Item from "./_components/Item";
+
+export interface ItemType {
   id: number;
   name: string;
   category: string;
@@ -10,13 +11,11 @@ interface Item {
 }
 
 export const ItemList: React.FC<{
-  items: Item[];
+  items: ItemType[];
   onAddItemsClick: () => void;
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-
-  const theme = useGetTheme();
 
   const filteredItems = items.filter(
     (item) =>
@@ -56,12 +55,7 @@ export const ItemList: React.FC<{
       </ul>
       <ul className="space-y-2">
         {filteredItems.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
-          >
-            {item.name} - {item.category} - {item.price.toLocaleString()}원
-          </li>
+          <Item item={item} key={index} />
         ))}
       </ul>
     </div>
