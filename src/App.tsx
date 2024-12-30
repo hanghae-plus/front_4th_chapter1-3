@@ -9,14 +9,15 @@ import AppLayout from "./components/layout/app-layout/AppLayout";
 import { UserProvider } from "./contexts/user-context/UserProvider";
 import { NotificationProvider } from "./contexts/notification-context/NotificationProvider";
 
-// 메인 App 컴포넌트
+const DEFAULT_ITEM_LENGTH = 1000;
+
 const App: React.FC = () => {
-  const [items, setItems] = useState(generateItems(1000));
+  const [items, setItems] = useState(generateItems(DEFAULT_ITEM_LENGTH));
 
   const addItems = () => {
     setItems((prevItems) => [
       ...prevItems,
-      ...generateItems(1000, prevItems.length),
+      ...generateItems(DEFAULT_ITEM_LENGTH, prevItems.length),
     ]);
   };
 
