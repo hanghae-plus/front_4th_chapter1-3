@@ -4,7 +4,6 @@ import * as React from "react";
 import { shallowEquals } from "../equalities";
 import { useRef } from "../hooks";
 
-// memo HOC는 컴포넌트의 props를 얕은 비교하여 불필요한 리렌더링을 방지합니다.
 export function memo<P extends object>(
   Component: React.ComponentType<P>,
   _equals = shallowEquals,
@@ -16,12 +15,14 @@ export function memo<P extends object>(
 
   const MemoizedComponent = (props: P) => {
     const prevPropsRef = useRef<P | null>(null);
+    const renderPropsRef = useRef<React.ReactElement | null>(null);
 
     if (prevPropsRef.current || _equals(prevPropsRef.current, props)) {
       prevPropsRef.current = props;
+      renderPropsRef.current = React.createElement(Component, props);
     }
 
-    return React.createElement(Component, props);
+    return renderPropsRef.current;
   };
 
   return MemoizedComponent;
