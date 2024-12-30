@@ -1,7 +1,9 @@
 // deepEquals 함수는 두 값의 깊은 비교를 수행합니다.
 
 export function deepEquals<T>(objA: T, objB: T): boolean {
-  if (Object.is(objA, objB)) return true;
+  if (Object.is(objA, objB)) {
+    return true;
+  }
 
   if (
     typeof objA !== "object" ||
