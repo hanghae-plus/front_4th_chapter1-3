@@ -3,6 +3,7 @@ import { Item } from '../@lib/type/type';
 import { renderLog } from '../utils';
 import { useThemeContext } from '../@lib/hooks/useThemeContext';
 import { memo } from '../@lib';
+import ItemComponent from './Item';
 
 // ItemList 컴포넌트
 export const ItemList: React.FC<{
@@ -51,12 +52,7 @@ export const ItemList: React.FC<{
       </ul>
       <ul className="space-y-2">
         {filteredItems.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded shadow ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-700 text-white'}`}
-          >
-            {item.name} - {item.category} - {item.price.toLocaleString()}원
-          </li>
+          <ItemComponent key={index} theme={theme} index={index} item={item} />
         ))}
       </ul>
     </div>
