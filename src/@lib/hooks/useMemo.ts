@@ -10,6 +10,13 @@ export function useMemo<T>(
   const memoizedValue = useRef<T>();
   const prevDeps = useRef<DependencyList>();
 
+  if (!prevDeps.current) {
+    memoizedValue.current = factory();
+    prevDeps.current = _deps;
+
+    return memoizedValue.current;
+  }
+
   if (!_equals(prevDeps.current, _deps)) {
     memoizedValue.current = factory();
     prevDeps.current = _deps;
