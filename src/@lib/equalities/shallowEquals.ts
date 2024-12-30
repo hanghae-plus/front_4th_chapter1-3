@@ -27,5 +27,14 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
     }
   }
 
+  // 4. 모든 키에 대해 얕은 비교 수행
+  if (Array.isArray(objA) && Array.isArray(objB)) {
+    return aKeys.every((v, i) => objA[i] === objB[i]);
+  }
+
+  if (!Array.isArray(objA) && !Array.isArray(objB)) {
+    return aKeys.every((v) => objA[v as keyof T] === objB[v as keyof T]);
+  }
+
   return true;
 }

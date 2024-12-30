@@ -2,8 +2,8 @@
 
 ### 기본과제
 
-- [ ] shallowEquals 구현 완료
-- [ ] deepEquals 구현 완료
+- [X] shallowEquals 구현 완료
+- [X] deepEquals 구현 완료
 - [ ] memo 구현 완료
 - [ ] deepMemo 구현 완료
 - [ ] useRef 구현 완료
