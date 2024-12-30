@@ -11,7 +11,7 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined,
 );
 
-export const useGetThemeContext = () => {
+export const useGetTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
     throw new Error("useGetThemeContext must be used within an AppProvider");
