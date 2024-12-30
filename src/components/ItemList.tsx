@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Item } from '../@lib/type/type';
 import { renderLog } from '../utils';
-import { useAppContext } from '../@lib/hooks/useAppContext';
+import { useThemeContext } from '../@lib/hooks/useThemeContext';
 
 // ItemList 컴포넌트
 export const ItemList: React.FC<{
@@ -10,7 +10,7 @@ export const ItemList: React.FC<{
 }> = ({ items, onAddItemsClick }) => {
   renderLog('ItemList rendered');
   const [filter, setFilter] = useState('');
-  const { theme } = useAppContext();
+  const { theme } = useThemeContext();
 
   const filteredItems = items.filter(
     (item) =>
