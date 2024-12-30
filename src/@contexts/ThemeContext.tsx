@@ -1,22 +1,23 @@
 /* eslint-disable react-refresh/only-export-components */
-import { memo, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createSafeContext } from "../@lib/utils/createSafeContext";
+import { ThemeMode } from "./ThemeContext.types";
 
 interface Props {
   children: React.ReactNode;
 }
 
 function ThemeProvider({ children }: Props) {
-  const [state, setState] = useState<ThemeState>({
-    theme: "light",
+  const [state, setState] = useState<ThemeContextState>({
+    mode: "light",
   });
 
-  const actions = useMemo<ThemeActions>(
+  const actions = useMemo<ThemeContextActions>(
     () => ({
-      toggleTheme() {
-        setState((prev) => ({
-          ...prev,
-          theme: prev.theme === "light" ? "dark" : "light",
+      toggleThemeMode() {
+        setState(({ mode, ...rest }) => ({
+          ...rest,
+          mode: mode === "light" ? "dark" : "light",
         }));
       },
     }),
@@ -31,17 +32,17 @@ function ThemeProvider({ children }: Props) {
 }
 
 // Context API
-export interface ThemeState {
-  theme: "dark" | "light";
+export interface ThemeContextState {
+  mode: ThemeMode;
 }
 
-export interface ThemeActions {
-  toggleTheme(): void;
+export interface ThemeContextActions {
+  toggleThemeMode(): void;
 }
 
 export const [ThemeStateProvider, useThemeStateContext] =
-  createSafeContext<ThemeState>("ThemeProvider");
+  createSafeContext<ThemeContextState>("ThemeProvider");
 export const [ThemeActionsProvider, useThemeActionsContext] =
-  createSafeContext<ThemeActions>("ThemeProvider");
+  createSafeContext<ThemeContextActions>("ThemeProvider");
 
-export default memo(ThemeProvider);
+export default ThemeProvider;
