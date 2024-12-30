@@ -22,14 +22,14 @@ function _shallowEqualArray<T>(arrA: Array<T>, arrB: Array<T>): boolean {
   return arrA.every((item, index) => item === arrB[index]);
 }
 
-function _shallowEqualObject(
-  objA: Record<string, unknown>,
-  objB: Record<string, unknown>,
+function _shallowEqualObject<T extends string | number | symbol>(
+  objA: Record<T, unknown>,
+  objB: Record<T, unknown>,
 ): boolean {
   if (objA === objB) return true;
 
-  const keysA = Object.keys(objA);
-  const keysB = Object.keys(objB);
+  const keysA = Object.keys(objA) as T[];
+  const keysB = Object.keys(objB) as T[];
 
   if (keysA.length !== keysB.length) {
     return false;
