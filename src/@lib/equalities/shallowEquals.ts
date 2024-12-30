@@ -1,3 +1,9 @@
+/**
+ * 얕은 비교를 수행하는 함수
+ * @param objA 비교할 첫 번째 값
+ * @param objB 비교할 두 번째 값
+ * @returns 두 값이 얕은 수준에서 동일하면 true, 그렇지 않으면 false를 반환
+ */
 export function shallowEquals<T>(objA: T, objB: T): boolean {
   // 1. 두 값이 정확히 같은지 확인 (참조가 같은 경우)
   if (objA === objB) {

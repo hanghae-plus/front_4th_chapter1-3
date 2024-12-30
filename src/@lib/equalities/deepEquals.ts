@@ -1,3 +1,9 @@
+/**
+ * 깊은 비교를 수행하는 함수
+ * @param objA 비교할 첫 번째 값
+ * @param objB 비교할 두 번째 값
+ * @returns 두 값이 깊은 수준에서 동일하면 true, 그렇지 않으면 false를 반환
+ */
 export function deepEquals<T>(objA: T, objB: T): boolean {
   // 1. 기본 타입이거나 null인 경우 처리
   if (objA === objB) {
