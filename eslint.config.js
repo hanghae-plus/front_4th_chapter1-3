@@ -25,8 +25,20 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "@typescript-eslint/comma-dangle": ["error", "never"],
     },
   },
   eslintPluginPrettier,
   eslintConfigPrettier,
+  // 마지막 인자에 ,를 붙이면 문제가 일어나는 현상 제거
+  {
+    rules: {
+      "prettier/prettier": [
+        "error",
+        {
+          endOfLine: "auto",
+        },
+      ],
+    },
+  }
 );
