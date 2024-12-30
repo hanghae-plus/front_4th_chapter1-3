@@ -1,5 +1,5 @@
 import { shallowEquals } from "../equalities";
-import { ComponentType, createElement } from "react";
+import { ComponentType, createElement, ReactElement } from "react";
 import { useRef } from "../hooks";
 
 export function memo<P extends object>(
@@ -8,17 +8,17 @@ export function memo<P extends object>(
 ) {
   const MemoizedComponent = (props: P) => {
     const prevPropRef = useRef<P | null>(null);
+    const prevComponentRef = useRef<ReactElement<P> | null>(null);
 
     const shouldUpdate =
       prevPropRef.current === null || !_equals(prevPropRef.current, props);
 
     prevPropRef.current = props;
-
     if (shouldUpdate) {
-      return createElement(Component, props);
+      prevComponentRef.current = createElement(Component, props);
     }
 
-    return null;
+    return prevComponentRef.current;
   };
   return MemoizedComponent;
 }
