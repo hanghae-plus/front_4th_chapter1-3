@@ -1,4 +1,4 @@
-export function deepEquals<T>(objA: T, objB: T): boolean {
+export function deepEquals<T extends object>(objA: T, objB: T): boolean {
   if (typeof objA !== typeof objB) {
     return false;
   }
@@ -28,8 +28,6 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
     }
 
     return Object.keys(objA).every((key) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       return deepEquals(objA[key], objB[key]);
     });
   }

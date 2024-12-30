@@ -1,4 +1,4 @@
-export function shallowEquals<T>(objA: T, objB: T): boolean {
+export function shallowEquals<T extends object>(objA: T, objB: T): boolean {
   if (typeof objA !== typeof objB) {
     return false;
   }
@@ -27,8 +27,6 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
       return false;
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     return Object.keys(objA).every((key) => objA[key] === objB[key]);
   }
 
