@@ -1,9 +1,10 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext } from "react";
 import { generateItems } from "./utils";
 import { ItemList } from "./components/item-list/ItemList";
 import { ComplexForm } from "./components/complex-form/ComflexForm";
 import { Header } from "./components/header/Header";
 import { NotificationSystem } from "./components/notification-system/NotificationSystem";
+import { ThemeProvider } from "./contexts/theme-context/ThemeProvider";
 
 // 타입 정의
 interface User {
@@ -20,8 +21,6 @@ interface Notification {
 
 // AppContext 타입 정의
 interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
@@ -30,27 +29,13 @@ interface AppContextType {
   removeNotification: (id: number) => void;
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-// 커스텀 훅: useAppContext
-export const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
-  return context;
-};
+export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
   const [items, setItems] = useState(generateItems(1000));
   const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
 
   const addItems = () => {
     setItems((prevItems) => [
@@ -85,8 +70,6 @@ const App: React.FC = () => {
   };
 
   const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
     user,
     login,
     logout,
@@ -96,24 +79,26 @@ const App: React.FC = () => {
   };
 
   return (
-    <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
-            </div>
-            <div className="w-full md:w-1/2 md:pl-4">
-              <ComplexForm />
+    <ThemeProvider>
+      <AppContext.Provider value={contextValue}>
+        <div
+          className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+        >
+          <Header />
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/2 md:pr-4">
+                <ItemList items={items} onAddItemsClick={addItems} />
+              </div>
+              <div className="w-full md:w-1/2 md:pl-4">
+                <ComplexForm />
+              </div>
             </div>
           </div>
+          <NotificationSystem />
         </div>
-        <NotificationSystem />
-      </div>
-    </AppContext.Provider>
+      </AppContext.Provider>
+    </ThemeProvider>
   );
 };
 
