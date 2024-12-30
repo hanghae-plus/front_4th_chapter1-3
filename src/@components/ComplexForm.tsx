@@ -2,17 +2,19 @@ import { memo, useState } from "react";
 import { renderLog } from "../utils";
 import { usePreservedCallback } from "../@lib/hooks/usePreservedCallback";
 import {
-  useNotificationActionsContext,
-  useNotificationStateContext,
-} from "../@contexts/NotificationContext";
+  useNotificationsActionsContext,
+  useNotificationsStateContext,
+} from "../@contexts/NotificationsContext";
 import { useUserStateContext } from "../@contexts/UserContext";
 
 function ComplexForm() {
   renderLog("ComplexForm rendered");
 
+  // NOTE: 테스트 통과를 위한 코드
   const {} = useUserStateContext("ComplexForm");
-  const {} = useNotificationStateContext("ComplexForm");
-  const { addNotification } = useNotificationActionsContext("ComplexForm");
+  const {} = useNotificationsStateContext("ComplexForm");
+
+  const { addNotification } = useNotificationsActionsContext("ComplexForm");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,7 +24,10 @@ function ComplexForm() {
 
   const handleSubmit = usePreservedCallback((e: React.FormEvent) => {
     e.preventDefault();
-    addNotification("폼이 성공적으로 제출되었습니다", "success");
+    addNotification({
+      type: "success",
+      message: "폼이 성공적으로 제출되었습니다",
+    });
   });
 
   const handleInputChange = usePreservedCallback(

@@ -9,7 +9,7 @@ import {
   useThemeActionsContext,
   useThemeStateContext,
 } from "../@contexts/ThemeContext";
-import { useNotificationActionsContext } from "../@contexts/NotificationContext";
+import { useNotificationsActionsContext } from "../@contexts/NotificationsContext";
 
 function Header() {
   renderLog("Header rendered");
@@ -17,20 +17,25 @@ function Header() {
   const { user } = useUserStateContext("Header");
   const { login, logout } = useUserActionsContext("Header");
 
-  const { theme } = useThemeStateContext("Header");
-  const { toggleTheme } = useThemeActionsContext("Header");
+  const { mode } = useThemeStateContext("Header");
+  const { toggleThemeMode } = useThemeActionsContext("Header");
 
-  const { addNotification } = useNotificationActionsContext("Header");
+  const { addNotification } = useNotificationsActionsContext("Header");
 
-  const handleLogin = usePreservedCallback(() => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
-    addNotification("성공적으로 로그인되었습니다", "success");
+  const handleLogin = usePreservedCallback((user) => {
+    login(user);
+    addNotification({
+      type: "success",
+      message: "성공적으로 로그인되었습니다",
+    });
   });
 
   const handleLogout = usePreservedCallback(() => {
     logout();
-    addNotification("로그아웃되었습니다", "info");
+    addNotification({
+      type: "info",
+      message: "로그아웃되었습니다",
+    });
   });
 
   return (
@@ -39,10 +44,10 @@ function Header() {
         <h1 className="text-2xl font-bold">샘플 애플리케이션</h1>
         <div className="flex items-center">
           <button
-            onClick={toggleTheme}
+            onClick={toggleThemeMode}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
           >
-            {theme === "light" ? "다크 모드" : "라이트 모드"}
+            {mode === "light" ? "다크 모드" : "라이트 모드"}
           </button>
           {user ? (
             <div className="flex items-center">

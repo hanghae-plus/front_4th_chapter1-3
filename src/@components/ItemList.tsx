@@ -1,34 +1,57 @@
-import { memo, useState } from "react";
-import { renderLog } from "../utils";
+import { memo, useMemo, useState, useTransition } from "react";
+import { generateItems, renderLog } from "../utils";
 import { useThemeStateContext } from "../@contexts/ThemeContext";
+import { usePreservedCallback } from "../@lib/hooks/usePreservedCallback";
 
-interface Item {
+interface ItemType {
   id: number;
   name: string;
   category: string;
   price: number;
 }
 
-interface Props {
-  items: Item[];
-  onAddItemsClick: () => void;
-}
-
-function ItemList({ items, onAddItemsClick }: Props) {
+function ItemList() {
   renderLog("ItemList rendered");
 
+  const [items, setItems] = useState<ItemType[]>(() => generateItems(1000));
   const [filter, setFilter] = useState("");
-  const { theme } = useThemeStateContext("ItemList");
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
+  const { mode } = useThemeStateContext("ItemList");
+
+  const [pending, startTransition] = useTransition();
+
+  const filteredItems = useMemo(() => {
+    return items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(filter.toLowerCase()) ||
+        item.category.toLowerCase().includes(filter.toLowerCase()),
+    );
+  }, [items, filter]);
+
+  const totalPrice = useMemo(
+    () => filteredItems.reduce((sum, item) => sum + item.price, 0),
+    [filteredItems],
   );
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const averagePrice = useMemo(
+    () => Math.round(totalPrice / filteredItems.length) || 0,
+    [filteredItems, totalPrice],
+  );
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+  const handleAddItemsButtonClick = usePreservedCallback(() => {
+    startTransition(() => {
+      setItems((prevItems) => [
+        ...prevItems,
+        ...generateItems(1000, prevItems.length),
+      ]);
+    });
+  });
+
+  const handleFilterChange = usePreservedCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFilter(e.target.value);
+    },
+  );
 
   return (
     <div className="mt-8">
@@ -38,7 +61,7 @@ function ItemList({ items, onAddItemsClick }: Props) {
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={handleAddItemsButtonClick}
           >
             대량추가
           </button>
@@ -48,7 +71,7 @@ function ItemList({ items, onAddItemsClick }: Props) {
         type="text"
         placeholder="상품 검색..."
         value={filter}
-        onChange={(e) => setFilter(e.target.value)}
+        onChange={handleFilterChange}
         className="w-full p-2 mb-4 border border-gray-300 rounded text-black"
       />
       <ul className="mb-4 mx-4 flex gap-3 text-sm justify-end">
@@ -57,17 +80,25 @@ function ItemList({ items, onAddItemsClick }: Props) {
         <li>평균가격: {averagePrice.toLocaleString()}원</li>
       </ul>
       <ul className="space-y-2">
-        {filteredItems.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
-          >
-            {item.name} - {item.category} - {item.price.toLocaleString()}원
-          </li>
-        ))}
+        {pending
+          ? "데이터를 준비 중이에요! (｡•̀ᴗ-)✧"
+          : filteredItems.map(({ name, category, price }, index) => (
+              <li
+                key={index}
+                className={`p-2 rounded shadow ${colorScheme[mode]}`}
+              >
+                {name} - {category} - {price.toLocaleString()}원
+              </li>
+            ))}
       </ul>
     </div>
   );
 }
+
+// Styles
+const colorScheme = {
+  dark: "bg-gray-700 text-white",
+  light: "bg-white text-black",
+} as const;
 
 export default memo(ItemList);
