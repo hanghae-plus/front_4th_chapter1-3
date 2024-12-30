@@ -3,6 +3,10 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
     return false;
   }
 
+  if (objA === objB) {
+    return true;
+  }
+
   if (Array.isArray(objA) && Array.isArray(objB)) {
     if (objA.length !== objB.length) {
       return false;
