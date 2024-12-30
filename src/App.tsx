@@ -1,6 +1,13 @@
-import React, { useState, createContext, useContext } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useCallback,
+  useMemo,
+} from "react";
 import { generateItems, renderLog } from "./utils";
 import { ThemeProvider, useTheme } from "./ThemeContext";
+import { AuthProvider, useAuth } from "./AuthContext";
 
 // 타입 정의
 interface Item {
@@ -26,9 +33,9 @@ interface Notification {
 interface AppContextType {
   // theme: string;
   // toggleTheme: () => void;
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
+  // user: User | null;
+  // login: (email: string, password: string) => void;
+  // logout: () => void;ㄹ
   notifications: Notification[];
   addNotification: (message: string, type: Notification["type"]) => void;
   removeNotification: (id: number) => void;
@@ -37,7 +44,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 // 커스텀 훅: useAppContext
-const useAppContext = () => {
+export const useAppContext = () => {
   const context = useContext(AppContext);
   if (context === undefined) {
     throw new Error("useAppContext must be used within an AppProvider");
@@ -49,7 +56,7 @@ const useAppContext = () => {
 export const Header: React.FC = () => {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useTheme();
-  const { user, login, logout } = useAppContext();
+  const { user, login, logout } = useAuth();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
@@ -95,61 +102,74 @@ export const Header: React.FC = () => {
 export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
-  renderLog("ItemList rendered");
-  const [filter, setFilter] = useState("");
-  const { theme } = useTheme();
+}> = React.memo(
+  ({ items, onAddItemsClick }) => {
+    renderLog("ItemList rendered");
+    const [filter, setFilter] = useState("");
+    const { theme } = useTheme();
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
-  );
+    const filteredItems = useMemo(
+      () =>
+        items.filter(
+          (item) =>
+            item.name.toLowerCase().includes(filter.toLowerCase()) ||
+            item.category.toLowerCase().includes(filter.toLowerCase())
+        ),
+      [items, filter]
+    );
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+    const { totalPrice, averagePrice } = useMemo(() => {
+      const total = filteredItems.reduce((sum, item) => sum + item.price, 0);
+      return {
+        totalPrice: total,
+        averagePrice: Math.round(total / filteredItems.length) || 0,
+      };
+    }, [filteredItems]);
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
-
-  return (
-    <div className="mt-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">상품 목록</h2>
-        <div>
-          <button
-            type="button"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
-          >
-            대량추가
-          </button>
+    return (
+      <div className="mt-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">상품 목록</h2>
+          <div>
+            <button
+              type="button"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
+              onClick={onAddItemsClick}
+            >
+              대량추가
+            </button>
+          </div>
         </div>
+        <input
+          type="text"
+          placeholder="상품 검색..."
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="w-full p-2 mb-4 border border-gray-300 rounded text-black"
+        />
+        <ul className="mb-4 mx-4 flex gap-3 text-sm justify-end">
+          <li>검색결과: {filteredItems.length.toLocaleString()}개</li>
+          <li>전체가격: {totalPrice.toLocaleString()}원</li>
+          <li>평균가격: {averagePrice.toLocaleString()}원</li>
+        </ul>
+        <ul className="space-y-2">
+          {filteredItems.map((item, index) => (
+            <li
+              key={index}
+              className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
+            >
+              {item.name} - {item.category} - {item.price.toLocaleString()}원
+            </li>
+          ))}
+        </ul>
       </div>
-      <input
-        type="text"
-        placeholder="상품 검색..."
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        className="w-full p-2 mb-4 border border-gray-300 rounded text-black"
-      />
-      <ul className="mb-4 mx-4 flex gap-3 text-sm justify-end">
-        <li>검색결과: {filteredItems.length.toLocaleString()}개</li>
-        <li>전체가격: {totalPrice.toLocaleString()}원</li>
-        <li>평균가격: {averagePrice.toLocaleString()}원</li>
-      </ul>
-      <ul className="space-y-2">
-        {filteredItems.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
-          >
-            {item.name} - {item.category} - {item.price.toLocaleString()}원
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
+    );
+  },
+  (prevProps, nextProps) => {
+    // items가 변경되었을 때만 리렌더링
+    return prevProps.items === nextProps.items;
+  }
+);
 // ComplexForm 컴포넌트
 export const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
@@ -284,61 +304,54 @@ const AppLayout = React.memo(({ children }: { children: React.ReactNode }) => {
 const App: React.FC = () => {
   // const [theme, setTheme] = useState("light");
   const [items, setItems] = useState(generateItems(1000));
-  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // const toggleTheme = () => {
   //   setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   // };
 
-  const addItems = () => {
+  const addItems = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
       ...generateItems(1000, prevItems.length),
     ]);
-  };
+  }, []);
 
-  const login = (email: string) => {
-    setUser({ id: 1, name: "홍길동", email });
-    addNotification("성공적으로 로그인되었습니다", "success");
-  };
+  const addNotification = useCallback(
+    (message: string, type: Notification["type"]) => {
+      const newNotification: Notification = {
+        id: Date.now(),
+        message,
+        type,
+      };
+      setNotifications((prev) => [...prev, newNotification]);
+    },
+    []
+  );
 
-  const logout = () => {
-    setUser(null);
-    addNotification("로그아웃되었습니다", "info");
-  };
-
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
-
-  const removeNotification = (id: number) => {
+  const removeNotification = useCallback((id: number) => {
     setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
+      prev.filter((notification) => notification.id !== id)
     );
-  };
+  }, []);
 
-  const contextValue: AppContextType = {
-    // theme,
-    // toggleTheme,
-    user,
-    login,
-    logout,
-    notifications,
-    addNotification,
-    removeNotification,
-  };
+  const contextValue = useMemo(
+    () => ({
+      notifications,
+      addNotification,
+      removeNotification,
+    }),
+    [notifications, addNotification, removeNotification]
+  );
 
   return (
     <ThemeProvider>
       <AppContext.Provider value={contextValue}>
         <AppLayout>
-          <Header />
+          <AuthProvider>
+            <Header />
+          </AuthProvider>
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row">
               <div className="w-full md:w-1/2 md:pr-4">
