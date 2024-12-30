@@ -3,10 +3,6 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
     return true;
   }
 
-  if (objA === null || objB === null) {
-    return objA === objB;
-  }
-
   if (typeof objA !== "object" || typeof objB !== "object") {
     return objA === objB;
   }
