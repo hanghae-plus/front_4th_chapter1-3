@@ -5,7 +5,7 @@ import { shallowEquals } from "../equalities";
 
 export function useCallback<T extends Function>(
   factory: T,
-  _deps: DependencyList
+  _deps: DependencyList,
 ) {
   const ref = useRef<null | { deps: DependencyList; factory: T }>(null);
 

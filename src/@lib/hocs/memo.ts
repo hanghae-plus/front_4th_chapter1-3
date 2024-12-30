@@ -6,7 +6,7 @@ import { useRef } from "../hooks";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,
-  _equals = shallowEquals
+  _equals = shallowEquals,
 ) {
   const MemoizedComponent = function (props: P) {
     const ref = useRef<null | {
