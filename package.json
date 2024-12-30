@@ -14,7 +14,7 @@
     "test": "vitest",
     "test:basic": "vitest basic",
     "test:advanced": "vitest advanced",
-    "test:external": "vitest external",
+    "test:external": "vitest externalStore",
     "test:ui": "vitest --ui",
     "prepare": "husky"
   },
