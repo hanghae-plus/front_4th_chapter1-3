@@ -1,18 +1,13 @@
-import React from "react";
-
 import { ThemeContext } from "../context/ThemeContext";
-import { useContextValue } from "../context/useContextValue";
 import { UserContext } from "../context/UserContext";
+import { useContextValue } from "../context/useContextValue";
 import { renderLog } from "../utils";
+import { LoginButton } from "./LoginButton";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { user, login, logout } = useContextValue(UserContext);
   const { theme, toggleTheme } = useContextValue(ThemeContext);
-
-  const handleLogin = () => {
-    login("user@example.com", "password");
-  };
+  const userContext = useContextValue(UserContext);
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -25,24 +20,7 @@ export const Header: React.FC = () => {
           >
             {theme === "light" ? "다크 모드" : "라이트 모드"}
           </button>
-          {user ? (
-            <div className="flex items-center">
-              <span className="mr-2">{user.name}님 환영합니다!</span>
-              <button
-                onClick={logout}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              >
-                로그아웃
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
-              로그인
-            </button>
-          )}
+          <LoginButton user={userContext.user} />
         </div>
       </div>
     </header>
