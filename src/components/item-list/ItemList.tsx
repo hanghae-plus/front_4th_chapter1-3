@@ -9,7 +9,6 @@ interface Item {
   price: number;
 }
 
-// ItemList 컴포넌트
 export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;

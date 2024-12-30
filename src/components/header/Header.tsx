@@ -8,7 +8,6 @@ import {
 } from "../../contexts/user-context/useUserContext";
 import { renderLog } from "../../utils";
 
-// Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
 
@@ -19,7 +18,7 @@ export const Header: React.FC = () => {
   const { login, logout } = useGetUserActions();
 
   const handleLogin = () => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
+    // TODO: 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login({ id: Date.now(), name: "user@example.com", email: "password" });
   };
 

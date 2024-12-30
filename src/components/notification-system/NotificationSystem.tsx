@@ -4,7 +4,6 @@ import {
 } from "../../contexts/notification-context/useNotificationContext";
 import { renderLog } from "../../utils";
 
-// NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = () => {
   renderLog("NotificationSystem rendered");
   const { removeNotification } = useGetNoticationActions();

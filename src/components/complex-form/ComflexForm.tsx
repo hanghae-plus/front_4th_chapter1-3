@@ -3,7 +3,6 @@ import { useState } from "react";
 import { renderLog } from "../../utils";
 import { useGetNoticationActions } from "../../contexts/notification-context/useNotificationContext";
 
-// ComplexForm 컴포넌트
 export const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
 
