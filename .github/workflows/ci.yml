@@ -92,7 +92,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: advanced-test
+      - name: external-test
         run: |
           npm install
           npm run test:external
