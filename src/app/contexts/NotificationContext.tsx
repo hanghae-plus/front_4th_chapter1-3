@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-import { useCallback, useMemo } from "../@lib";
+import { useCallback, useMemo } from "../../@lib";
 
 interface Notification {
   id: number;
@@ -7,13 +7,18 @@ interface Notification {
   type: "info" | "success" | "warning" | "error";
 }
 
-interface NotificationContextType {
+interface NotificationState {
   notifications: Notification[];
+}
+
+interface NotificationActions {
   addNotification: (message: string, type: Notification["type"]) => void;
   removeNotification: (id: number) => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(
+type NotificationType = NotificationState & NotificationActions;
+
+const NotificationContext = createContext<NotificationType | undefined>(
   undefined,
 );
 
@@ -38,7 +43,7 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
     );
   }, []);
 
-  const contextValue = useMemo<NotificationContextType>(
+  const contextValue = useMemo<NotificationType>(
     () => ({
       notifications,
       addNotification,

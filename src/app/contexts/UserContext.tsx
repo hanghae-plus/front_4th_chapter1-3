@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useNotificationContext } from "./NotificationContext";
-import { useCallback, useMemo } from "../@lib";
+import { useCallback, useMemo } from "../../@lib";
 
 interface User {
   id: number;
@@ -8,13 +8,18 @@ interface User {
   email: string;
 }
 
-interface UserContextType {
+interface UserState {
   user: User | null;
+}
+
+interface UserActions {
   login: (email: string, password: string) => void;
   logout: () => void;
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+type UserType = UserState & UserActions;
+
+const UserContext = createContext<UserType | undefined>(undefined);
 
 const UserProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
@@ -33,7 +38,7 @@ const UserProvider = ({ children }: PropsWithChildren) => {
     addNotification("로그아웃되었습니다", "info");
   }, [addNotification]);
 
-  const contextValue = useMemo<UserContextType>(
+  const contextValue = useMemo<UserType>(
     () => ({
       user,
       login,
