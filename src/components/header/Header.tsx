@@ -1,14 +1,26 @@
-import { useAppContext } from "../../App";
+import {
+  useGetTheme,
+  useGetToggleTheme,
+} from "../../contexts/theme-context/useThemeContext";
+import {
+  useGetUser,
+  useGetUserActions,
+} from "../../contexts/user-context/useUserContext";
 import { renderLog } from "../../utils";
 
 // Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+
+  const theme = useGetTheme();
+  const toggleTheme = useGetToggleTheme();
+
+  const user = useGetUser();
+  const { login, logout } = useGetUserActions();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
+    login({ id: Date.now(), name: "user@example.com", email: "password" });
   };
 
   return (

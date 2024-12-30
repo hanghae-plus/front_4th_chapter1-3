@@ -9,7 +9,7 @@ export interface User {
 interface userContextType {
   user: User | null;
   actions: {
-    login: (email: string) => void;
+    login: (user: User) => void;
     logout: () => void;
   };
 }
