@@ -2,11 +2,10 @@ import { shallowEquals } from "../equalities";
 import React, { ComponentType, createElement } from "react";
 import { useRef } from "../hooks";
 
-// memo HOC는 컴포넌트의 props를 얕은 비교하여 불필요한 리렌더링을 방지합니다.
-
+// memo: 컴포넌트 자체를 메모이제이션하는 고차 컴포넌트
 export function memo<P extends object>(
   Component: ComponentType<P>,
-  _equals = shallowEquals
+  _equals = shallowEquals,
 ) {
   // HOC 패턴으로 새로운 컴포넌트를 반환, 고차함수 패턴
   return function MemoizedComponent(props: P) {
@@ -17,25 +16,13 @@ export function memo<P extends object>(
     }>(null);
 
     // 2. props 비교 및 업데이트
-    // 2-1. 저장된 객체가 없다면 새롭게 등록한다
-    if (ref.current == null) {
+    // 첫 렌더링(저장된 객체가 없을 때)이거나 props가 변경된 경우에만 새로운 컴포넌트를 생성, cf. 아닌 경우 반환x
+    if (ref.current == null || !_equals(props, ref.current.props)) {
       ref.current = {
         component: createElement(Component, props),
         props,
       };
       return ref.current.component;
     }
-    // 2-2. 저장된 객체가 있는 경우
-    // 2-2-1. props가 같은 경우
-    if (_equals(ref.current.props, props)) {
-      return ref.current.component;
-    }
-
-    // 2-2-2. props가 같지 않은 경우
-    ref.current = {
-      component: createElement(Component, props),
-      props,
-    };
-    return ref.current.component;
   };
 }

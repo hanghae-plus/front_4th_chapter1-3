@@ -2,14 +2,14 @@ import { DependencyList } from "react";
 import { shallowEquals } from "../equalities";
 import { useRef } from "./useRef";
 
-// factory: 메모이제이션을 할 값
-// deps: 메모이제이션을 하고 다음 렌더링에서 비교하는 의존성 배열
-// equals: 메모이제이션을 하고 다음 렌더링에서 비교하는 함수
+// factory: 메모이제이션을할 값
+// deps: 메모이제이션을하고 다음 렌더링에서 비교하는 의존성 배열
+// equals: 메모이제이션을하고 다음 렌더링에서 비교하는 함수
 
 export function useMemo<T>(
   factory: () => T,
   deps: DependencyList,
-  equals = shallowEquals
+  equals = shallowEquals,
 ): T {
   // 1. 이전 의존성과 계산된 값을 저장하는 ref를 생성
   const ref = useRef<{ deps: DependencyList; value: T } | null>(null);
