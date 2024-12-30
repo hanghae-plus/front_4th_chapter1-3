@@ -1,35 +1,27 @@
 import { memo } from "react";
 import { renderLog } from "../utils";
 import {
-  useNotificationActionsContext,
-  useNotificationStateContext,
-} from "../@contexts/NotificationContext";
+  useNotificationsActionsContext,
+  useNotificationsStateContext,
+} from "../@contexts/NotificationsContext";
 
 function NotificationSystem() {
   renderLog("NotificationSystem rendered");
 
-  const { notifications } = useNotificationStateContext("NotificationSystem");
+  const { group } = useNotificationsStateContext("NotificationSystem");
   const { removeNotification } =
-    useNotificationActionsContext("NotificationSystem");
+    useNotificationsActionsContext("NotificationSystem");
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
-      {notifications.map((notification) => (
+      {[...group.entries()].map(([id, { type, message }]) => (
         <div
-          key={notification.id}
-          className={`p-4 rounded shadow-lg ${
-            notification.type === "success"
-              ? "bg-green-500"
-              : notification.type === "error"
-                ? "bg-red-500"
-                : notification.type === "warning"
-                  ? "bg-yellow-500"
-                  : "bg-blue-500"
-          } text-white`}
+          key={id}
+          className={`p-4 rounded shadow-lg ${colorScheme[type]} text-white`}
         >
-          {notification.message}
+          {message}
           <button
-            onClick={() => removeNotification(notification.id)}
+            onClick={() => removeNotification(id)}
             className="ml-4 text-white hover:text-gray-200"
           >
             닫기
@@ -39,5 +31,13 @@ function NotificationSystem() {
     </div>
   );
 }
+
+// Styles
+const colorScheme = {
+  info: "bg-blue-500",
+  warning: "bg-yellow-500",
+  error: "bg-red-500",
+  success: "bg-green-500",
+} as const;
 
 export default memo(NotificationSystem);
