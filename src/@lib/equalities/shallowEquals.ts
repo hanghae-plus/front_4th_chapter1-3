@@ -8,7 +8,7 @@ import { isRecord } from "../validation/isRecord";
  * @returns {boolean}
  */
 export function shallowEquals<T>(objA: T, objB: T): boolean {
-  if (objA === objB) {
+  if (Object.is(objA, objB)) {
     return true;
   }
 

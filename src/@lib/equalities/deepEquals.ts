@@ -8,7 +8,7 @@ import { isRecord } from "../validation/isRecord";
  * @returns {boolean}
  */
 export function deepEquals<T>(objA: T, objB: T): boolean {
-  if (objA === objB) {
+  if (Object.is(objA, objB)) {
     return true;
   }
   if (isNullOrPrimitive(objA) || isNullOrPrimitive(objB)) {
