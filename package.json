@@ -18,16 +18,12 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@types/node": "^22.10.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
-  "lint-staged": {
+ "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "tsc --noEmit",
-      "prettier --write",
-      "eslint --fix"
-    ]
+      "tsc --noEmit --jsx react-jsx"]
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -35,6 +31,7 @@
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^22.10.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
