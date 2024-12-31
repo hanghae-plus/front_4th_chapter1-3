@@ -14,19 +14,20 @@ export function memo<P extends object>(
   // 3. equals 함수를 사용하여 props 비교
   // 4. props가 변경된 경우에만 새로운 렌더링 수행
 
-  const MemoizedComponent = (props: P) => {
-    const prevPropsRef = useRef<P | null>(null);
-    const renderPropsRef = useRef<ReactElement | null>(null);
+  const MemoizedComponent = (props: P): ReactElement => {
+    const propsRef = useRef<{ component: ReactElement; props: P } | null>(null);
 
-    if (!prevPropsRef.current || _equals(prevPropsRef.current, props)) {
-      prevPropsRef.current = props;
-      renderPropsRef.current = createElement(Component, props);
-
-      return createElement(Component, props);
+    if (!propsRef.current || !_equals(propsRef.current.props, props)) {
+      propsRef.current = {
+        component: createElement(Component, props),
+        props,
+      };
     }
 
-    return renderPropsRef.current;
+    return propsRef.current.component;
   };
+
+  return MemoizedComponent;
 
   /* 
   //이전 코드드
@@ -42,6 +43,4 @@ export function memo<P extends object>(
     return React.createElement(Component, props);
   }; 
   */
-
-  return MemoizedComponent;
 }
