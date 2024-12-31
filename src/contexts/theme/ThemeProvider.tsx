@@ -1,5 +1,5 @@
 import { PropsWithChildren, useCallback, useMemo, useState } from "react";
-import { Theme, ThemeContext } from "./ThemeContext";
+import { Theme, ThemeContext } from "./useThemeContext";
 
 const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>("light");

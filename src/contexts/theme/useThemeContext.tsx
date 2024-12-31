@@ -1,14 +1,11 @@
-import { useContext } from "react";
-import { ThemeContext } from "./ThemeContext";
+import { createContextHook } from "../../utils/function/createContextHook";
 
-const useThemeContext = () => {
-  const context = useContext(ThemeContext);
+export type Theme = "light" | "dark";
 
-  if (!context) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
+interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+}
 
-  return context;
-};
-
-export default useThemeContext;
+export const [ThemeContext, useThemeContext] =
+  createContextHook<ThemeContextType>("Theme");

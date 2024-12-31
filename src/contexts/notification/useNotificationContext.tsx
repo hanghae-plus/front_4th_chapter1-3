@@ -1,16 +1,16 @@
-import { useContext } from "react";
-import { NotificationContext } from "./NotificationContext";
+import { createContextHook } from "../../utils/function/createContextHook";
 
-const useNotificationContext = () => {
-  const context = useContext(NotificationContext);
+export interface INotification {
+  id: number;
+  message: string;
+  type: "info" | "success" | "warning" | "error";
+}
 
-  if (!context) {
-    throw new Error(
-      "useNotification must be used within a NotificationProvider",
-    );
-  }
+interface NotificationContextType {
+  notifications: INotification[];
+  addNotification: (message: string, type: INotification["type"]) => void;
+  removeNotification: (id: number) => void;
+}
 
-  return context;
-};
-
-export default useNotificationContext;
+export const [NotificationContext, useNotificationContext] =
+  createContextHook<NotificationContextType>("Notification");

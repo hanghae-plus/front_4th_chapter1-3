@@ -1,6 +1,6 @@
 import { PropsWithChildren, useCallback, useMemo, useState } from "react";
-import useNotificationContext from "../notification/useNotificationContext";
-import { IUser, UserContext } from "./UserContext";
+import { useNotificationContext } from "../notification/useNotificationContext";
+import { IUser, UserContext } from "./useUserContext";
 
 const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null);

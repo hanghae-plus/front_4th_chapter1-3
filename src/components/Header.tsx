@@ -1,5 +1,5 @@
-import useThemeContext from "../contexts/theme/useThemeContext";
-import useUserContext from "../contexts/user/useUserContext";
+import { useThemeContext } from "../contexts/theme/useThemeContext";
+import { useUserContext } from "../contexts/user/useUserContext";
 import { renderLog } from "../utils";
 
 const Header = () => {

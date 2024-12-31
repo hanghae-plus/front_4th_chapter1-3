@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import useNotificationContext from "../contexts/notification/useNotificationContext";
+import { useNotificationContext } from "../contexts/notification/useNotificationContext";
 import { renderLog } from "../utils";
-
 const ComplexForm = () => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useNotificationContext();

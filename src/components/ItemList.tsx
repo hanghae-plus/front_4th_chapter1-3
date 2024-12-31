@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { useThemeContext } from "../contexts/theme/useThemeContext";
 import { renderLog } from "../utils";
-import useThemeContext from "../contexts/theme/useThemeContext";
 
 interface Item {
   id: number;

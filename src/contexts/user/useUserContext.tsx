@@ -1,14 +1,16 @@
-import { useContext } from "react";
-import { UserContext } from "./UserContext";
+import { createContextHook } from "../../utils/function/createContextHook";
 
-const useUserContext = () => {
-  const context = useContext(UserContext);
+export interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
 
-  if (!context) {
-    throw new Error("useUser must be used within a UserProvider");
-  }
+interface UserContextType {
+  user: IUser | null;
+  login: (email: string, password: string) => void;
+  logout: () => void;
+}
 
-  return context;
-};
-
-export default useUserContext;
+export const [UserContext, useUserContext] =
+  createContextHook<UserContextType>("User");

@@ -1,5 +1,5 @@
 import { PropsWithChildren, useCallback, useMemo, useState } from "react";
-import { INotification, NotificationContext } from "./NotificationContext";
+import { INotification, NotificationContext } from "./useNotificationContext";
 
 const NotificationProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [notifications, setNotifications] = useState<INotification[]>([]);

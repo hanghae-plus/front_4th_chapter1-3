@@ -1,4 +1,4 @@
-import useNotificationContext from "../contexts/notification/useNotificationContext";
+import { useNotificationContext } from "../contexts/notification/useNotificationContext";
 import { renderLog } from "../utils";
 
 const NotificationSystem = () => {
