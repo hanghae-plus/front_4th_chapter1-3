@@ -1,28 +1,27 @@
 import { useState } from "react";
 import { generateItems, renderLog } from "../../utils";
 
-import Item from "./_components/Item";
-
-export interface ItemType {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-}
+import { useGetTheme } from "../../contexts/theme-context/useThemeContext";
 
 const DEFAULT_ITEM_LENGTH = 1000;
 
 export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
 
+  const theme = useGetTheme();
+
   const [filter, setFilter] = useState("");
-  const [items, setItems] = useState(generateItems(DEFAULT_ITEM_LENGTH));
+  const [items, setItems] = useState(() => generateItems(DEFAULT_ITEM_LENGTH));
 
   const handleAddItemsClick = () => {
     setItems((prevItems) => [
       ...prevItems,
       ...generateItems(DEFAULT_ITEM_LENGTH, prevItems.length),
     ]);
+  };
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value);
   };
 
   const filteredItems = items.filter(
@@ -53,7 +52,7 @@ export const ItemList: React.FC = () => {
         type="text"
         placeholder="상품 검색..."
         value={filter}
-        onChange={(e) => setFilter(e.target.value)}
+        onChange={handleFilterChange}
         className="w-full p-2 mb-4 border border-gray-300 rounded text-black"
       />
       <ul className="mb-4 mx-4 flex gap-3 text-sm justify-end">
@@ -62,8 +61,13 @@ export const ItemList: React.FC = () => {
         <li>평균가격: {averagePrice.toLocaleString()}원</li>
       </ul>
       <ul className="space-y-2">
-        {filteredItems.map((item, index) => (
-          <Item item={item} key={index} />
+        {filteredItems.map((item) => (
+          <li
+            key={item.id}
+            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
+          >
+            {item.name} - {item.category} - {item.price.toLocaleString()}원
+          </li>
         ))}
       </ul>
     </div>
