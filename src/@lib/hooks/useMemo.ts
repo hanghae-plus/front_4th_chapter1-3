@@ -4,7 +4,11 @@ import { shallowEquals } from "../equalities";
 import { useRef as myRef } from "./useRef";
 
 // 🎯 계산 비용이 높은 값을 메모이제이션.
-export function useMemo<T>(factory: () => T, _deps: DependencyList, _equals = shallowEquals): T {
+export function useMemo<T>(
+  factory: () => T,
+  _deps: DependencyList,
+  _equals = shallowEquals,
+): T {
   // 1. 이전 의존성과 결과를 저장할 ref 생성
   const prevDeps = myRef<DependencyList | undefined>();
   const prevResult = myRef<T | undefined>();

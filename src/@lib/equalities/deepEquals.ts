@@ -1,7 +1,12 @@
 // 🎯 두 값의 깊은 비교를 수행.
 export function deepEquals<T>(objA: T, objB: T): boolean {
   // 1. 기본 타입(primitive type)이거나 null인 경우
-  if (typeof objA !== "object" || typeof objB !== "object" || objA === null || objB === null) {
+  if (
+    typeof objA !== "object" ||
+    typeof objB !== "object" ||
+    objA === null ||
+    objB === null
+  ) {
     return Object.is(objA, objB);
   }
 
@@ -35,5 +40,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   }
 
   // 객체의 각 속성(key-value)에 대해 재귀적으로 호출
-  return keysA.every((key) => deepEquals(objA[key as keyof T], objB[key as keyof T]));
+  return keysA.every((key) =>
+    deepEquals(objA[key as keyof T], objB[key as keyof T]),
+  );
 }

@@ -1,7 +1,6 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, memo } from "react";
 import { generateItems, renderLog } from "./utils";
 import { useCallback, useMemo } from "./@lib/index";
-import * as React from "react";
 
 // 타입 정의
 interface Item {
@@ -78,7 +77,7 @@ const useNotification = () => {
 };
 
 // Header 컴포넌트
-const Header: React.FC = React.memo(() => {
+const Header: React.FC = memo(() => {
   renderLog("Header rendered");
 
   const { theme, toggleTheme } = useTheme();
@@ -128,7 +127,7 @@ const Header: React.FC = React.memo(() => {
 const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
-}> = React.memo(({ items, onAddItemsClick }) => {
+}> = memo(({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
 
   const [filter, setFilter] = useState("");
@@ -199,7 +198,7 @@ const ItemList: React.FC<{
 });
 
 // ComplexForm 컴포넌트
-const ComplexForm: React.FC = React.memo(() => {
+const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
 
   const { addNotification } = useNotification();
@@ -291,7 +290,7 @@ const ComplexForm: React.FC = React.memo(() => {
 });
 
 // NotificationSystem 컴포넌트
-const NotificationSystem: React.FC = React.memo(() => {
+const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
 
   const { notifications, removeNotification } = useNotification();

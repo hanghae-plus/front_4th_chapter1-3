@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { shallowEquals } from "../equalities";
 import { ComponentType, ReactElement, createElement, useRef } from "react";
 
 // 🎯 컴포넌트의 props를 얕은 비교하여 불필요한 리렌더링을 방지.
-export function memo<P extends object>(Component: ComponentType<P>, _equals = shallowEquals) {
+export function memo<P extends object>(
+  Component: ComponentType<P>,
+  _equals = shallowEquals,
+) {
   return function MemoizedComponent(props: P) {
     // 1. 이전 props를 저장할 ref 생성
     const memoizedProps = useRef<P | null>(null);
@@ -17,7 +19,7 @@ export function memo<P extends object>(Component: ComponentType<P>, _equals = sh
       memoizedProps.current = props;
       memoizedComponent.current = createElement(Component, props);
     }
-    
+
     return memoizedComponent.current; // ReactElement 반환.
   };
 }
