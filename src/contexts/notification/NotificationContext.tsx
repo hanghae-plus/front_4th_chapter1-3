@@ -6,7 +6,7 @@ export interface INotification {
   type: "info" | "success" | "warning" | "error";
 }
 
-export interface NotificationContextType {
+interface NotificationContextType {
   notifications: INotification[];
   addNotification: (message: string, type: INotification["type"]) => void;
   removeNotification: (id: number) => void;

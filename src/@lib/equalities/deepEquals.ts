@@ -6,7 +6,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
     return true;
   }
 
-  // 2.  둘 중 하나라도 객체가 아닌 경우 처리
+  // 2. 둘 중 하나라도 객체가 아닌 경우 처리
   if (typeof objA !== "object" || typeof objB !== "object") {
     return false;
   }
@@ -14,12 +14,12 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   const keysA = Object.keys(objA as object);
   const keysB = Object.keys(objB as object);
 
-  // 객체의 키 개수가 다른 경우 처리
+  // 3. 객체의 키 개수가 다른 경우 처리
   if (keysA.length !== keysB.length) {
     return false;
   }
 
-  // 재귀적으로 deepEquals 호출하여 깊은 비교 수행
+  // 4. 재귀적으로 deepEquals 호출하여 깊은 비교 수행
   for (const key of keysA) {
     if (
       !deepEquals(
