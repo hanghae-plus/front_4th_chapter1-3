@@ -22,21 +22,26 @@
     "react-dom": "^18.3.1"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "tsc --noEmit",
-      "prettier --write",
-      "eslint --fix"
-    ]
+    "*.ts?(x)": [
+    "tsc --noEmit --skipLibCheck --excludeFiles eslint.config.js",
+    "eslint --fix",
+    "prettier --write"
+    ],
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "eslint.config.js": "prettier --write"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@playwright/test": "^1.49.1",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
-    "@types/prop-types": "^15.7.14",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "@vitest/coverage-v8": "^2.1.2",
     "eslint": "^9.9.0",
