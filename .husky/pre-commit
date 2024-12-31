@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 npm run tsc && npm run prettier:write && npm run lint:fix
+=======
+npm run tsc && npm run prettier:write && npm run lint:fix
+>>>>>>> 2ed3bc6d72aad9acf0d9da3177ca1b7fbaca53a7
