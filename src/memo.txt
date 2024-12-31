@@ -1,0 +1,15 @@
+shallowEquals
+배열 얕은비교
+객체 얕은 비교
+
+deepEquals
+배열 정확히 비교
+객체 정확히 비교
+중첩된 구조 정확히 비교
+
+hooks
+useRef
+리렌더링 되어도 useRef 참조값 유지
+렌더링 간 ref 값 유지, 값 변경 시 리렌더링 트리거 하지 않기
+
+useMemo
