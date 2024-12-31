@@ -1,4 +1,3 @@
-import { renderLog } from "./utils";
 import { ItemList } from "./components/item-list/ItemList";
 import { ComplexForm } from "./components/complex-form/ComflexForm";
 import { Header } from "./components/header/Header";
@@ -9,8 +8,6 @@ import { UserProvider } from "./contexts/user-context/UserProvider";
 import { NotificationProvider } from "./contexts/notification-context/NotificationProvider";
 
 const App: React.FC = () => {
-  renderLog("App rendered");
-
   return (
     <ThemeProvider>
       <NotificationProvider>
