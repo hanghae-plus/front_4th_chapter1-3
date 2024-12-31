@@ -55,7 +55,13 @@ const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      <div
+        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+      >
+        {children}
+      </div>
+    </ThemeContext.Provider>
   );
 };
 
