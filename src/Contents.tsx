@@ -13,7 +13,7 @@ import {
   NotificationSystem,
 } from "./@lib/components";
 
-const AppContainer: React.FC = () => {
+const Contents: React.FC = () => {
   const { theme } = useThemeContext();
   const { setUser } = useAuthContext();
   const { addNotification } = useNotiContext();
@@ -61,4 +61,4 @@ const AppContainer: React.FC = () => {
   );
 };
 
-export default AppContainer;
+export default Contents;

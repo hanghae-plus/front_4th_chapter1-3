@@ -8,12 +8,10 @@ export function useMemo<T>(
   _deps: DependencyList,
   _equals = shallowEquals,
 ): T {
-  const isInitialized = useRef<boolean>(false);
   const memoizedFactory = useRef<T | null>(null);
   const memoizedDeps = useRef<DependencyList | null>(null);
 
-  if (!(isInitialized.current && _equals(memoizedDeps.current, _deps))) {
-    isInitialized.current = true;
+  if (!memoizedDeps.current || !_equals(memoizedDeps.current, _deps)) {
     memoizedFactory.current = factory();
     memoizedDeps.current = _deps;
   }

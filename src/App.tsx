@@ -5,7 +5,7 @@ import {
   ThemeContextProvider,
 } from "./@lib";
 import ContextWrapper from "./@lib/hooks/context/ContextWrapper";
-import AppContainer from "./AppContainer";
+import Contents from "./Contents";
 
 const App: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ const App: React.FC = () => {
         NotiContextProvider,
       ]}
     >
-      <AppContainer />
+      <Contents />
     </ContextWrapper>
   );
 };

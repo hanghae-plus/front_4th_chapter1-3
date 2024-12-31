@@ -9,8 +9,8 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
   )
     return false;
 
-  const keysA = Object.keys(objA);
-  const keysB = Object.keys(objB);
+  const keysA = Object.keys(objA) as (keyof typeof objA)[];
+  const keysB = Object.keys(objB) as (keyof typeof objA)[];
 
   if (keysA.length !== keysB.length) return false;
 
