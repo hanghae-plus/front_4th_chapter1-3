@@ -1,4 +1,5 @@
 import {
+  NotificationType,
   useGetNoticationActions,
   useGetNotifiactions,
 } from "../../contexts/notification-context/useNotificationContext";
@@ -14,15 +15,9 @@ export const NotificationSystem: React.FC = () => {
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          className={`p-4 rounded shadow-lg ${
-            notification.type === "success"
-              ? "bg-green-500"
-              : notification.type === "error"
-                ? "bg-red-500"
-                : notification.type === "warning"
-                  ? "bg-yellow-500"
-                  : "bg-blue-500"
-          } text-white`}
+          className={`p-4 rounded shadow-lg ${getNotificationStyleByType(
+            notification.type,
+          )} text-white`}
         >
           {notification.message}
           <button
@@ -36,3 +31,21 @@ export const NotificationSystem: React.FC = () => {
     </div>
   );
 };
+
+function getNotificationStyleByType(type: NotificationType) {
+  switch (type) {
+    case "success": {
+      return "bg-green-500";
+    }
+    case "error": {
+      return "bg-red-500";
+    }
+    case "warning": {
+      return "bg-yellow-500";
+    }
+    case "info":
+    default: {
+      return "bg-blue-500";
+    }
+  }
+}
