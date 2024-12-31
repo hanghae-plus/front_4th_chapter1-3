@@ -1,4 +1,4 @@
-import { shallowEquals } from './shallowEquals';
+import { shallowEquals } from "./shallowEquals";
 
 /**
  * 두 객체가 깊은 의미에서 같은지 비교하는 함수
@@ -13,7 +13,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   }
 
   // 객체 타입 및 null 체크
-  if (!objA || !objB || typeof objA !== 'object' || typeof objB !== 'object') {
+  if (!objA || !objB || typeof objA !== "object" || typeof objB !== "object") {
     return false;
   }
 
@@ -29,12 +29,12 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   }
 
   // 중첩된 객체를 직접 비교하기 전에 얕은 비교를 먼저 시도
-  return keysA.every(key => {
+  return keysA.every((key) => {
     const valA = (objA as Record<string, unknown>)[key];
     const valB = (objB as Record<string, unknown>)[key];
 
     // 중첩된 객체일 경우에는 shallowEquals로 먼저 확인
-    if (typeof valA === 'object' && typeof valB === 'object') {
+    if (typeof valA === "object" && typeof valB === "object") {
       return shallowEquals(valA, valB) || deepEquals(valA, valB);
     }
 

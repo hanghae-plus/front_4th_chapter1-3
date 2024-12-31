@@ -7,18 +7,22 @@
 export function shallowEquals<T>(objA: T, objB: T): boolean {
   // 참조 비교
   if (objA === objB) {
-    return true
-  };
+    return true;
+  }
 
   // 객체 타입 및 null 체크
-  if (!objA || !objB || typeof objA !== 'object' || typeof objB !== 'object') {
+  if (!objA || !objB || typeof objA !== "object" || typeof objB !== "object") {
     return false;
   }
 
-  // 키 길이 및 값 비교
+  // 키 개수 및 값 비교
   const keysA = Object.keys(objA);
   return (
     keysA.length === Object.keys(objB).length &&
-    keysA.every(key => (objA as Record<string, unknown>)[key] === (objB as Record<string, unknown>)[key])
+    keysA.every(
+      (key) =>
+        (objA as Record<string, unknown>)[key] ===
+        (objB as Record<string, unknown>)[key],
+    )
   );
 }
