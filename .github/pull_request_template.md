@@ -2,14 +2,14 @@
 
 ### 기본과제
 
-- [ ] shallowEquals 구현 완료
-- [ ] deepEquals 구현 완료
-- [ ] memo 구현 완료
-- [ ] deepMemo 구현 완료
-- [ ] useRef 구현 완료
-- [ ] useMemo 구현 완료
-- [ ] useDeepMemo 구현 완료
-- [ ] useCallback 구현 완료
+- [x] shallowEquals 구현 완료
+- [x] deepEquals 구현 완료
+- [x] memo 구현 완료
+- [x] deepMemo 구현 완료
+- [x] useRef 구현 완료
+- [x] useMemo 구현 완료
+- [x] useDeepMemo 구현 완료
+- [x] useCallback 구현 완료
 
 ### 심화 과제
 

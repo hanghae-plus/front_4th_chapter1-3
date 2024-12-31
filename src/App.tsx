@@ -1,13 +1,9 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, PropsWithChildren } from "react";
+import { useCallback, useMemo, memo } from "./@lib"
 import { generateItems, renderLog } from "./utils";
 
 // 타입 정의
-interface Item {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-}
+type Theme = 'light' | 'dark';
 
 interface User {
   id: number;
@@ -21,41 +17,116 @@ interface Notification {
   type: "info" | "success" | "warning" | "error";
 }
 
-// AppContext 타입 정의
-interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
+interface NotificationContextType {
   notifications: Notification[];
   addNotification: (message: string, type: Notification["type"]) => void;
   removeNotification: (id: number) => void;
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined);
+interface ThemeContextType {
+  theme: string;
+  toggleTheme: () => void;
+}
+
+interface UserContextType {
+  user: User | null;
+  login: (email: string, name: string) => void;
+  logout: () => void;
+}
 
 // 커스텀 훅: useAppContext
-const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
+const ThemeContext = createContext<ThemeContextType | null>(null);
+const UserContext = createContext<UserContextType | null>(null);
+const NotificationContext = createContext<NotificationContextType | null>(null);
+
+// Provider 컴포넌트
+const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  // 다크모드 관련
+  const [theme, setTheme] = useState<Theme>('light'); 
+  
+  const toggleTheme = useCallback(() => {
+    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light')
+  }, [])
+
+  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+};
+
+const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const { addNotification } = useNotification();
+
+  const [user, setUser] = useState<User | null>(null);
+
+  const login = useCallback((email: string, name: string) => {
+    setUser({ id: 1, name, email });
+    addNotification("성공적으로 로그인되었습니다", "success");
+  }, [])
+
+  const logout = useCallback(() => {
+    setUser(null);
+    addNotification("로그아웃되었습니다", "info");
+  }, []);
+
+  const value = useMemo(() => ({ user, login, logout }), [user, login, logout]);
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>
+}
+
+const NotificationProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const addNotification = useCallback((message: string, type: Notification["type"]) => {
+    setNotifications(prevNotify => [...prevNotify, { id: Date.now(), message, type }]);
+  }, []);
+
+  const removeNotification = useCallback((id: number) => {
+    setNotifications(prev => prev.filter(notif => notif.id !== id));
+  }, []);
+
+  const value = useMemo(() => ({
+    notifications, addNotification, removeNotification
+  }), [notifications, addNotification, removeNotification]);
+
+  return <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>;
+}
+
+// Custom 훅
+const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) throw new Error('useTheme must be used within a ThemeProvider');
+  return context;
+};
+
+const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) throw new Error('useUser must be used within a UserProvider');
+  return context;
+};
+
+const useNotification = () => {
+  const context = useContext(NotificationContext);
+  if (!context) throw new Error('useNotification must be used within a NotificationProvider');
   return context;
 };
 
 // Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+  const { theme, toggleTheme } = useTheme();
+  const { user, logout, login } = useUser();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
+    login("user@example.com", "홍길동")
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   return (
-    <header className="bg-gray-800 text-white p-4">
+    <header className={`p-4 ${theme === 'light' ? 'bg-gray-800 text-white' : 'bg-gray-800 text-gray-200'}`}>
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-2xl font-bold">샘플 애플리케이션</h1>
         <div className="flex items-center">
@@ -69,7 +140,7 @@ export const Header: React.FC = () => {
             <div className="flex items-center">
               <span className="mr-2">{user.name}님 환영합니다!</span>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               >
                 로그아웃
@@ -90,13 +161,19 @@ export const Header: React.FC = () => {
 };
 
 // ItemList 컴포넌트
-export const ItemList: React.FC<{
-  items: Item[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+export const ItemList: React.FC = memo(() => {
   renderLog("ItemList rendered");
+  const memoizedItems = useMemo(() => generateItems(1000), []);
+  const [items, setItems] = useState(memoizedItems);
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+  const { theme } = useTheme();
+
+  const addItems = () => {
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(1000, prevItems.length),
+    ]);
+  };
 
   const filteredItems = items.filter(
     (item) =>
@@ -116,7 +193,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addItems}
           >
             대량추가
           </button>
@@ -146,12 +223,12 @@ export const ItemList: React.FC<{
       </ul>
     </div>
   );
-};
+});
 
 // ComplexForm 컴포넌트
-export const ComplexForm: React.FC = () => {
+export const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotification();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -231,12 +308,12 @@ export const ComplexForm: React.FC = () => {
       </form>
     </div>
   );
-};
+});
 
 // NotificationSystem 컴포넌트
-export const NotificationSystem: React.FC = () => {
+export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useNotification();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -264,82 +341,40 @@ export const NotificationSystem: React.FC = () => {
       ))}
     </div>
   );
+});
+
+const Application: React.FC = () => {
+  const { theme } = useTheme();
+
+  return (
+    <div className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}>
+      <Header />
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2 md:pr-4">
+            <ItemList />
+          </div>
+          <div className="w-full md:w-1/2 md:pl-4">
+            <ComplexForm />
+          </div>
+        </div>
+      </div>
+      <NotificationSystem />
+    </div>
+  );
 };
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
-  const [items, setItems] = useState(generateItems(1000));
-  const [user, setUser] = useState<User | null>(null);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
-
-  const addItems = () => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(1000, prevItems.length),
-    ]);
-  };
-
-  const login = (email: string) => {
-    setUser({ id: 1, name: "홍길동", email });
-    addNotification("성공적으로 로그인되었습니다", "success");
-  };
-
-  const logout = () => {
-    setUser(null);
-    addNotification("로그아웃되었습니다", "info");
-  };
-
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
-
-  const removeNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
-  };
-
-  const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
-    user,
-    login,
-    logout,
-    notifications,
-    addNotification,
-    removeNotification,
-  };
-
   return (
-    <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 md:pr-4">
-              <ItemList items={items} onAddItemsClick={addItems} />
-            </div>
-            <div className="w-full md:w-1/2 md:pl-4">
-              <ComplexForm />
-            </div>
-          </div>
-        </div>
-        <NotificationSystem />
-      </div>
-    </AppContext.Provider>
-  );
-};
+    <ThemeProvider>
+      <NotificationProvider>
+        <UserProvider>
+          <Application />
+        </UserProvider>
+      </NotificationProvider>
+    </ThemeProvider>
+  )
+}
 
 export default App;
