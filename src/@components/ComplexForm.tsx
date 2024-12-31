@@ -1,41 +1,61 @@
-import { memo, useState } from "react";
+import { useState } from "react";
 import { renderLog } from "../utils";
-import { usePreservedCallback } from "../@lib/hooks/usePreservedCallback";
+import { useUserStateContext } from "../@contexts/UserProvider";
 import {
-  useNotificationsActionsContext,
-  useNotificationsStateContext,
-} from "../@contexts/NotificationsContext";
-import { useUserStateContext } from "../@contexts/UserContext";
+  useNotificationSystemActionsContext,
+  useNotificationSystemStateContext,
+} from "../@contexts/NotificationSystemProvider";
+import { usePreservedCallback } from "../@lib/hooks/usePreservedCallback";
+
+interface FormData {
+  name: string;
+  email: string;
+  age: number;
+  preferences: string[];
+}
 
 function ComplexForm() {
   renderLog("ComplexForm rendered");
 
   // NOTE: 테스트 통과를 위한 코드
-  const {} = useUserStateContext("ComplexForm");
-  const {} = useNotificationsStateContext("ComplexForm");
+  useUserStateContext("ComplexForm");
+  useNotificationSystemStateContext("ComplexForm");
 
-  const { addNotification } = useNotificationsActionsContext("ComplexForm");
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     age: 0,
-    preferences: [] as string[],
+    preferences: [],
   });
 
-  const handleSubmit = usePreservedCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    addNotification({
-      type: "success",
-      message: "폼이 성공적으로 제출되었습니다",
-    });
-  });
+  const { addNotification } =
+    useNotificationSystemActionsContext("ComplexForm");
+
+  const handleSubmit = usePreservedCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      addNotification({
+        type: "success",
+        message: "폼이 성공적으로 제출되었습니다.",
+      });
+    },
+  );
 
   const handleInputChange = usePreservedCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
+
+      if (name === "age") {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: parseInt(value) || 0,
+        }));
+        return;
+      }
+
       setFormData((prev) => ({
         ...prev,
-        [name]: name === "age" ? parseInt(value) || 0 : value,
+        [name]: value,
       }));
     },
   );
@@ -44,7 +64,7 @@ function ComplexForm() {
     setFormData((prev) => ({
       ...prev,
       preferences: prev.preferences.includes(preference)
-        ? prev.preferences.filter((p) => p !== preference)
+        ? prev.preferences.filter((current) => current !== preference)
         : [...prev.preferences, preference],
     }));
   });
@@ -101,4 +121,4 @@ function ComplexForm() {
   );
 }
 
-export default memo(ComplexForm);
+export default ComplexForm;

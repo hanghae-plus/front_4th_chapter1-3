@@ -1,6 +1,6 @@
-import { memo, useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { generateItems, renderLog } from "../utils";
-import { useThemeStateContext } from "../@contexts/ThemeContext";
+import { useThemeStateContext } from "../@contexts/ThemeProvider";
 import { usePreservedCallback } from "../@lib/hooks/usePreservedCallback";
 
 interface ItemType {
@@ -16,34 +16,23 @@ function ItemList() {
   const [items, setItems] = useState<ItemType[]>(() => generateItems(1000));
   const [filter, setFilter] = useState("");
 
-  const { mode } = useThemeStateContext("ItemList");
-
   const [pending, startTransition] = useTransition();
 
-  const filteredItems = useMemo(() => {
-    return items.filter(
-      (item) =>
-        item.name.toLowerCase().includes(filter.toLowerCase()) ||
-        item.category.toLowerCase().includes(filter.toLowerCase()),
-    );
-  }, [items, filter]);
+  const { theme } = useThemeStateContext("ItemList");
 
-  const totalPrice = useMemo(
-    () => filteredItems.reduce((sum, item) => sum + item.price, 0),
-    [filteredItems],
+  // const deferredFilter = useDeferredValue(filter);
+  const filteredItems = items.filter(
+    (item) =>
+      item.name.toLowerCase().includes(filter.toLowerCase()) ||
+      item.category.toLowerCase().includes(filter.toLowerCase()),
   );
 
-  const averagePrice = useMemo(
-    () => Math.round(totalPrice / filteredItems.length) || 0,
-    [filteredItems, totalPrice],
-  );
+  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
 
-  const handleAddItemsButtonClick = usePreservedCallback(() => {
+  const handleAddItemsClick = usePreservedCallback(() => {
     startTransition(() => {
-      setItems((prevItems) => [
-        ...prevItems,
-        ...generateItems(1000, prevItems.length),
-      ]);
+      setItems((prev) => [...prev, ...generateItems(1000, prev.length)]);
     });
   });
 
@@ -61,7 +50,7 @@ function ItemList() {
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={handleAddItemsButtonClick}
+            onClick={handleAddItemsClick}
           >
             대량추가
           </button>
@@ -85,7 +74,7 @@ function ItemList() {
           : filteredItems.map(({ name, category, price }, index) => (
               <li
                 key={index}
-                className={`p-2 rounded shadow ${colorScheme[mode]}`}
+                className={`p-2 rounded shadow ${themeVariants[theme]}`}
               >
                 {name} - {category} - {price.toLocaleString()}원
               </li>
@@ -96,9 +85,9 @@ function ItemList() {
 }
 
 // Styles
-const colorScheme = {
+const themeVariants = {
   dark: "bg-gray-700 text-white",
   light: "bg-white text-black",
 } as const;
 
-export default memo(ItemList);
+export default ItemList;

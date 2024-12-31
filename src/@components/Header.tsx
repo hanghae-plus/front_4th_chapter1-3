@@ -1,36 +1,42 @@
-import { memo } from "react";
-import { renderLog } from "../utils";
-import { usePreservedCallback } from "../@lib/hooks/usePreservedCallback";
-import {
-  useUserActionsContext,
-  useUserStateContext,
-} from "../@contexts/UserContext";
+import { useNotificationSystemActionsContext } from "../@contexts/NotificationSystemProvider";
 import {
   useThemeActionsContext,
   useThemeStateContext,
-} from "../@contexts/ThemeContext";
-import { useNotificationsActionsContext } from "../@contexts/NotificationsContext";
+} from "../@contexts/ThemeProvider";
+import {
+  useUserActionsContext,
+  useUserStateContext,
+} from "../@contexts/UserProvider";
+import { UserType } from "../@contexts/UserProvider.types";
+import { usePreservedCallback } from "../@lib/hooks/usePreservedCallback";
+import { renderLog } from "../utils";
 
 function Header() {
   renderLog("Header rendered");
 
+  const TEST_USER: UserType = {
+    id: 1,
+    name: "홍길동",
+    email: "test@aaa.aaa",
+  };
+
   const { user } = useUserStateContext("Header");
   const { login, logout } = useUserActionsContext("Header");
 
-  const { mode } = useThemeStateContext("Header");
-  const { toggleThemeMode } = useThemeActionsContext("Header");
+  const { theme } = useThemeStateContext("Header");
+  const { toggleTheme } = useThemeActionsContext("Header");
 
-  const { addNotification } = useNotificationsActionsContext("Header");
+  const { addNotification } = useNotificationSystemActionsContext("Header");
 
-  const handleLogin = usePreservedCallback((user) => {
-    login(user);
+  const handleLoginClick = usePreservedCallback(() => {
+    login(TEST_USER);
     addNotification({
       type: "success",
       message: "성공적으로 로그인되었습니다",
     });
   });
 
-  const handleLogout = usePreservedCallback(() => {
+  const handleLogoutClick = usePreservedCallback(() => {
     logout();
     addNotification({
       type: "info",
@@ -44,16 +50,16 @@ function Header() {
         <h1 className="text-2xl font-bold">샘플 애플리케이션</h1>
         <div className="flex items-center">
           <button
-            onClick={toggleThemeMode}
+            onClick={toggleTheme}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
           >
-            {mode === "light" ? "다크 모드" : "라이트 모드"}
+            {theme === "light" ? "다크 모드" : "라이트 모드"}
           </button>
           {user ? (
             <div className="flex items-center">
               <span className="mr-2">{user.name}님 환영합니다!</span>
               <button
-                onClick={handleLogout}
+                onClick={handleLogoutClick}
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               >
                 로그아웃
@@ -61,7 +67,7 @@ function Header() {
             </div>
           ) : (
             <button
-              onClick={handleLogin}
+              onClick={handleLoginClick}
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
               로그인
@@ -73,4 +79,4 @@ function Header() {
   );
 }
 
-export default memo(Header);
+export default Header;

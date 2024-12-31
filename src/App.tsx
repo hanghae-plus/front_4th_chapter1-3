@@ -1,17 +1,17 @@
 import Header from "./@components/Header";
 import ItemList from "./@components/ItemList";
-import NotificationsProvider from "./@contexts/NotificationsContext";
-import ThemeProvider, { useThemeStateContext } from "./@contexts/ThemeContext";
-import UserProvider from "./@contexts/UserContext";
+import ThemeProvider, { useThemeStateContext } from "./@contexts/ThemeProvider";
+import UserProvider from "./@contexts/UserProvider";
 import ComplexForm from "./@components/ComplexForm";
 import NotificationSystem from "./@components/NotificationSystem";
 import Portal from "./@components/Portal";
+import NotificationSystemProvider from "./@contexts/NotificationSystemProvider";
 
 function App() {
   return (
     <UserProvider>
       <ThemeProvider>
-        <NotificationsProvider>
+        <NotificationSystemProvider>
           <Root>
             <Header />
             <div className="container mx-auto px-4 py-8">
@@ -26,10 +26,10 @@ function App() {
             </div>
           </Root>
 
-          <Portal id="notification">
+          <Portal id="notification-system">
             <NotificationSystem />
           </Portal>
-        </NotificationsProvider>
+        </NotificationSystemProvider>
       </ThemeProvider>
     </UserProvider>
   );
@@ -41,12 +41,14 @@ interface RootProps {
 }
 
 const Root = ({ children }: RootProps) => {
-  const { mode } = useThemeStateContext("Root");
-  return <div className={`min-h-screen ${colorScheme[mode]}`}>{children}</div>;
+  const { theme } = useThemeStateContext("Root");
+  return (
+    <div className={`min-h-screen ${themeVariants[theme]}`}>{children}</div>
+  );
 };
 
 // Styles
-const colorScheme = {
+const themeVariants = {
   dark: "bg-gray-900 text-white",
   light: "bg-gray-100 text-black",
 } as const;

@@ -1,18 +1,18 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useMemo, useState } from "react";
-import { createSafeContext } from "../@lib/utils/createSafeContext";
-import { UserType } from "./UserContext.types";
+import { UserType } from "./UserProvider.types";
+import { createSafeContext } from "../@lib/utils";
 
 interface Props {
   children: React.ReactNode;
 }
 
 function UserProvider({ children }: Props) {
-  const [state, setState] = useState<UserContextState>({
+  const [state, setState] = useState<ContextState>({
     user: null,
   });
 
-  const actions = useMemo<UserContextActions>(
+  const actions = useMemo<ContextActions>(
     () => ({
       login(user) {
         setState((prev) => ({ ...prev, user }));
@@ -33,18 +33,18 @@ function UserProvider({ children }: Props) {
 }
 
 // Context API
-export interface UserContextState {
+interface ContextState {
   user: UserType | null;
 }
 
-export interface UserContextActions {
+interface ContextActions {
   login(user: UserType): void;
   logout(): void;
 }
 
 export const [UserStateProvider, useUserStateContext] =
-  createSafeContext<UserContextState>("UserProvider");
+  createSafeContext<ContextState>("UserProvider");
 export const [UserActionsProvider, useUserActionsContext] =
-  createSafeContext<UserContextActions>("UserProvider");
+  createSafeContext<ContextActions>("UserProvider");
 
 export default UserProvider;
