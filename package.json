@@ -22,16 +22,11 @@
     "react-dom": "^18.3.1"
   },
   "lint-staged": {
-    "*.ts?(x)": [
-    "tsc --noEmit --skipLibCheck --excludeFiles eslint.config.js",
-    "eslint --fix",
-    "prettier --write"
-    ],
-    "*.js": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "eslint.config.js": "prettier --write"
+    "*.{js,jsx,ts,tsx}": [
+      "tsc --noEmit --jsx react-jsx --skipLibCheck --allowJs",
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

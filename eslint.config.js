@@ -25,6 +25,12 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+    },
+  },
+  eslintPluginPrettier,
+  eslintConfigPrettier,
+  {
+    rules: {
       "prettier/prettier": [
         "error",
         {
@@ -33,6 +39,4 @@ export default tseslint.config(
       ],
     },
   },
-  eslintPluginPrettier,
-  eslintConfigPrettier,
 );
