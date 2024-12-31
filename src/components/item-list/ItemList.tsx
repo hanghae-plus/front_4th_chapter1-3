@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { renderLog } from "../../utils";
+import { generateItems, renderLog } from "../../utils";
 
 import Item from "./_components/Item";
 
@@ -10,12 +10,20 @@ export interface ItemType {
   price: number;
 }
 
-export const ItemList: React.FC<{
-  items: ItemType[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+const DEFAULT_ITEM_LENGTH = 1000;
+
+export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
+
   const [filter, setFilter] = useState("");
+  const [items, setItems] = useState(generateItems(DEFAULT_ITEM_LENGTH));
+
+  const handleAddItemsClick = () => {
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(DEFAULT_ITEM_LENGTH, prevItems.length),
+    ]);
+  };
 
   const filteredItems = items.filter(
     (item) =>
@@ -35,7 +43,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={handleAddItemsClick}
           >
             대량추가
           </button>

@@ -3,6 +3,8 @@ import { useState } from "react";
 import { renderLog } from "../../utils";
 import { useGetNoticationActions } from "../../contexts/notification-context/useNotificationContext";
 
+const PREFERENCES = ["독서", "운동", "음악", "여행"];
+
 export const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
 
@@ -66,7 +68,7 @@ export const ComplexForm: React.FC = () => {
           className="w-full p-2 border border-gray-300 rounded text-black"
         />
         <div className="space-x-4">
-          {["독서", "운동", "음악", "여행"].map((pref) => (
+          {PREFERENCES.map((pref) => (
             <label key={pref} className="inline-flex items-center">
               <input
                 type="checkbox"

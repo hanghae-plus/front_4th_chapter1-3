@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { generateItems } from "./utils";
+import { renderLog } from "./utils";
 import { ItemList } from "./components/item-list/ItemList";
 import { ComplexForm } from "./components/complex-form/ComflexForm";
 import { Header } from "./components/header/Header";
@@ -9,17 +8,8 @@ import AppLayout from "./components/layout/app-layout/AppLayout";
 import { UserProvider } from "./contexts/user-context/UserProvider";
 import { NotificationProvider } from "./contexts/notification-context/NotificationProvider";
 
-const DEFAULT_ITEM_LENGTH = 1000;
-
 const App: React.FC = () => {
-  const [items, setItems] = useState(generateItems(DEFAULT_ITEM_LENGTH));
-
-  const addItems = () => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(DEFAULT_ITEM_LENGTH, prevItems.length),
-    ]);
-  };
+  renderLog("App rendered");
 
   return (
     <ThemeProvider>
@@ -30,7 +20,7 @@ const App: React.FC = () => {
             <div className="container mx-auto px-4 py-8">
               <div className="flex flex-col md:flex-row">
                 <div className="w-full md:w-1/2 md:pr-4">
-                  <ItemList items={items} onAddItemsClick={addItems} />
+                  <ItemList />
                 </div>
                 <div className="w-full md:w-1/2 md:pl-4">
                   <ComplexForm />
