@@ -17,8 +17,8 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <UserProvider>
-        <NotificationProvider>
+      <NotificationProvider>
+        <UserProvider>
           <Header />
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row">
@@ -31,8 +31,8 @@ const App: React.FC = () => {
             </div>
           </div>
           <NotificationSystem />
-        </NotificationProvider>
-      </UserProvider>
+        </UserProvider>
+      </NotificationProvider>
     </ThemeProvider>
   );
 };
