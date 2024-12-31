@@ -4,7 +4,7 @@ import { renderLog } from "./../../utils";
 import { memo } from "../hocs";
 import { useCallback, useNotiContext } from "../hooks";
 
-export const ComplexForm: React.FC = memo(() => {
+const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useNotiContext();
   const [formData, setFormData] = useState({
@@ -92,4 +92,6 @@ export const ComplexForm: React.FC = memo(() => {
       </form>
     </div>
   );
-});
+};
+
+export default memo(ComplexForm);

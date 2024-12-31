@@ -3,10 +3,15 @@ import { useAuthContext, useCallback, useThemeContext } from "../hooks";
 import { memo } from "../hocs";
 import { renderLog } from "../../utils";
 
-export const Header: React.FC = memo(() => {
+interface HeaderProps {
+  login: (email: string, password: string) => void;
+  logout: () => void;
+}
+const Header: React.FC<HeaderProps> = ({ login, logout }) => {
   renderLog("Header rendered");
-  const { user, login, logout } = useAuthContext();
+  const { user } = useAuthContext();
   const { theme, toggleTheme } = useThemeContext();
+
   const handleLogin = useCallback(() => {
     login("user@example.com", "password");
   }, [login]);
@@ -44,4 +49,6 @@ export const Header: React.FC = memo(() => {
       </div>
     </header>
   );
-});
+};
+
+export default memo(Header);
