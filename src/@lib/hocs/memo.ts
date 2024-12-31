@@ -1,8 +1,8 @@
 /* import React from "react"; */
 /* import React, { ComponentType } from "react"; */
+import { createElement, ReactElement } from "react";
 import { shallowEquals } from "../equalities";
 import { useRef } from "../hooks";
-import { createElement, ReactElement } from "react";
 
 // memo HOC는 컴포넌트의 props를 얕은 비교하여 불필요한 리렌더링을 방지합니다.
 export function memo<P extends object>(
@@ -14,35 +14,32 @@ export function memo<P extends object>(
   // 3. equals 함수를 사용하여 props 비교
   // 4. props가 변경된 경우에만 새로운 렌더링 수행
 
-  const MemoizedComponent = function (props: P) {
-    const ref = useRef<null | {
-      component: ReactElement;
-      props: P;
-    }>(null);
-
-    // 초기 current가 비어있는 경우
-    if (ref.current === null) {
-      ref.current = {
+  const MemoizedComponent = (props: P) => {
+    const propsRef = useRef<null | { component: ReactElement; props: P }>(null);
+    if (!propsRef.current || _equals(propsRef.current.props, props)) {
+      propsRef.current = {
         component: createElement(Component, props),
         props,
       };
 
-      return ref.current.component;
+      return propsRef.current.component;
     }
-
-    // props가 같을 경우
-    if (_equals(ref.current?.props, props)) {
-      return ref.current?.component;
-    }
-
-    // props가 같지 않을 경우
-    ref.current = {
-      component: createElement(Component, props),
-      props,
-    };
-
-    return ref.current.component;
   };
+
+  /* 
+  //이전 코드드
+  const MemoizedComponent = (props: P) => {
+    const prevPropsRef = useRef<P | null>(null);
+    const renderPropsRef = useRef<React.ReactElement | null>(null);
+
+    if (!prevPropsRef.current || _equals(prevPropsRef.current, props)) {
+      prevPropsRef.current = props;
+      renderPropsRef.current = React.createElement(Component, props);
+    }
+
+    return React.createElement(Component, props);
+  }; 
+  */
 
   return MemoizedComponent;
 }
