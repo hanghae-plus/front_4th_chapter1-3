@@ -20,16 +20,15 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 // 커스텀 Hook으로 Context 에러 처리
 export const useUser = () => {
   const context = useContext(UserContext);
-
   if (!context) {
     throw new Error("useUser must be used within a UserProvider");
   }
-
   return context;
 };
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+
   const { addNotification } = useNotification();
 
   const login = useCallback((email: string) => {
