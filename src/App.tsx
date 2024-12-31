@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { generateItems } from "./utils";
-import { ItemList } from "./@lib/components/itemList";
+import { ItemList } from "./@lib/components/ItemList";
 import { themeContext as ThemeContext } from "./@lib/context/themeContext";
 import { UserContext } from "./@lib/context/userContext";
 import { NotificationContext } from "./@lib/context/notificationContext";
