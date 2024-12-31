@@ -15,7 +15,7 @@ export function memo<P extends object>(
   // 4. props가 변경된 경우에만 새로운 렌더링 수행
 
   const MemoizedComponent = (props: P): ReactElement => {
-    /* const propsRef = useRef<{ component: ReactElement; props: P } | null>(null);
+    const propsRef = useRef<{ component: ReactElement; props: P } | null>(null);
 
     if (!propsRef.current || !_equals(propsRef.current.props, props)) {
       propsRef.current = {
@@ -24,17 +24,7 @@ export function memo<P extends object>(
       };
     }
 
-    return propsRef.current.component; */
-
-    const prevPropsRef = useRef<P | null>(null);
-    const renderPropsRef = useRef<React.ReactElement | null>(null);
-
-    if (!prevPropsRef.current || !_equals(prevPropsRef.current, props)) {
-      prevPropsRef.current = props;
-      renderPropsRef.current = createElement(Component, props);
-    }
-
-    return createElement(Component, props);
+    return propsRef.current.component;
   };
 
   return MemoizedComponent;
@@ -45,7 +35,7 @@ export function memo<P extends object>(
     const prevPropsRef = useRef<P | null>(null);
     const renderPropsRef = useRef<React.ReactElement | null>(null);
 
-    if (!prevPropsRef.current || _equals(prevPropsRef.current, props)) {
+    if (!prevPropsRef.current || !_equals(prevPropsRef.current, props)) {
       prevPropsRef.current = props;
       renderPropsRef.current = React.createElement(Component, props);
     }
