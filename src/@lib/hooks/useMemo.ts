@@ -13,17 +13,14 @@ export function useMemo<T>(
   // 3. 의존성이 변경된 경우 factory 함수 실행 및 결과 저장
   // 4. 메모이제이션된 값 반환
 
-  // 이전 의존성과 결과를 저장하는 ref
-  const memoized = useRef<{ _deps: DependencyList; value: T } | null>(null);
+  const prevPropsRef = useRef<DependencyList | null>(null); //의존성 배열 저장, 초기값은 null
+  const prevProps = useRef<T | null>(null); // 이전 생성된 값 저장, 초기값은 null
 
-  // 의존성 변경된 경우 새값 생성
-  if (!memoized.current || !_equals(_deps, memoized.current._deps)) {
-    memoized.current = {
-      _deps,
-      value: factory(),
-    };
+  // 현재 의존성과 이전 의존성 비교
+  if (!prevPropsRef || !_equals(prevPropsRef.current, _deps)) {
+    prevPropsRef.current = _deps;
+    prevProps.current = factory();
   }
 
-  //메모제이션된 값 반환
-  return memoized.current.value;
+  return prevProps.current!;
 }
