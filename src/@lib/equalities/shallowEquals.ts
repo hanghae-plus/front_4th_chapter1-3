@@ -1,4 +1,7 @@
-import { KeyValueObject, isKeyValueObject } from './isKeyValueObject';
+import {
+	PrimitiveKeyValueObject,
+	isPrimitiveKeyValueObject,
+} from './isKeyValueObject';
 
 export function shallowEquals<T>(objA: T, objB: T): boolean {
 	if (Array.isArray(objA) === true && Array.isArray(objB)) {
@@ -17,9 +20,9 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
 		return true;
 	}
 
-	if (isKeyValueObject(objA) && isKeyValueObject(objB)) {
-		const keyValueA = objA as KeyValueObject;
-		const keyValueB = objB as KeyValueObject;
+	if (isPrimitiveKeyValueObject(objA) && isPrimitiveKeyValueObject(objB)) {
+		const keyValueA = objA as PrimitiveKeyValueObject;
+		const keyValueB = objB as PrimitiveKeyValueObject;
 		const keys = Object.keys(keyValueA);
 
 		for (const key of keys) {
