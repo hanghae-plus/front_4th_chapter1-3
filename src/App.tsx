@@ -1,7 +1,7 @@
 import React, {useState, createContext, useContext, useEffect} from "react";
 import { generateItems, renderLog } from "./utils";
-import {  useCallback, useMemo } from "./@lib";
-import {memo} from "react";
+import {memo,  useCallback, useMemo } from "./@lib";
+// import {memo} from "react";
 import {deepEquals} from "./@lib";
 
 // 타입 정의
