@@ -27,11 +27,7 @@ export function shallowEquals<T extends Record<string, unknown>>(
 
   // 4. 모든 키에 대해 얕은 비교 수행
   for (const key of keysA) {
-    // B 객체에 해당 키가 없거나 값이 다른 경우
-    if (
-      !Object.prototype.hasOwnProperty.call(objB, key) ||
-      objA[key] !== objB[key]
-    ) {
+    if (objA[key] !== objB[key]) {
       return false;
     }
   }
