@@ -1,12 +1,7 @@
-import React, {
-  useState,
-  createContext,
-  useContext,
-  PropsWithChildren,
-  useMemo,
-} from "react";
+import { useState, createContext, useContext, PropsWithChildren } from "react";
 import { generateItems, renderLog } from "./utils";
 import { useCallback } from "./@lib/hooks/useCallback";
+import { useMemo } from "./@lib/hooks/useMemo";
 
 // 타입 정의
 interface Item {
@@ -54,7 +49,6 @@ const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [theme, setTheme] = useState("light");
 
   const toggleTheme = useCallback(() => {
-    console.log("toggleTheme");
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   }, []);
 
