@@ -1,6 +1,7 @@
-import React, { useState, createContext, useContext } from "react";
-import { generateItems, renderLog } from "./utils.ts";
-import { useCallback, useMemo } from "./@lib/index.ts";
+import { useState, createContext, useContext } from "react";
+import { generateItems, renderLog } from "./utils";
+import { useCallback, useMemo } from "./@lib/index";
+import * as React from "react";
 
 // 타입 정의
 interface Item {
