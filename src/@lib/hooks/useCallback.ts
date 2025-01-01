@@ -7,7 +7,7 @@ import { useMemo } from "./useMemo";
 export function useCallback<T extends Function>(
   callback: T,
   deps: DependencyList,
-  equals = shallowEquals,
+  equals = shallowEquals
 ): T {
   // NOTE: useMemo를 사용하여 콜백 함수를 메모이제이션
   return useMemo(() => callback, deps, equals);

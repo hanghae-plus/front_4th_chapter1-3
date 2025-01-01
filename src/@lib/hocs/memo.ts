@@ -7,7 +7,7 @@ import React, { ComponentType } from "react";
 // NOTE: 메모이제이션(Memoization)은 이전에 계산한 값을 저장해두고 재사용하는 최적화 기법이다.
 export function memo<P extends object>(
   Component: ComponentType<P>,
-  equals = shallowEquals,
+  equals = shallowEquals
 ) {
   // const MemoizedComponent = (props: P) => {
   //   // 1. 이전 props를 저장할 ref 생성

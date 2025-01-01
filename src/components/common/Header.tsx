@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { renderLog } from "../../utils";
-import { useTheme } from "../../contexts/ThemeContext";
-import { useAuth } from "../../contexts/AuthContext";
-import { useNotification } from "../../contexts/NotificationContext";
+import { useTheme, useAuth, useNotification } from "../../contexts";
 
 // 별도의 컴포넌트로 notification 로직 분리
 const AuthNotification: React.FC<{ action: string }> = React.memo(
