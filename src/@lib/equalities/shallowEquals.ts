@@ -19,10 +19,9 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
 
   for (const key of objAKeys) {
     // Check: key 타업 단언
-    if (
-      !Object.prototype.hasOwnProperty.call(objB, key) ||
-      objA[key as keyof typeof objA] !== objB[key as keyof typeof objB]
-    ) {
+    const valueA = objA[key as keyof typeof objA];
+    const valueB = objB[key as keyof typeof objB];
+    if (!Object.prototype.hasOwnProperty.call(objB, key) || valueA !== valueB) {
       return false;
     }
   }

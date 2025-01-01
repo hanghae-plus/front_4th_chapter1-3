@@ -1,11 +1,32 @@
 export function deepEquals<T>(objA: T, objB: T): boolean {
-  // 1. 기본 타입이거나 null인 경우 처리
+  if (objA === objB) {
+    return true;
+  }
 
-  // 2. 둘 다 객체인 경우:
-  //    - 배열인지 확인
-  //    - 객체의 키 개수가 다른 경우 처리
-  //    - 재귀적으로 각 속성에 대해 deepEquals 호출
+  if (objA === null || objB === null) {
+    return objA === objB;
+  }
 
-  // 이 부분을 적절히 수정하세요.
-  return objA === objB;
+  if (typeof objA !== "object" || typeof objB !== "object") {
+    return objA === objB;
+  }
+
+  const objAKeys = Object.keys(objA);
+  const objBKeys = Object.keys(objB);
+
+  if (objAKeys.length !== objBKeys.length) return false;
+
+  for (const key of objAKeys) {
+    const valueA = objA[key as keyof typeof objA];
+    const valueB = objB[key as keyof typeof objB];
+
+    // HERE : 근백님 로직 이해 후, 적용
+    if (
+      !Object.prototype.hasOwnProperty.call(objB, key) ||
+      !deepEquals(valueA, valueB)
+    ) {
+      return false;
+    }
+  }
+  return true;
 }
