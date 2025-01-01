@@ -3,11 +3,11 @@ import React, {
   createContext,
   useContext,
   useCallback,
-  useMemo,
+  useMemo
 } from "react";
 import { generateItems, renderLog } from "./utils";
-import { ThemeProvider, useTheme } from "./ThemeContext";
-import { AuthProvider, useAuth } from "./AuthContext";
+import { ThemeProvider, useTheme } from "./contexts/themeContext";
+import { AuthProvider, useAuth } from "./contexts/authContext";
 
 // 타입 정의
 interface Item {
@@ -122,7 +122,7 @@ export const ItemList: React.FC<{
       const total = filteredItems.reduce((sum, item) => sum + item.price, 0);
       return {
         totalPrice: total,
-        averagePrice: Math.round(total / filteredItems.length) || 0,
+        averagePrice: Math.round(total / filteredItems.length) || 0
       };
     }, [filteredItems]);
 
@@ -178,7 +178,7 @@ export const ComplexForm: React.FC = () => {
     name: "",
     email: "",
     age: 0,
-    preferences: [] as string[],
+    preferences: [] as string[]
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -190,7 +190,7 @@ export const ComplexForm: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "age" ? parseInt(value) || 0 : value,
+      [name]: name === "age" ? parseInt(value) || 0 : value
     }));
   };
 
@@ -199,7 +199,7 @@ export const ComplexForm: React.FC = () => {
       ...prev,
       preferences: prev.preferences.includes(preference)
         ? prev.preferences.filter((p) => p !== preference)
-        : [...prev.preferences, preference],
+        : [...prev.preferences, preference]
     }));
   };
 
@@ -314,7 +314,7 @@ const App: React.FC = () => {
   const addItems = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
-      ...generateItems(1000, prevItems.length),
+      ...generateItems(1000, prevItems.length)
     ]);
   }, []);
 
@@ -323,7 +323,7 @@ const App: React.FC = () => {
       const newNotification: Notification = {
         id: Date.now(),
         message,
-        type,
+        type
       };
       setNotifications((prev) => [...prev, newNotification]);
     },
@@ -340,9 +340,15 @@ const App: React.FC = () => {
     () => ({
       notifications,
       addNotification,
-      removeNotification,
+      removeNotification
     }),
     [notifications, addNotification, removeNotification]
+  );
+
+  // ItemList를 메모이제이션
+  const memoizedItemList = useMemo(
+    () => <ItemList items={items} onAddItemsClick={addItems} />,
+    [items, addItems]
   );
 
   return (
@@ -354,9 +360,7 @@ const App: React.FC = () => {
           </AuthProvider>
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row">
-              <div className="w-full md:w-1/2 md:pr-4">
-                <ItemList items={items} onAddItemsClick={addItems} />
-              </div>
+              <div className="w-full md:w-1/2 md:pr-4">{memoizedItemList}</div>
               <div className="w-full md:w-1/2 md:pl-4">
                 <ComplexForm />
               </div>

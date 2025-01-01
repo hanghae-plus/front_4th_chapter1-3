@@ -1,22 +1,26 @@
 import React, { createContext, useContext, useState } from "react";
-import { useAppContext } from "./App";
+import { useAppContext } from "../App";
 
+// 1. User 인터페이스 정의
 interface User {
   id: number;
   name: string;
   email: string;
 }
 
+// 2. AuthContextType 정의
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
 }
 
+// 3. AuthContext 생성, 초기값은 undefined
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// 4. AuthProvider 컴포넌트 정의
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+  children
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const { addNotification } = useAppContext();
@@ -38,6 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// 5. AuthContext를 쉽게 사용하기 위한 커스텀 훅
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

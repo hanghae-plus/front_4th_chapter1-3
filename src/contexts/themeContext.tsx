@@ -8,12 +8,12 @@ interface ThemeContextType {
 
 // 2. ThemeContext 생성, 초기값은 undefined
 export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined,
+  undefined
 );
 
 // NOTE: Provider는 React Context의 데이터를 제공하는 컴포넌트
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children, // Provider 안에 들어가는 자식 컴포넌트들
+  children // Provider 안에 들어가는 자식 컴포넌트들
 }) => {
   const [theme, setTheme] = useState("light");
 
