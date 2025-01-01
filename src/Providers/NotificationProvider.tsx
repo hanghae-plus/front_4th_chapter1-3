@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useCallback, useMemo } from "../@lib";
 import {
   Notification,
+  NotificationActionsContext,
   NotificationContext,
 } from "../hooks/useNotificationContext";
 
@@ -30,14 +31,18 @@ export const NotificationProvider = ({
     );
   }, []);
 
-  const value = useMemo(
-    () => ({ notifications, addNotification, removeNotification }),
-    [notifications, addNotification, removeNotification],
+  const value = useMemo(() => ({ notifications }), [notifications]);
+
+  const actions = useMemo(
+    () => ({ addNotification, removeNotification }),
+    [addNotification, removeNotification],
   );
 
   return (
     <NotificationContext.Provider value={value}>
-      {children}
+      <NotificationActionsContext.Provider value={actions}>
+        {children}
+      </NotificationActionsContext.Provider>
     </NotificationContext.Provider>
   );
 };

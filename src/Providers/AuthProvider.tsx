@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useCallback, useMemo } from "../@lib";
 import { AuthContext, User } from "../hooks/useAuthContext";
-import { useNotificationContext } from "../hooks/useNotificationContext";
+import { useNotificationActions } from "../hooks/useNotificationContext";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const { addNotification } = useNotificationContext();
+  const { addNotification } = useNotificationActions();
 
   const login = useCallback(
     (email: string) => {
