@@ -1,10 +1,5 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useMemo
-} from "react";
+import React, { createContext, useContext, useState } from "react";
+import { useCallback, useMemo } from "../@lib/hooks";
 
 // 1. Notification 인터페이스 정의
 interface Notification {
