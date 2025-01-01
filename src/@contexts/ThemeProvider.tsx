@@ -4,7 +4,7 @@ import { Theme } from "./ThemeProvider.types";
 import { createSafeContext } from "../@lib/utils";
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function ThemeProvider({ children }: Props) {

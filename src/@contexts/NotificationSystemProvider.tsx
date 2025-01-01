@@ -4,7 +4,7 @@ import { NotificationType } from "./NotificationSystemProvider.types";
 import { createSafeContext } from "../@lib/utils";
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function NotificationSystemProvider({ children }: Props) {

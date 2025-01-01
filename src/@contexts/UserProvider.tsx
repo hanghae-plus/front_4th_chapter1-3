@@ -4,7 +4,7 @@ import { UserType } from "./UserProvider.types";
 import { createSafeContext } from "../@lib/utils";
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function UserProvider({ children }: Props) {
