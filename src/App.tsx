@@ -46,7 +46,7 @@ const useAppContext = () => {
 
 // Header 컴포넌트
 export const Header: React.FC = () => {
-  renderLog("Header rendered");
+  renderLog("Header rendered 123");
   const { theme, toggleTheme, user, login, logout } = useAppContext();
 
   const handleLogin = () => {
