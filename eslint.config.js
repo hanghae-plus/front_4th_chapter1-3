@@ -1,10 +1,10 @@
 import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginPrettier from "eslint-plugin-prettier/recommended";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   { ignores: ["dist"] },
@@ -25,8 +25,9 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "comma-dangle": ["error", never], // 추가된 규칙
     },
   },
   eslintPluginPrettier,
-  eslintConfigPrettier,
+  eslintConfigPrettier
 );
