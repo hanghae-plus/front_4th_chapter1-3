@@ -1,6 +1,6 @@
 import React from "react";
 import { renderLog } from "../../utils";
-import { useNotification } from "../../contexts/NotificationContext";
+import { useNotification } from "../../contexts";
 
 // NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = () => {

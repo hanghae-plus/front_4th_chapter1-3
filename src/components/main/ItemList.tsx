@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { renderLog } from "../../utils";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "../../contexts";
 
 // 타입 정의
 interface Item {

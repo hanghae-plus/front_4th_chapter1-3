@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { renderLog } from "../../utils";
-import { useNotification } from "../../contexts/NotificationContext";
+import { useNotification } from "../../contexts";
 
 // ComplexForm 컴포넌트
 export const ComplexForm: React.FC = () => {

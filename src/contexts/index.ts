@@ -1,3 +1,3 @@
-export { ThemeProvider, useTheme } from "./ThemeContext";
-export { AuthProvider, useAuth } from "./AuthContext";
-export { NotificationProvider, useNotification } from "./NotificationContext";
+export { ThemeProvider, useTheme } from "./themeContext";
+export { AuthProvider, useAuth } from "./authContext";
+export { NotificationProvider, useNotification } from "./notificationContext";

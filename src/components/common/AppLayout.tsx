@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "../../contexts";
 
 // 레이아웃을 위한 새로운 컴포넌트 추가
 export const AppLayout = React.memo(
