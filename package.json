@@ -23,7 +23,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "tsc --noEmit --jsx react-jsx --allowJs --skipLibCheck --allowImportingTsExtensions",
+      "tsc --noEmit --jsx react-jsx --allowJs --skipLibCheck --allowImportingTsExtensions --esModuleInterop",
       "prettier --write",
       "eslint --fix"
     ]
