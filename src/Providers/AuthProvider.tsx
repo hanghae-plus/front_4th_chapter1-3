@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCallback, useMemo } from "../@lib";
-import { AuthContext, User } from "../Contexts/AuthContext";
+import { AuthContext, User } from "../hooks/useAuthContext";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

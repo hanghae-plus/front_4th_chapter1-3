@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "../@lib";
 import {
   Notification,
   NotificationContext,
-} from "../Contexts/NotificationContext";
+} from "../hooks/useNotificationContext";
 
 export const NotificationProvider = ({
   children,

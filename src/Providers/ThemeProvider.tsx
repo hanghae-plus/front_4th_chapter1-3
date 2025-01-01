@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCallback, useMemo } from "../@lib";
-import { ThemeContext } from "../Contexts/ThemeContext";
+import { ThemeContext } from "../hooks/useThemeContext";
 
 export const ThemeProvider = ({
   defaultTheme = "light",
