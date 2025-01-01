@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { ComplexForm, Header, ItemList, NotificationSystem } from "../App";
 import { useThemeContext } from "../hooks/useThemeContext";
 import { generateItems } from "../utils";
+import { Header } from "./Header";
+import { ItemList } from "./ItemList";
+import { ComplexForm } from "./ComplexForm";
+import { NotificationSystem } from "./NotificationSystem";
 
 export const Layout = () => {
   const [items, setItems] = useState(() => generateItems(1000));
