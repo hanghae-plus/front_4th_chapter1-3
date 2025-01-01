@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCallback, useMemo } from "../@lib";
-import { ThemeContext } from "../hooks/useThemeContext";
+import { ThemeActionsContext, ThemeContext } from "../hooks/useThemeContext";
 
 export const ThemeProvider = ({
   defaultTheme = "light",
@@ -15,9 +15,14 @@ export const ThemeProvider = ({
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   }, []);
 
-  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
+  const value = useMemo(() => ({ theme }), [theme]);
+  const actions = useMemo(() => ({ toggleTheme }), [toggleTheme]);
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      <ThemeActionsContext.Provider value={actions}>
+        {children}
+      </ThemeActionsContext.Provider>
+    </ThemeContext.Provider>
   );
 };
