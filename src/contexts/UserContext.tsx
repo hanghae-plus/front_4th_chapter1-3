@@ -19,7 +19,7 @@ type Props = {
 
 export const UserProvider = ({ children }: Props) => {
   const [user, setUser] = useState<User | null>(null);
-  const { addNotification } = useNotificationContext();
+  const { addNotification } = useNotificationContext(); // 얘를 Header 컴포넌트 안에서 썼을 때는 요구사항 충족 못함. 이유가 뭘까? : Header까지 가는 리렌더링을 막지 못한 걸로 보임.
 
   const login = useCallback(
     (email: string) => {
@@ -35,6 +35,7 @@ export const UserProvider = ({ children }: Props) => {
   }, [addNotification]);
 
   const contextValue = useMemo(
+    // 이것이 최적화에 미치는 영향을 알아봐야. => { user, login, logout } 객체는 매 렌더링마다 새롭게 생성됨. 이를 막기 위해 useMemo에다 넣어주는 것.
     () => ({ user, login, logout }),
     [user, login, logout],
   );
@@ -47,7 +48,7 @@ export const UserProvider = ({ children }: Props) => {
 export const useUserContext = () => {
   const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error("useUserContext must be used within an AppProvider");
+    throw new Error("useUserContext must be used within an UserProvider");
   }
   return context;
 };
