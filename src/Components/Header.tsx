@@ -1,12 +1,13 @@
 import { memo } from "../@lib";
 import { useAuthActions, useAuthContext } from "../hooks/useAuthContext";
-import { useThemeContext } from "../hooks/useThemeContext";
 import { useNotificationActions } from "../hooks/useNotificationContext";
+import { useThemeActions, useThemeContext } from "../hooks/useThemeContext";
 import { renderLog } from "../utils";
 
 export const Header: React.FC = memo(() => {
   renderLog("Header rendered");
-  const { theme, toggleTheme } = useThemeContext();
+  const { theme } = useThemeContext();
+  const { toggleTheme } = useThemeActions();
   const { user } = useAuthContext();
   const { login, logout } = useAuthActions();
   const { addNotification } = useNotificationActions();
