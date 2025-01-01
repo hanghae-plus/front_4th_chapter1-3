@@ -11,7 +11,7 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
-  const [, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const addNotification = useCallback(
     (message: string, type: Notification["type"]) => {
@@ -21,6 +21,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
         type,
       };
       setNotifications((prev) => [...prev, newNotification]);
+    },
+    [setNotifications],
+  );
+
+  const removeNotification = useCallback(
+    (id: number) => {
+      setNotifications((prev) =>
+        prev.filter((notification) => notification.id !== id),
+      );
     },
     [setNotifications],
   );
@@ -40,11 +49,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const value: AuthContextType = useMemo(
     () => ({
+      notifications,
+      addNotification,
+      removeNotification,
       user,
       login,
       logout,
     }),
-    [user, login, logout],
+    [notifications, addNotification, removeNotification, user, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

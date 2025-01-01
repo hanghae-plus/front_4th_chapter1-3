@@ -1,10 +1,10 @@
 import { memo } from "../../@lib";
-import { useAppContext } from "../../contexts/app/useAppContext";
+import { useAuthContext } from "../../contexts/auth/useAuthContext";
 import { renderLog } from "../../utils";
 
 export const NotificationSystem = memo(() => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useAuthContext();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
