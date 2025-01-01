@@ -8,16 +8,12 @@ import {
   ItemList,
   NotificationSystem,
 } from "./components";
+import { ThemeProvider } from "./contexts";
 
 const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
   const [items, setItems] = useState(generateItems(1000));
   const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
 
   const addItems = () => {
     setItems((prevItems) => [
@@ -52,8 +48,6 @@ const App: React.FC = () => {
   };
 
   const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
     user,
     login,
     logout,
@@ -64,9 +58,7 @@ const App: React.FC = () => {
 
   return (
     <AppContext.Provider value={contextValue}>
-      <div
-        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-      >
+      <ThemeProvider>
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row">
@@ -79,7 +71,7 @@ const App: React.FC = () => {
           </div>
         </div>
         <NotificationSystem />
-      </div>
+      </ThemeProvider>
     </AppContext.Provider>
   );
 };

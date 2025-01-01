@@ -3,8 +3,6 @@ import { User } from "../types/User";
 import { Notification } from "../types/Notification";
 
 export interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
