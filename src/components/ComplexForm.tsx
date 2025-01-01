@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useAppContext } from "../contexts/useAppContext";
+import { useNotification } from "../contexts/NotificationContext";
 import { renderLog } from "../utils";
+import { memo, useCallback } from "../@lib";
 
 // ComplexForm 컴포넌트
-export const ComplexForm: React.FC = () => {
+export const ComplexForm: React.FC = memo(() => {
     renderLog("ComplexForm rendered");
-    const { addNotification } = useAppContext();
+    const { addNotification } = useNotification();
+
     const [formData, setFormData] = useState({
       name: "",
       email: "",
@@ -13,27 +15,36 @@ export const ComplexForm: React.FC = () => {
       preferences: [] as string[],
     });
   
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      addNotification("폼이 성공적으로 제출되었습니다", "success");
-    };
+    const handleSubmit = useCallback(
+      (e: React.FormEvent) => {
+        e.preventDefault();
+        addNotification("폼이 성공적으로 제출되었습니다", "success");
+      },
+      [addNotification]
+    );
   
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({
-        ...prev,
-        [name]: name === "age" ? parseInt(value) || 0 : value,
-      }));
-    };
+    const handleInputChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+          ...prev,
+          [name]: name === "age" ? parseInt(value) || 0 : value,
+        }));
+      },
+      []
+    );
   
-    const handlePreferenceChange = (preference: string) => {
-      setFormData((prev) => ({
-        ...prev,
-        preferences: prev.preferences.includes(preference)
-          ? prev.preferences.filter((p) => p !== preference)
-          : [...prev.preferences, preference],
-      }));
-    };
+    const handlePreferenceChange = useCallback(
+      (preference: string) => {
+        setFormData((prev) => ({
+          ...prev,
+          preferences: prev.preferences.includes(preference)
+            ? prev.preferences.filter((p) => p !== preference)
+            : [...prev.preferences, preference],
+        }));
+      },
+      []
+    );
   
     return (
       <div className="mt-8">
@@ -85,4 +96,4 @@ export const ComplexForm: React.FC = () => {
         </form>
       </div>
     );
-  };
+  });

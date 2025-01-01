@@ -1,12 +1,15 @@
 import React from "react";
+import { memo, useCallback } from "../@lib";
+import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";
 import { renderLog } from "../utils";
-import { useAppContext } from "../contexts/useAppContext";
-import { useCallback } from "../@lib";
 
 // Header 컴포넌트
-export const Header: React.FC = () => {
+export const Header: React.FC = memo(() => {
     renderLog("Header rendered");
-    const { theme, toggleTheme, user, login, logout } = useAppContext();
+  
+    const { user, logout, login } = useAuth();
+    const { theme, toggleTheme } = useTheme();
   
     const handleLogin = useCallback(() => {
       login("user@example.com", "password");
@@ -45,4 +48,4 @@ export const Header: React.FC = () => {
         </div>
       </header>
     );
-  };
+  });
