@@ -14,7 +14,7 @@ interface AuthContextType {
   logout: () => void;
 }
 
-// 3. AuthContext 생성, 초기값은 undefined
+// 3. AuthContext 생성
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // 4. AuthProvider 컴포넌트 정의
