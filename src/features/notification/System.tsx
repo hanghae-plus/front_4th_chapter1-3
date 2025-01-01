@@ -1,7 +1,8 @@
+import { memo } from "../../@lib";
 import { useAppContext } from "../../contexts/app/useAppContext";
 import { renderLog } from "../../utils";
 
-export const NotificationSystem = () => {
+export const NotificationSystem = memo(() => {
   renderLog("NotificationSystem rendered");
   const { notifications, removeNotification } = useAppContext();
 
@@ -31,4 +32,4 @@ export const NotificationSystem = () => {
       ))}
     </div>
   );
-};
+});

@@ -13,14 +13,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [, setNotifications] = useState<Notification[]>([]);
 
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
+  const addNotification = useCallback(
+    (message: string, type: Notification["type"]) => {
+      const newNotification: Notification = {
+        id: Date.now(),
+        message,
+        type,
+      };
+      setNotifications((prev) => [...prev, newNotification]);
+    },
+    [setNotifications],
+  );
 
   const login = useCallback(
     (email: string) => {

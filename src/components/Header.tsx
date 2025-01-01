@@ -1,10 +1,11 @@
-import { useAppContext } from "../contexts/app/useAppContext";
+import { memo } from "../@lib";
 import { useAuthContext } from "../contexts/auth/useAuthContext";
+import { useThemeContext } from "../contexts/theme/useThemeContext";
 import { renderLog } from "../utils";
 
-export const Header = () => {
+export const Header = memo(() => {
   renderLog("Header rendered");
-  const { theme, toggleTheme } = useAppContext();
+  const { theme, toggleTheme } = useThemeContext();
   const { login, user, logout } = useAuthContext();
 
   const handleLogin = () => {
@@ -45,4 +46,4 @@ export const Header = () => {
       </div>
     </header>
   );
-};
+});

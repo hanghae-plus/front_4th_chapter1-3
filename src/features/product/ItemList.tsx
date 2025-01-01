@@ -1,27 +1,35 @@
 import { useState } from "react";
 import { renderLog } from "../../utils";
-import { useAppContext } from "../../contexts/app/useAppContext";
 import { Item } from "./entity";
+import { useThemeContext } from "../../contexts/theme/useThemeContext";
+import { memo, useMemo } from "../../@lib";
 
 interface ItemListProps {
   items: Item[];
   onAddItemsClick: () => void;
 }
 
-export const ItemList = ({ items, onAddItemsClick }: ItemListProps) => {
+export const ItemList = memo(({ items, onAddItemsClick }: ItemListProps) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+  const { theme } = useThemeContext();
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
+  const filteredItems = useMemo(
+    () =>
+      items.filter(
+        (item) =>
+          item.name.toLowerCase().includes(filter.toLowerCase()) ||
+          item.category.toLowerCase().includes(filter.toLowerCase()),
+      ),
+    [items, filter],
   );
-
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
-
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+  const { totalPrice, averagePrice } = useMemo(() => {
+    const total = filteredItems.reduce((sum, item) => sum + item.price, 0);
+    return {
+      totalPrice: total,
+      averagePrice: Math.round(total / filteredItems.length) || 0,
+    };
+  }, [filteredItems]);
 
   return (
     <div className="mt-8">
@@ -50,9 +58,9 @@ export const ItemList = ({ items, onAddItemsClick }: ItemListProps) => {
         <li>평균가격: {averagePrice.toLocaleString()}원</li>
       </ul>
       <ul className="space-y-2">
-        {filteredItems.map((item, index) => (
+        {filteredItems.map((item) => (
           <li
-            key={index}
+            key={item.id}
             className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
           >
             {item.name} - {item.category} - {item.price.toLocaleString()}원
@@ -61,4 +69,4 @@ export const ItemList = ({ items, onAddItemsClick }: ItemListProps) => {
       </ul>
     </div>
   );
-};
+});

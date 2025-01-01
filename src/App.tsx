@@ -3,9 +3,12 @@ import { NotificationSystem } from "./features/notification/System";
 import { ComplexForm } from "./components/ComplexForm";
 import { ItemList } from "./features/product/ItemList";
 import { useAppContext } from "./contexts/app/useAppContext";
+import { useThemeContext } from "./contexts/theme/useThemeContext";
+import { memo } from "./@lib";
 
-const App = () => {
-  const { theme, items, addItems } = useAppContext();
+const App = memo(() => {
+  const { items, addItems } = useAppContext();
+  const { theme } = useThemeContext();
 
   return (
     <div
@@ -25,6 +28,6 @@ const App = () => {
       <NotificationSystem />
     </div>
   );
-};
+});
 
 export default App;

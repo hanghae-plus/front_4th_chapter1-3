@@ -3,7 +3,6 @@ import { AppContext } from "./AppContext";
 import { Notification } from "../../features/notification/entity";
 
 import { generateItems } from "../../utils";
-import { useMemo } from "../../@lib";
 import { AppContextType } from "./type";
 
 interface AppProviderProps {
@@ -11,13 +10,8 @@ interface AppProviderProps {
 }
 
 export function AppProvider({ children }: AppProviderProps) {
-  const [theme, setTheme] = useState("light");
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [items, setItems] = useState(generateItems(1000));
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
 
   const addNotification = (message: string, type: Notification["type"]) => {
     const newNotification: Notification = {
@@ -41,18 +35,13 @@ export function AppProvider({ children }: AppProviderProps) {
     ]);
   };
 
-  const value: AppContextType = useMemo(
-    () => ({
-      theme,
-      toggleTheme,
-      notifications,
-      addNotification,
-      removeNotification,
-      items,
-      addItems,
-    }),
-    [theme, toggleTheme],
-  );
+  const value: AppContextType = {
+    notifications,
+    addNotification,
+    removeNotification,
+    items,
+    addItems,
+  };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
