@@ -5,6 +5,9 @@ import react from "@vitejs/plugin-react-swc";
 export default mergeConfig(
   defineConfig({
     plugins: [react()],
+    resolve: {
+      extensions: [".js", ".jsx", ".ts", ".tsx"] // 파일 확장자 해석을 위한 설정 추가
+    }
   }),
   defineTestConfig({
     test: {
@@ -13,8 +16,8 @@ export default mergeConfig(
       setupFiles: "./src/setupTests.ts",
       coverage: {
         reportsDirectory: "./.coverage",
-        reporter: ["lcov", "json", "json-summary"],
-      },
-    },
-  }),
+        reporter: ["lcov", "json", "json-summary"]
+      }
+    }
+  })
 );
