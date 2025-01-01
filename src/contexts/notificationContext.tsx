@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useMemo
+} from "react";
 
 // 1. Notification 인터페이스 정의
 interface Notification {
@@ -24,31 +30,38 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const addNotification = (message: string, type: Notification["type"]) => {
-    // NOTE: 새로운 알림 생성 시 현재 시간을 ID로 사용
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
+  const addNotification = useCallback(
+    (message: string, type: Notification["type"]) => {
+      // NOTE: 새로운 알림 생성 시 현재 시간을 ID로 사용
+      const newNotification: Notification = {
+        id: Date.now(),
+        message,
+        type
+      };
+      setNotifications((prev) => [...prev, newNotification]);
+    },
+    []
+  );
 
-  const removeNotification = (id: number) => {
+  const removeNotification = useCallback((id: number) => {
     // NOTE: 지정된 ID의 알림만 필터링하여 제거
     setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id)
     );
-  };
+  }, []);
+
+  // value 객체를 메모이제이션
+  const value = useMemo(
+    () => ({
+      notifications,
+      addNotification,
+      removeNotification
+    }),
+    [notifications, addNotification, removeNotification]
+  );
 
   return (
-    <NotificationContext.Provider
-      value={{
-        notifications: [...notifications],
-        addNotification,
-        removeNotification
-      }}
-    >
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { generateItems, renderLog } from "./utils";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -15,81 +15,79 @@ interface Item {
   price: number;
 }
 
-// AppContext 타입 정의
-// interface AppContextType {
-//   // theme: string;
-//   // toggleTheme: () => void;
-//   // user: User | null;
-//   // login: (email: string, password: string) => void;
-//   // logout: () => void;ㄹ
-//   notifications: Notification[];
-//   addNotification: (message: string, type: Notification["type"]) => void;
-//   removeNotification: (id: number) => void;
-// }
+// 별도의 컴포넌트로 notification 로직 분리
+const AuthNotification: React.FC<{ action: string }> = React.memo(
+  ({ action }) => {
+    const { addNotification } = useNotification();
 
-// const AppContext = createContext<AppContextType | undefined>(undefined);
+    useEffect(() => {
+      if (action === "login") {
+        addNotification("성공적으로 로그인되었습니다", "success");
+      } else if (action === "logout") {
+        addNotification("로그아웃되었습니다", "info");
+      }
+    }, [action, addNotification]);
 
-// 커스텀 훅: useAppContext
-// export const useAppContext = () => {
-//   const context = useContext(AppContext);
-//   if (context === undefined) {
-//     throw new Error("useAppContext must be used within an AppProvider");
-//   }
-//   return context;
-// };
+    return null;
+  }
+);
 
 // Header 컴포넌트
-export const Header: React.FC = () => {
+// NOTE: 알림 추가 및 닫기 시 header도 같이 리렌더링 되어 React.memo를 사용하여 최적화 -> 그래도 안됨.
+export const Header: React.FC = React.memo(() => {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useTheme();
   const { user, login, logout } = useAuth();
-  const { addNotification } = useNotification();
+  const [authAction, setAuthAction] = useState<string>(""); // 추가
 
-  const handleLogin = () => {
+  const handleLogin = useCallback(() => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login("user@example.com", "password");
-    addNotification("성공적으로 로그인되었습니다", "success");
-  };
+    setAuthAction("login");
+  }, [login]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     logout();
-    addNotification("로그아웃되었습니다", "info");
-  };
+    setAuthAction("logout");
+  }, [logout]);
 
   return (
-    <header className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">샘플 애플리케이션</h1>
-        <div className="flex items-center">
-          <button
-            onClick={toggleTheme}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-          >
-            {theme === "light" ? "다크 모드" : "라이트 모드"}
-          </button>
-          {user ? (
-            <div className="flex items-center">
-              <span className="mr-2">{user.name}님 환영합니다!</span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              >
-                로그아웃
-              </button>
-            </div>
-          ) : (
+    <>
+      <header className="bg-gray-800 text-white p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold">샘플 애플리케이션</h1>
+          <div className="flex items-center">
             <button
-              onClick={handleLogin}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              onClick={toggleTheme}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
             >
-              로그인
+              {theme === "light" ? "다크 모드" : "라이트 모드"}
             </button>
-          )}
+            {user ? (
+              <div className="flex items-center">
+                <span className="mr-2">{user.name}님 환영합니다!</span>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  로그아웃
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >
+                로그인
+              </button>
+            )}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <AuthNotification action={authAction} />
+    </>
   );
-};
+});
 
 // ItemList 컴포넌트
 export const ItemList: React.FC<{
@@ -295,14 +293,7 @@ const AppLayout = React.memo(({ children }: { children: React.ReactNode }) => {
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  // const [theme, setTheme] = useState("light");
   const [items, setItems] = useState(generateItems(1000));
-  // const [user, setUser] = useState<User | null>(null);
-  // const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  // const toggleTheme = () => {
-  //   setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  // };
 
   const addItems = useCallback(() => {
     setItems((prevItems) => [
@@ -310,33 +301,6 @@ const App: React.FC = () => {
       ...generateItems(1000, prevItems.length)
     ]);
   }, []);
-
-  // const addNotification = useCallback(
-  //   (message: string, type: Notification["type"]) => {
-  //     const newNotification: Notification = {
-  //       id: Date.now(),
-  //       message,
-  //       type
-  //     };
-  //     setNotifications((prev) => [...prev, newNotification]);
-  //   },
-  //   []
-  // );
-
-  // const removeNotification = useCallback((id: number) => {
-  //   setNotifications((prev) =>
-  //     prev.filter((notification) => notification.id !== id)
-  //   );
-  // }, []);
-
-  // const contextValue = useMemo(
-  //   () => ({
-  //     notifications,
-  //     addNotification,
-  //     removeNotification
-  //   }),
-  //   [notifications, addNotification, removeNotification]
-  // );
 
   // ItemList를 메모이제이션
   const memoizedItemList = useMemo(
