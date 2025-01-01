@@ -6,5 +6,6 @@ export function useCallback<T extends Function>(
   factory: T,
   _deps: DependencyList,
 ): T {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useMemo(() => factory, _deps);
 }

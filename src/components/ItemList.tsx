@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useThemeContext } from "../contexts/theme/useThemeContext";
-import { renderLog } from "../utils";
+import { generateItems, renderLog } from "../utils";
 
 interface Item {
   id: number;
@@ -9,16 +9,17 @@ interface Item {
   price: number;
 }
 
-const ItemList = ({
-  items,
-  onAddItemsClick,
-}: {
-  items: Item[];
-  onAddItemsClick: () => void;
-}) => {
+const NUMBER_OF_ITEMS = 1000;
+
+const ItemList = () => {
   renderLog("ItemList rendered");
-  const [filter, setFilter] = useState("");
+
   const { theme } = useThemeContext();
+
+  const [filter, setFilter] = useState("");
+  const [items, setItems] = useState<Item[]>(() =>
+    generateItems(NUMBER_OF_ITEMS),
+  );
 
   const filteredItems = items.filter(
     (item) =>
@@ -30,6 +31,10 @@ const ItemList = ({
 
   const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
 
+  const handleAddItemsClick = useCallback(() => {
+    setItems(generateItems(NUMBER_OF_ITEMS));
+  }, []);
+
   return (
     <div className="mt-8">
       <div className="flex justify-between items-center mb-4">
@@ -38,7 +43,7 @@ const ItemList = ({
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={handleAddItemsClick}
           >
             대량추가
           </button>
