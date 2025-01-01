@@ -4,6 +4,8 @@ import { useThemeContext } from "./hooks/useThemeContext";
 import { ThemeProvider } from "./Providers/ThemeProvider";
 import { Layout } from "./Components/Layout";
 import { memo } from "./@lib";
+import { useAuthContext } from "./hooks/useAuthContext";
+import { AuthProvider } from "./Providers/AuthProvider";
 
 // 타입 정의
 interface Item {
@@ -11,12 +13,6 @@ interface Item {
   name: string;
   category: string;
   price: number;
-}
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
 }
 
 interface Notification {
@@ -27,9 +23,6 @@ interface Notification {
 
 // AppContext 타입 정의
 interface AppContextType {
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
   notifications: Notification[];
   addNotification: (message: string, type: Notification["type"]) => void;
   removeNotification: (id: number) => void;
@@ -49,12 +42,19 @@ const useAppContext = () => {
 // Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { user, login, logout } = useAppContext();
   const { theme, toggleTheme } = useThemeContext();
+  const { user, login, logout } = useAuthContext();
+  const { addNotification } = useAppContext();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login("user@example.com", "password");
+    addNotification("성공적으로 로그인되었습니다", "success");
+  };
+
+  const handleLogout = () => {
+    logout();
+    addNotification("로그아웃되었습니다", "info");
   };
 
   return (
@@ -72,7 +72,7 @@ export const Header: React.FC = () => {
             <div className="flex items-center">
               <span className="mr-2">{user.name}님 환영합니다!</span>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               >
                 로그아웃
@@ -271,18 +271,7 @@ export const NotificationSystem: React.FC = memo(() => {
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const login = (email: string) => {
-    setUser({ id: 1, name: "홍길동", email });
-    addNotification("성공적으로 로그인되었습니다", "success");
-  };
-
-  const logout = () => {
-    setUser(null);
-    addNotification("로그아웃되었습니다", "info");
-  };
 
   const addNotification = (message: string, type: Notification["type"]) => {
     const newNotification: Notification = {
@@ -300,9 +289,6 @@ const App: React.FC = () => {
   };
 
   const contextValue: AppContextType = {
-    user,
-    login,
-    logout,
     notifications,
     addNotification,
     removeNotification,
@@ -310,9 +296,11 @@ const App: React.FC = () => {
 
   return (
     <AppContext.Provider value={contextValue}>
-      <ThemeProvider defaultTheme={"light"}>
-        <Layout />
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider defaultTheme={"light"}>
+          <Layout />
+        </ThemeProvider>
+      </AuthProvider>
     </AppContext.Provider>
   );
 };
