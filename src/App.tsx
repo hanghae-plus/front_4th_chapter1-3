@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState } from "react";
 import { renderLog } from "./utils";
 import { useThemeContext } from "./hooks/useThemeContext";
 import { ThemeProvider } from "./Providers/ThemeProvider";
@@ -6,6 +6,8 @@ import { Layout } from "./Components/Layout";
 import { memo } from "./@lib";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { AuthProvider } from "./Providers/AuthProvider";
+import { NotificationProvider } from "./Providers/NotificationProvider";
+import { useNotificationContext } from "./hooks/useNotificationContext";
 
 // 타입 정의
 interface Item {
@@ -15,36 +17,12 @@ interface Item {
   price: number;
 }
 
-interface Notification {
-  id: number;
-  message: string;
-  type: "info" | "success" | "warning" | "error";
-}
-
-// AppContext 타입 정의
-interface AppContextType {
-  notifications: Notification[];
-  addNotification: (message: string, type: Notification["type"]) => void;
-  removeNotification: (id: number) => void;
-}
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-// 커스텀 훅: useAppContext
-const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
-  return context;
-};
-
 // Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useThemeContext();
   const { user, login, logout } = useAuthContext();
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotificationContext();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
@@ -154,7 +132,7 @@ export const ItemList: React.FC<{
 // ComplexForm 컴포넌트
 export const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotificationContext();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -239,7 +217,7 @@ export const ComplexForm: React.FC = memo(() => {
 // NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useNotificationContext();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -271,37 +249,14 @@ export const NotificationSystem: React.FC = memo(() => {
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
-
-  const removeNotification = (id: number) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id),
-    );
-  };
-
-  const contextValue: AppContextType = {
-    notifications,
-    addNotification,
-    removeNotification,
-  };
-
   return (
-    <AppContext.Provider value={contextValue}>
+    <NotificationProvider>
       <AuthProvider>
         <ThemeProvider defaultTheme={"light"}>
           <Layout />
         </ThemeProvider>
       </AuthProvider>
-    </AppContext.Provider>
+    </NotificationProvider>
   );
 };
 
