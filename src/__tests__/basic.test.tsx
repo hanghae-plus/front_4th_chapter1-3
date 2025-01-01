@@ -570,6 +570,26 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
           ref.current?.updateDeps([[1, 2, 3]]);
         });
         expect(mockFactory).toHaveBeenCalledTimes(4);
+
+        act(() => {
+          ref.current?.updateDeps([[1, [2, 3]]]);
+        });
+        expect(mockFactory).toHaveBeenCalledTimes(5);
+
+        act(() => {
+          ref.current?.updateDeps([[1, [2, 3]]]);
+        });
+        expect(mockFactory).toHaveBeenCalledTimes(5);
+
+        act(() => {
+          ref.current?.updateDeps([{ a: { b: 1 } }]);
+        });
+        expect(mockFactory).toHaveBeenCalledTimes(6);
+
+        act(() => {
+          ref.current?.updateDeps([{ a: { b: 1 } }]);
+        });
+        expect(mockFactory).toHaveBeenCalledTimes(6);
       });
     });
   });
