@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from "react";
-import { useAppContext } from "../App";
 
 // 1. User 인터페이스 정의
 interface User {
@@ -23,16 +22,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const { addNotification } = useAppContext();
 
+  // NOTE: 로그인/로그아웃에서 addNotification를 사용하니 의존성이 생겨서 사용하지 않음
   const login = (email: string) => {
     setUser({ id: 1, name: "홍길동", email });
-    addNotification("성공적으로 로그인되었습니다", "success");
   };
 
   const logout = () => {
     setUser(null);
-    addNotification("로그아웃되었습니다", "info");
   };
 
   return (
