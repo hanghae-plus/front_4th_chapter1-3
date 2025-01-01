@@ -6,10 +6,8 @@ import {
   NotificationSystem,
   AppLayout
 } from "./components";
+import { ThemeProvider, AuthProvider, NotificationProvider } from "./contexts";
 import { generateItems } from "./utils";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { AuthProvider } from "./contexts/AuthContext";
-import { NotificationProvider } from "./contexts/NotificationContext";
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
