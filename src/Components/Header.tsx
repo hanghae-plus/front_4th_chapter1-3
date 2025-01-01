@@ -1,5 +1,4 @@
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useNotificationContext } from "../hooks/useNotificationContext";
 import { useThemeContext } from "../hooks/useThemeContext";
 import { renderLog } from "../utils";
 
@@ -7,17 +6,14 @@ export const Header: React.FC = () => {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useThemeContext();
   const { user, login, logout } = useAuthContext();
-  const { addNotification } = useNotificationContext();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login("user@example.com", "password");
-    addNotification("성공적으로 로그인되었습니다", "success");
   };
 
   const handleLogout = () => {
     logout();
-    addNotification("로그아웃되었습니다", "info");
   };
 
   return (
