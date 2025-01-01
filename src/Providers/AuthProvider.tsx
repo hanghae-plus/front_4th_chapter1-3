@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCallback, useMemo } from "../@lib";
-import { AuthContext, User } from "../hooks/useAuthContext";
+import { AuthActionsContext, AuthContext, User } from "../hooks/useAuthContext";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -16,7 +16,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   }, []);
 
-  const value = useMemo(() => ({ user, login, logout }), [user, login, logout]);
+  const value = useMemo(() => ({ user }), [user]);
+  const actions = useMemo(() => ({ login, logout }), [login, logout]);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      <AuthActionsContext.Provider value={actions}>
+        {children}
+      </AuthActionsContext.Provider>
+    </AuthContext.Provider>
+  );
 };
