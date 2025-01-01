@@ -25,6 +25,7 @@ export const useAppContext = () => {
   return context;
 };
 
+// 감싸는 객체는 ContextProvider라는 이름으로 생성하는 것을 추천
 export const AppContextProvider = ({
   children,
 }: {
@@ -85,6 +86,15 @@ export const AppContextProvider = ({
   };
 
   return (
+    // 실제로 return하는 부분은 AppContext의 Provider를 감싼다
     <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+
+    /**
+     * AppContextProvider를 실제 사용할 때는 아래와 같이 사용
+     *
+     * <AppContextProvider>
+     *  <App />
+     * </AppcontextProvider>
+     */
   );
 };
