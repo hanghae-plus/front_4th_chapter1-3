@@ -1,7 +1,8 @@
 export function shallowEquals<T>(objA: T, objB: T): boolean {
   if (objA === objB) return true;
 
-  if (objA === null || objB === null || typeof objA !== "object" || typeof objB !== "object") return false;
+  if (objA === null || objB === null || 
+    typeof objA !== "object" || typeof objB !== "object") return false;
 
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
