@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
 import * as utils from "../utils";
-import { AppProvider } from "../contexts/AppProvider";
+import { AppProvider } from "../contexts/app/AppProvider";
 
 const renderLogMock = vi.spyOn(utils, "renderLog");
 const generateItemsSpy = vi.spyOn(utils, "generateItems");

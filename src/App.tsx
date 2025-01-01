@@ -2,7 +2,7 @@ import { Header } from "./components/Header";
 import { NotificationSystem } from "./features/notification/System";
 import { ComplexForm } from "./components/ComplexForm";
 import { ItemList } from "./features/product/ItemList";
-import { useAppContext } from "./contexts/useAppContext";
+import { useAppContext } from "./contexts/app/useAppContext";
 
 const App = () => {
   const { theme, items, addItems } = useAppContext();
