@@ -1,4 +1,11 @@
+import { useEffect, useState } from "react";
+
 export function useRef<T>(initialValue: T): { current: T } {
-  // React의 useState를 이용해서 만들어보세요.
-  return { current: initialValue };
+  const [currentValue, setCurrentValue] = useState({ current: initialValue });
+
+  useEffect(() => {
+    if (initialValue) setCurrentValue({ current: initialValue });
+  });
+
+  return currentValue;
 }
