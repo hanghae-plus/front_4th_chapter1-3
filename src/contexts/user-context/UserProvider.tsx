@@ -1,10 +1,10 @@
 import { PropsWithChildren, useCallback, useState } from "react";
 import { useMemo } from "../../@lib";
 import { User, UserContext } from "./useUserContext";
-import { useGetNoticationActions } from "../notification-context/useNotificationContext";
+import { useGetNotificationActions } from "../notification-context/useNotificationContext";
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
-  const { addNotification } = useGetNoticationActions();
+  const { addNotification } = useGetNotificationActions();
 
   const [user, setUser] = useState<User | null>(null);
 

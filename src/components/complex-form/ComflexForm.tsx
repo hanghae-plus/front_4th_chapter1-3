@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 import { renderLog } from "../../utils";
-import { useGetNoticationActions } from "../../contexts/notification-context/useNotificationContext";
+import { useGetNotificationActions } from "../../contexts/notification-context/useNotificationContext";
 
 const PREFERENCES = ["독서", "운동", "음악", "여행"];
 
 export const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
 
-  const { addNotification } = useGetNoticationActions();
+  const { addNotification } = useGetNotificationActions();
 
   const [formData, setFormData] = useState({
     name: "",

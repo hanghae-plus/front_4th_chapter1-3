@@ -1,6 +1,6 @@
 import { PropsWithChildren, useCallback, useState } from "react";
 import { useMemo } from "../../@lib";
-import { NotifiactionContext } from "./useNotificationContext";
+import { NotificationContext } from "./useNotificationContext";
 
 interface Notification {
   id: number;
@@ -40,8 +40,8 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
   }, [addNotification, notifications, removeNotification]);
 
   return (
-    <NotifiactionContext.Provider value={contextValue}>
+    <NotificationContext.Provider value={contextValue}>
       {children}
-    </NotifiactionContext.Provider>
+    </NotificationContext.Provider>
   );
 };

@@ -1,14 +1,14 @@
 import {
   NotificationType,
-  useGetNoticationActions,
-  useGetNotifiactions,
+  useGetNotificationActions,
+  useGetNotifications,
 } from "../../contexts/notification-context/useNotificationContext";
 import { renderLog } from "../../utils";
 
 export const NotificationSystem: React.FC = () => {
   renderLog("NotificationSystem rendered");
-  const { removeNotification } = useGetNoticationActions();
-  const notifications = useGetNotifiactions();
+  const { removeNotification } = useGetNotificationActions();
+  const notifications = useGetNotifications();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">

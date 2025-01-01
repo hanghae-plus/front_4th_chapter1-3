@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-type NotificationType = "success" | "error" | "warning" | "info";
+export type NotificationType = "success" | "error" | "warning" | "info";
 
 interface Notification {
   id: number;
@@ -16,23 +16,23 @@ interface NotificationContextType {
   };
 }
 
-export const NotifiactionContext = createContext<
+export const NotificationContext = createContext<
   NotificationContextType | undefined
 >(undefined);
 
-export const useGetNotifiactions = () => {
-  const context = useContext(NotifiactionContext);
+export const useGetNotifications = () => {
+  const context = useContext(NotificationContext);
   if (context === undefined) {
-    throw new Error("useGetNotifiactions must be used within an AppProvider");
+    throw new Error("useGetNotifications must be used within an AppProvider");
   }
   return context.notifications;
 };
 
-export const useGetNoticationActions = () => {
-  const context = useContext(NotifiactionContext);
+export const useGetNotificationActions = () => {
+  const context = useContext(NotificationContext);
   if (context === undefined) {
     throw new Error(
-      "useGetNoticationActions must be used within an AppProvider",
+      "useGetNotificationActions must be used within an AppProvider",
     );
   }
   return context.actions;
