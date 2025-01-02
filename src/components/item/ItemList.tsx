@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { generateItems, renderLog } from "../../utils";
-import { Item } from "./Item";
 import useThemeContext from "../../hooks/useThemeContext";
 
 export interface Item {
@@ -10,14 +9,12 @@ export interface Item {
   price: number;
 }
 
-// ItemList 컴포넌트
 export function ItemList() {
   const [items, setItems] = useState(() => generateItems(1000));
 
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  //DESC: test code pass를 위한 코드
-  useThemeContext();
+  const { theme } = useThemeContext();
 
   const filteredItems = items.filter(
     (item) =>
@@ -63,8 +60,13 @@ export function ItemList() {
         <li>평균가격: {averagePrice.toLocaleString()}원</li>
       </ul>
       <ul className="space-y-2">
-        {filteredItems.map((item) => (
-          <Item item={item} />
+        {filteredItems.map((item, index) => (
+          <li
+            key={index}
+            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
+          >
+            {item.name} - {item.category} - {item.price.toLocaleString()}원
+          </li>
         ))}
       </ul>
     </div>
