@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { useCallback, useMemo, useState } from "react";
 import { generateItems, renderLog } from "../../utils";
 import { useTheme } from "../../contexts/theme";
@@ -23,7 +22,7 @@ export const ItemList = () => {
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase())
+      item.category.toLowerCase().includes(filter.toLowerCase()),
   );
 
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
