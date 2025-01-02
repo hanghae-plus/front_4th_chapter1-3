@@ -2,7 +2,6 @@ import React, { useState, createContext, useContext, ReactNode } from "react";
 import { generateItems, renderLog } from "./utils";
 import { memo, useCallback, useDeepMemo, useMemo } from "./@lib";
 
-// 타입 정의
 interface Item {
   id: number;
   name: string;
@@ -22,7 +21,6 @@ interface Notification {
   type: "info" | "success" | "warning" | "error";
 }
 
-// AppContext 타입 정의
 interface AppContextType {
   theme: string;
   toggleTheme: () => void;
@@ -38,17 +36,6 @@ interface ItemContextType {
   items: Item[];
   addItems: () => void;
 }
-
-// const AppContext = createContext<AppContextType | undefined>(undefined);
-
-// 커스텀 훅: useAppContext
-// const useAppContext = () => {
-//   const context = useContext(AppContext);
-//   if (context === undefined) {
-//     throw new Error("useAppContext must be used within an AppProvider");
-//   }
-//   return context;
-// };
 
 const ThemeContext = createContext<
   Pick<AppContextType, "theme" | "toggleTheme"> | undefined
@@ -102,14 +89,12 @@ const useItemsContext = () => {
   return context;
 };
 
-// Header 컴포넌트
 export const Header: React.FC = memo(() => {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useThemeContext();
   const { user, login, logout } = useUserContext();
 
   const handleLogin = useCallback(() => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login("user@example.com", "password");
   }, [login]);
 
@@ -148,7 +133,6 @@ export const Header: React.FC = memo(() => {
   );
 });
 
-// ItemList 컴포넌트
 export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
@@ -217,7 +201,6 @@ export const ItemList: React.FC<{
   );
 });
 
-// ComplexForm 컴포넌트
 export const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useNotificationContext();
@@ -310,7 +293,6 @@ export const ComplexForm: React.FC = memo(() => {
   );
 });
 
-// NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
   const { notifications, removeNotification } = useNotificationContext();
@@ -464,7 +446,6 @@ const Main: React.FC = memo(() => {
   );
 });
 
-// 메인 App 컴포넌트
 const App: React.FC = () => {
   return (
     <ThemeProvider>

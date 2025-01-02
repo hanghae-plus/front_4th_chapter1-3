@@ -7,7 +7,6 @@ export function useMemo<T>(
   _deps: DependencyList,
   _equals = shallowEquals,
 ): T {
-  // 직접 작성한 useRef를 통해서 만들어보세요.
   const ref = useRef<T | null>(null);
   const deps = useRef<DependencyList | null>(null);
 
