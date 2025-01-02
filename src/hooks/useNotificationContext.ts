@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { NotificationContext } from "../store/notificationContext";
 
-// // 커스텀 훅: useAppContext
 const useNotificationContext = () => {
   const context = useContext(NotificationContext);
   if (context === undefined) {
