@@ -1,4 +1,4 @@
-import { isObject } from "../utils/typeUtils.ts";
+import { isObject } from "../utils";
 
 export function deepEquals<T>(objA: T, objB: T): boolean {
   if (Object.is(objA, objB)) {

@@ -6,11 +6,14 @@ import {
   NotificationContext,
   ThemeContext,
 } from "./@lib/hooks/useContext.ts";
-import { Notification, User } from "./@lib/types/types.ts";
-import Header from "./components/Header.tsx";
-import NotificationSystem from "./components/NotificationSystem.tsx";
-import ComplexForm from "./components/ComplexForm.tsx";
-import ItemList from "./components/ItemList.tsx";
+
+import { Notification, User } from "./@lib/types";
+import {
+  ComplexForm,
+  Header,
+  ItemList,
+  NotificationSystem,
+} from "./components";
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
@@ -84,7 +87,7 @@ const App: React.FC = () => {
       addNotification,
       removeNotification,
     }),
-    [notifications],
+    [addNotification, notifications, removeNotification],
   );
   return (
     <ThemeContext.Provider value={themeValue}>

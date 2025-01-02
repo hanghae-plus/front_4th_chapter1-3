@@ -1,4 +1,9 @@
-import { FormValues, ValidationError } from "../types/types.ts";
+import { FormValues, ValidationError } from "../types";
+
+export const isObject = <T>(obj: T) => {
+  if (obj === null) return false;
+  return typeof obj === "object";
+};
 
 export function validateForm(values: FormValues): ValidationError<FormValues> {
   const errors: ValidationError<FormValues> = {};

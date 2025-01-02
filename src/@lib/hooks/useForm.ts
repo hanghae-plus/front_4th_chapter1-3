@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCallback } from "./useCallback.ts";
-import { UseFormProps, ValidationError } from "../types/types.ts";
+import { UseFormProps, ValidationError } from "../types";
 
 export function useForm<T>({
   initialState,

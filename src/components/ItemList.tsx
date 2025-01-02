@@ -1,10 +1,10 @@
 import { renderLog } from "../utils";
 import { memo, useMemo } from "../@lib";
 import { useThemeContext } from "../@lib/hooks/useContext.ts";
-import { Item } from "../@lib/types/types.ts";
 import { useState } from "react";
+import { Item } from "../@lib/types";
 
-const ItemList: React.FC<{
+export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
 }> = memo(({ items, onAddItemsClick }) => {
@@ -67,5 +67,3 @@ const ItemList: React.FC<{
     </div>
   );
 });
-
-export default ItemList;

@@ -1,10 +1,9 @@
-// 타입 정의
 import { createContext, useContext } from "react";
 import {
   NotificationContextType,
   ThemeContextType,
   UserContextType,
-} from "../types/types.ts";
+} from "../types";
 
 export const UserContext = createContext<UserContextType | undefined>(
   undefined,

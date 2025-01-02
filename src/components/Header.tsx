@@ -3,7 +3,7 @@ import { memo, useCallback } from "../@lib";
 import { useThemeContext, useUserContext } from "../@lib/hooks/useContext.ts";
 
 // Header 컴포넌트
-const Header: React.FC = memo(() => {
+export const Header: React.FC = memo(() => {
   renderLog("Header rendered");
   const { user, login, logout } = useUserContext();
   const { theme, toggleTheme } = useThemeContext();
@@ -47,5 +47,3 @@ const Header: React.FC = memo(() => {
     </header>
   );
 });
-
-export default Header;

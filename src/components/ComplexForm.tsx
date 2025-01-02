@@ -2,9 +2,9 @@ import { renderLog } from "../utils";
 import { memo, useCallback } from "../@lib";
 import { useNotificationContext } from "../@lib/hooks/useContext.ts";
 import { useForm } from "../@lib/hooks/useForm.ts";
-import { validateForm } from "../@lib/utils/formValidation.ts";
+import { validateForm } from "../@lib/utils";
 
-const ComplexForm: React.FC = memo(() => {
+export const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useNotificationContext();
 
@@ -83,5 +83,3 @@ const ComplexForm: React.FC = memo(() => {
 const ErrorMessage: React.FC<{ message: string }> = ({ message }) => {
   return <span className="text-red-600 text-sm">{message}</span>;
 };
-
-export default ComplexForm;
