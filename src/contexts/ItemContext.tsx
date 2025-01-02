@@ -13,7 +13,9 @@ const ItemContext = createContext<ItemContextType | undefined>(undefined);
 export const useItemContext = () => {
   const context = useContext(ItemContext);
   if (context === undefined) {
-    throw new Error("fsjdkldjfkl");
+    throw new Error(
+      "useItemContext must be used within an ItemContextProvider",
+    );
   }
   return context;
 };

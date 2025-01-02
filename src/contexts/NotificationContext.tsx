@@ -16,7 +16,7 @@ export const useNotificationContext = () => {
   const context = useContext(NotificationContext);
   if (context === undefined) {
     throw new Error(
-      "useNotification must be used within an NotificationContext",
+      "useNotificationContext must be used within an NotificationContext",
     );
   }
   return context;
