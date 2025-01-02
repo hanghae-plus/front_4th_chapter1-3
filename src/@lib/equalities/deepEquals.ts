@@ -1,3 +1,5 @@
+import { compareObjects } from "./compareObjects";
+
 export function deepEquals<T>(objA: T, objB: T): boolean {
-  return objA === objB;
+  return compareObjects(objA, objB, true);
 }
