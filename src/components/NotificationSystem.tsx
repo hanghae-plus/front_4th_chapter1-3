@@ -1,8 +1,9 @@
+import React from "react";
 import { renderLog } from "../utils";
 import { useAppContext } from "../hooks";
 
 // NotificationSystem 컴포넌트
-export const NotificationSystem: React.FC = () => {
+export const NotificationSystem: React.FC = React.memo(() => {
   renderLog("NotificationSystem rendered");
   const { notifications, removeNotification } = useAppContext();
 
@@ -32,4 +33,4 @@ export const NotificationSystem: React.FC = () => {
       ))}
     </div>
   );
-};
+});

@@ -12,10 +12,12 @@ export interface User {
   email: string;
 }
 
+export type NotificationType = "info" | "success" | "warning" | "error";
+
 export interface Notification {
   id: number;
   message: string;
-  type: "info" | "success" | "warning" | "error";
+  type: NotificationType;
 }
 
 // AppContext 타입 정의

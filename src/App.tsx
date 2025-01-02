@@ -36,12 +36,12 @@ const App: React.FC = () => {
       };
       setNotifications((prev) => [...prev, newNotification]);
     },
-    []
+    [],
   );
 
   const removeNotification = useCallback((id: number) => {
     setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id)
+      prev.filter((notification) => notification.id !== id),
     );
   }, []);
 
@@ -50,7 +50,7 @@ const App: React.FC = () => {
       setUser({ id: 1, name: "홍길동", email });
       addNotification("성공적으로 로그인되었습니다", "success");
     },
-    [addNotification]
+    [addNotification],
   );
 
   const logout = useCallback(() => {
@@ -78,7 +78,7 @@ const App: React.FC = () => {
       notifications,
       addNotification,
       removeNotification,
-    ]
+    ],
   );
 
   return (

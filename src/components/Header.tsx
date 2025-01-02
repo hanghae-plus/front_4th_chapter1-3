@@ -1,8 +1,9 @@
+import React from "react";
 import { renderLog } from "../utils";
 import { useAppContext } from "../hooks";
 
 // Header 컴포넌트
-export const Header: React.FC = () => {
+export const Header: React.FC = React.memo(() => {
   renderLog("Header rendered");
   const { theme, toggleTheme, user, login, logout } = useAppContext();
 
@@ -44,4 +45,4 @@ export const Header: React.FC = () => {
       </div>
     </header>
   );
-};
+});
