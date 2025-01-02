@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { generateItems } from "./utils";
 import { AppContext } from "./hooks/useAppContext";
 import { User, Notification, AppContextType } from "./types";
