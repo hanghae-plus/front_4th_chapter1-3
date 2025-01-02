@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { memo } from "../@lib";
 import { useThemeContext } from "../providers/theme-provider";
 import { renderLog } from "../utils";
 
@@ -9,12 +10,10 @@ interface Item {
   price: number;
 }
 
-interface ItemListProps {
+export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
-}
-
-export const ItemList = ({ items, onAddItemsClick }: ItemListProps) => {
+}> = memo(({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
   const theme = useThemeContext();
@@ -67,4 +66,4 @@ export const ItemList = ({ items, onAddItemsClick }: ItemListProps) => {
       </ul>
     </div>
   );
-};
+});

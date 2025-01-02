@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
+import { useMemo } from "../@lib";
 import { useThemeContext } from "../providers/theme-provider";
 import { generateItems } from "../utils";
 import Header from "./common/header";
@@ -9,13 +10,14 @@ import NotificationSystem from "./notification-system";
 
 const CommonLayout = () => {
   const theme = useThemeContext();
-  const [items, setItems] = useState(generateItems(1000));
-  const addItems = () => {
+  const memoizedItems = useMemo(() => generateItems(1000), []);
+  const [items, setItems] = useState(memoizedItems);
+  const addItems = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
       ...generateItems(1000, prevItems.length),
     ]);
-  };
+  }, []);
 
   return (
     <div
