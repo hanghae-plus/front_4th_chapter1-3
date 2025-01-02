@@ -4,6 +4,7 @@ import {
   useNotificationActionContext,
   useNotificationStateContext,
 } from "../contexts/NotificationContext";
+import { Button } from "./Button";
 
 export const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
@@ -82,12 +83,7 @@ export const ComplexForm: React.FC = () => {
             </label>
           ))}
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          제출
-        </button>
+        <Button>제출</Button>
       </form>
     </div>
   );
