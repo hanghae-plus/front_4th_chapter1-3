@@ -1,10 +1,10 @@
-import useThemeContext from "../hooks/useThemeContext";
+import useThemeContext from "../../hooks/useThemeContext";
 
 type Props = {
   children: React.ReactNode;
 };
 
-export default function ThemeContainer({ children }: Props) {
+export function ThemeContainer({ children }: Props) {
   const { theme } = useThemeContext();
   return (
     <div
