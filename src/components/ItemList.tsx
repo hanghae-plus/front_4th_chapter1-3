@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { useDebounce, useMemo } from "../@lib";
+import { memo, useDebounce, useMemo } from "../@lib";
 import { ThemeContext } from "../context/ThemeContext";
 import { useContextValue } from "../context/useContextValue";
 import { Item } from "../types/Item";
@@ -9,7 +9,7 @@ import { renderLog } from "../utils";
 export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+}> = memo(({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
   const debouncedFilter = useDebounce(filter);
@@ -35,14 +35,6 @@ export const ItemList: React.FC<{
     () => Math.round(totalPrice / filteredItems.length) || 0,
     [totalPrice, filteredItems.length],
   );
-
-  useEffect(() => {
-    const start = performance.now();
-    return () => {
-      const end = performance.now();
-      console.log(`ItemList rendered in ${end - start}ms`);
-    };
-  }, [items, onAddItemsClick]);
 
   return (
     <div className="mt-8">
@@ -82,4 +74,4 @@ export const ItemList: React.FC<{
       </ul>
     </div>
   );
-};
+});
