@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { renderLog } from "../utils";
-import { useAppContext } from "../hooks";
+import { useTheme } from "../hooks";
 import { Item } from "../types";
 
 // ItemList 컴포넌트
@@ -10,26 +10,26 @@ export const ItemList: React.FC<{
 }> = React.memo(({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+  const { theme } = useTheme();
 
   const filteredItems = useMemo(
     () =>
       items.filter(
         (item) =>
           item.name.toLowerCase().includes(filter.toLowerCase()) ||
-          item.category.toLowerCase().includes(filter.toLowerCase()),
+          item.category.toLowerCase().includes(filter.toLowerCase())
       ),
-    [items, filter],
+    [items, filter]
   );
 
   const totalPrice = useMemo(
     () => filteredItems.reduce((sum, item) => sum + item.price, 0),
-    [filteredItems],
+    [filteredItems]
   );
 
   const averagePrice = useMemo(
     () => Math.round(totalPrice / filteredItems.length) || 0,
-    [totalPrice, filteredItems.length],
+    [totalPrice, filteredItems.length]
   );
 
   return (

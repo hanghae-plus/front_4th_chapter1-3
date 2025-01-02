@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { renderLog } from "../utils";
-import { useAppContext } from "../hooks";
+import { useNotification } from "../hooks";
 
-// ComplexForm 컴포넌트
 export const ComplexForm: React.FC = React.memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotification();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,27 +12,46 @@ export const ComplexForm: React.FC = React.memo(() => {
     preferences: [] as string[],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addNotification("폼이 성공적으로 제출되었습니다", "success");
-  };
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      // 폼 유효성 검사
+      if (!formData.name || !formData.email) {
+        addNotification("이름과 이메일은 필수 입력 사항입니다.", "warning");
+        return;
+      }
+      addNotification("폼이 성공적으로 제출되었습니다", "success");
+    },
+    [addNotification, formData.name, formData.email]
+  );
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "age" ? parseInt(value) || 0 : value,
-    }));
-  };
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: name === "age" ? parseInt(value) || 0 : value,
+      }));
+    },
+    []
+  );
 
-  const handlePreferenceChange = (preference: string) => {
+  const handlePreferenceChange = useCallback((preference: string) => {
     setFormData((prev) => ({
       ...prev,
       preferences: prev.preferences.includes(preference)
         ? prev.preferences.filter((p) => p !== preference)
         : [...prev.preferences, preference],
     }));
-  };
+  }, []);
+
+  // useMemo를 사용하여 폼 유효성 메시지를 메모이제이션
+  const validationMessage = useMemo(() => {
+    if (!formData.name || !formData.email) {
+      return "이름과 이메일을 모두 입력해주세요.";
+    }
+    return null;
+  }, [formData.name, formData.email]);
 
   return (
     <div className="mt-8">
@@ -76,6 +94,9 @@ export const ComplexForm: React.FC = React.memo(() => {
             </label>
           ))}
         </div>
+        {validationMessage && (
+          <div className="text-red-500 text-sm">{validationMessage}</div>
+        )}
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

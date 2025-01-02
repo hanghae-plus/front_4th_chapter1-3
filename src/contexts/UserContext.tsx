@@ -11,8 +11,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = useCallback((email: string) => {
+  const login = useCallback((email: string, password: string) => {
     setUser({ id: 1, name: "홍길동", email });
+    console.log(password);
   }, []);
 
   const logout = useCallback(() => {
