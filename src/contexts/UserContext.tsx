@@ -15,27 +15,29 @@ interface UserActionContextType {
 const UserStateContext = createContext<UserStateContextType | undefined>(
   undefined,
 );
+
 const UserActionContext = createContext<UserActionContextType | undefined>(
   undefined,
 );
 
 export const useUserStateContext = () => {
-  const context = useContext(UserStateContext);
-  if (context === undefined) {
+  const state = useContext(UserStateContext);
+  if (state === undefined) {
     throw new Error(
       "useUserStateContext must be used within an UserContextProvider",
     );
   }
-  return context;
+  return state;
 };
+
 export const useUserActionContext = () => {
-  const context = useContext(UserActionContext);
-  if (context === undefined) {
+  const actions = useContext(UserActionContext);
+  if (actions === undefined) {
     throw new Error(
       "useUserActionContext must be used within an UserContextProvider",
     );
   }
-  return context;
+  return actions;
 };
 
 export const UserContextProvider = ({

@@ -12,27 +12,29 @@ interface ThemeActionContextType {
 const ThemeStateContext = createContext<ThemeStateContextType | undefined>(
   undefined,
 );
+
 const ThemeActionContext = createContext<ThemeActionContextType | undefined>(
   undefined,
 );
 
 export const useThemeStateContext = () => {
-  const context = useContext(ThemeStateContext);
-  if (context === undefined) {
+  const state = useContext(ThemeStateContext);
+  if (state === undefined) {
     throw new Error(
       "useThemeStateContext must be used within an ThemeProvider",
     );
   }
-  return context;
+  return state;
 };
+
 export const useThemeActionContext = () => {
-  const context = useContext(ThemeActionContext);
-  if (context === undefined) {
+  const actions = useContext(ThemeActionContext);
+  if (actions === undefined) {
     throw new Error(
       "useThemeActionContext must be used within an ThemeProvider",
     );
   }
-  return context;
+  return actions;
 };
 
 export const ThemeContextProvider = ({

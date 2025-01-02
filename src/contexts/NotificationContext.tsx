@@ -14,27 +14,29 @@ interface NotificationActionContextType {
 const NotificationStateContext = createContext<
   NotificationStateContextType | undefined
 >(undefined);
+
 const NotificationActionContext = createContext<
   NotificationActionContextType | undefined
 >(undefined);
 
 export const useNotificationStateContext = () => {
-  const context = useContext(NotificationStateContext);
-  if (context === undefined) {
+  const state = useContext(NotificationStateContext);
+  if (state === undefined) {
     throw new Error(
       "useNotificationStateContext must be used within an NotificationContext",
     );
   }
-  return context;
+  return state;
 };
+
 export const useNotificationActionContext = () => {
-  const context = useContext(NotificationActionContext);
-  if (context === undefined) {
+  const actions = useContext(NotificationActionContext);
+  if (actions === undefined) {
     throw new Error(
       "useNotificationActionContext must be used within an NotificationContext",
     );
   }
-  return context;
+  return actions;
 };
 
 export const NotificationContextProvider = ({
