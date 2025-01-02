@@ -33,13 +33,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   }
 
   for (const k of keysA) {
-    if (
-      !(k in objB) ||
-      !deepEquals(
-        (objA as Record<string, unknown>)[k],
-        (objB as Record<string, unknown>)[k],
-      )
-    ) {
+    if (!(k in objB) || !deepEquals(objA[k as keyof T], objB[k as keyof T])) {
       return false;
     }
   }

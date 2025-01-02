@@ -19,11 +19,7 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
   }
 
   for (const k of keysA) {
-    if (
-      !(k in objB) ||
-      (objA as Record<string, unknown>)[k] !==
-        (objB as Record<string, unknown>)[k]
-    ) {
+    if (!(k in objB) || objA[k as keyof T] !== objB[k as keyof T]) {
       return false;
     }
   }
