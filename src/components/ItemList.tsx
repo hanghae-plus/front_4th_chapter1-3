@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useMemo } from "../@lib";
+import { useDebounce, useMemo } from "../@lib";
 import { ThemeContext } from "../context/ThemeContext";
 import { useContextValue } from "../context/useContextValue";
 import { Item } from "../types/Item";
@@ -12,16 +12,18 @@ export const ItemList: React.FC<{
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
+  const debouncedFilter = useDebounce(filter);
+
   const { theme } = useContextValue(ThemeContext);
 
   const filteredItems = useMemo(
     () =>
       items.filter(
         (item) =>
-          item.name.toLowerCase().includes(filter.toLowerCase()) ||
-          item.category.toLowerCase().includes(filter.toLowerCase()),
+          item.name.toLowerCase().includes(debouncedFilter.toLowerCase()) ||
+          item.category.toLowerCase().includes(debouncedFilter.toLowerCase()),
       ),
-    [filter, items],
+    [debouncedFilter, items],
   );
 
   const totalPrice = useMemo(
@@ -61,9 +63,9 @@ export const ItemList: React.FC<{
         <li>평균가격: {averagePrice.toLocaleString()}원</li>
       </ul>
       <ul className="space-y-2">
-        {filteredItems.map((item, index) => (
+        {filteredItems.map((item) => (
           <li
-            key={index}
+            key={item.id}
             className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
           >
             {item.name} - {item.category} - {item.price.toLocaleString()}원
