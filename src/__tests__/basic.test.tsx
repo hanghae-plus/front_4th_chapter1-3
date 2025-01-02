@@ -135,7 +135,6 @@ describe("Chapter 1-3 기본과제: hooks 구현하기 > ", () => {
           fireEvent.click(getByText("rerender1"));
           fireEvent.click(getByText("rerender2"));
         });
-
         expect(refs.size).toBe(2);
       });
 
