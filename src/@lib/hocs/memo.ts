@@ -1,10 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ComponentType, createElement } from "react";
 import { shallowEquals } from "../equalities";
-import { ComponentType } from "react";
+import { useRef } from "../hooks";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,
   _equals = shallowEquals,
 ) {
-  return Component;
+  return (props: P) => {
+    const prevPropsRef = useRef<P | null>(null);
+    const renderRef = useRef<React.ReactElement | null>(null);
+
+    if (!prevPropsRef.current || !_equals(prevPropsRef.current, props)) {
+      prevPropsRef.current = props;
+      renderRef.current = createElement(Component, props);
+    }
+    return renderRef.current;
+  };
 }
