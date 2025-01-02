@@ -5,7 +5,8 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType["theme"]>(undefined);
-const ThemeUpdateContext = createContext((_themeContext: string) => {});
+const ThemeUpdateContext = createContext(() => {});
+
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
   const [theme, setTheme] = useState("light");
   const toggleTheme = () => {

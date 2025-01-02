@@ -1,4 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
+import {
+  useThemeContext,
+  useUpdateThemeContext,
+} from "./context/theme-provider";
 import { generateItems, renderLog } from "./utils";
 
 // 타입 정의
@@ -23,8 +27,6 @@ interface Notification {
 
 // AppContext 타입 정의
 interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
@@ -47,7 +49,9 @@ const useAppContext = () => {
 // Header 컴포넌트
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme, user, login, logout } = useAppContext();
+  const { user, login, logout } = useAppContext();
+  const theme = useThemeContext();
+  const toggleTheme = useUpdateThemeContext();
 
   const handleLogin = () => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
@@ -96,7 +100,7 @@ export const ItemList: React.FC<{
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+  const theme = useThemeContext();
 
   const filteredItems = items.filter(
     (item) =>
@@ -268,14 +272,10 @@ export const NotificationSystem: React.FC = () => {
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
+  const theme = useThemeContext();
   const [items, setItems] = useState(generateItems(1000));
   const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
 
   const addItems = () => {
     setItems((prevItems) => [
@@ -310,8 +310,6 @@ const App: React.FC = () => {
   };
 
   const contextValue: AppContextType = {
-    theme,
-    toggleTheme,
     user,
     login,
     logout,
