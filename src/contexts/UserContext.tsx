@@ -36,11 +36,11 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const { addNotification } = useNotificationContext();
 
   const login = useCallback(
-    (email: string, password: string) => {
+    (email: string) => {
       setUser({ id: 1, name: "User", email });
       addNotification("로그인되었습니다.", "success");
     },
-    [addNotification]
+    [addNotification],
   );
 
   const logout = useCallback(() => {
@@ -54,7 +54,7 @@ const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({
       login,
       logout,
     }),
-    [user, login, logout]
+    [user, login, logout],
   );
 
   return (

@@ -10,7 +10,7 @@ interface MemoizedValue<T> {
 export function useMemo<T>(
   factory: () => T,
   _deps: DependencyList,
-  _equals = shallowEquals
+  _equals = shallowEquals,
 ): T {
   // 1. 이전 의존성과 결과를 저장할 ref 생성
   const memoizedRef = useRef<MemoizedValue<T> | undefined>(undefined);

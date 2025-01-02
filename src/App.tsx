@@ -7,10 +7,10 @@ import { Header } from "./components/Header";
 import { ItemList } from "./components";
 import { ComplexForm } from "./components";
 import { NotificationSystem } from "./components";
+import Body from "./contexts/Body";
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
-  const [theme, setTheme] = useState("light");
   const [items, setItems] = useState(generateItems(10));
 
   const addItems = () => {
@@ -25,9 +25,7 @@ const App: React.FC = () => {
       <NotificationContextProvider>
         <UserContextProvider>
           <Header />
-          <div
-            className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-          >
+          <Body>
             <div className="container mx-auto px-4 py-8">
               <div className="flex flex-col md:flex-row">
                 <div className="w-full md:w-1/2 md:pr-4">
@@ -38,7 +36,7 @@ const App: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </Body>
           <NotificationSystem />
         </UserContextProvider>
       </NotificationContextProvider>

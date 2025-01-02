@@ -1,13 +1,11 @@
 import React, { memo } from "react";
 import { renderLog } from "../utils";
 import { useNotificationContext } from "../contexts/NotificationContext";
-import { useUserContext } from "../contexts/UserContext";
 
 // NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
   const { notifications, removeNotification } = useNotificationContext();
-  const { user } = useUserContext();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">

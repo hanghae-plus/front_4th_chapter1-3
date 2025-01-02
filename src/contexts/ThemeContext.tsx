@@ -35,7 +35,7 @@ const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({
       theme,
       toggleTheme,
     }),
-    [theme, toggleTheme]
+    [theme, toggleTheme],
   );
 
   return (
