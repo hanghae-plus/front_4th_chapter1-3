@@ -13,7 +13,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   }
 
   // 객체 타입 및 null 체크
-  if (!objA || !objB || typeof objA !== "object" || typeof objB !== "object") {
+  if (objA === null || objB === null || typeof objA !== "object" || typeof objB !== "object") {
     return false;
   }
 
