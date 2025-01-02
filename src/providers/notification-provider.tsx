@@ -1,4 +1,11 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 export interface Notification {
   id: number;
@@ -19,22 +26,29 @@ export const NotificationContext = createContext<
 export const NotificationProvider = ({ children }: PropsWithChildren) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
+  const addNotification = useCallback(
+    (message: string, type: Notification["type"]) => {
+      const newNotification: Notification = {
+        id: Date.now(),
+        message,
+        type,
+      };
+      setNotifications((prev) => [...prev, newNotification]);
+    },
+    [],
+  );
 
-  const removeNotification = (id: number) => {
+  const removeNotification = useCallback((id: number) => {
     setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id),
     );
-  };
+  }, []);
 
-  const value = { notifications, addNotification, removeNotification };
+  const value = useMemo(
+    () => ({ notifications, addNotification, removeNotification }),
+    [notifications, addNotification, removeNotification],
+  );
+
   return (
     <NotificationContext.Provider value={value}>
       {children}

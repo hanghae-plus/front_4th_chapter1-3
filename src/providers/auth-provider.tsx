@@ -1,4 +1,11 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { useNotificationContext } from "./notification-provider";
 
 export interface User {
@@ -22,20 +29,30 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const { addNotification } = useNotificationContext();
 
-  const login = (email: string) => {
-    const user: User = { id: 1, name: "홍길동", email };
-    setUser(user);
-    addNotification("성공적으로 로그인되었습니다", "success");
+  const login = useCallback(
+    (email: string) => {
+      const user: User = { id: 1, name: "홍길동", email };
+      setUser(user);
+      addNotification("성공적으로 로그인되었습니다", "success");
 
-    return user;
-  };
+      return user;
+    },
+    [addNotification],
+  );
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
     addNotification("로그아웃되었습니다", "info");
-  };
+  }, [addNotification]);
 
-  const value = { user, login, logout };
+  const value = useMemo(
+    () => ({
+      user,
+      login,
+      logout,
+    }),
+    [user, login, logout],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
