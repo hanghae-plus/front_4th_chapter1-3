@@ -3,11 +3,8 @@ import { useThemeContext } from "../contexts/theme";
 import { useUserContext } from "../contexts/user";
 import { renderLog } from "../utils";
 
-// Header 컴포넌트
-export const Header: React.FC = () => {
-  renderLog("Header rendered");
-  const { user, login, logout } = useUserContext();
-  const { theme, toggleTheme } = useThemeContext();
+const LogoutButton = () => {
+  const { user, logout } = useUserContext();
   const { addNotification } = useNotificationContext();
 
   const handleLogout = () => {
@@ -15,10 +12,43 @@ export const Header: React.FC = () => {
     addNotification("로그아웃되었습니다", "info");
   };
 
+  return (
+    <div className="flex items-center">
+      <span className="mr-2">{user?.name}님 환영합니다!</span>
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      >
+        로그아웃
+      </button>
+    </div>
+  );
+};
+
+const LoginButton = () => {
+  const { login } = useUserContext();
+  const { addNotification } = useNotificationContext();
+
   const handleLogin = () => {
     login("user@example.com", "password");
     addNotification("성공적으로 로그인되었습니다", "success");
   };
+
+  return (
+    <button
+      onClick={handleLogin}
+      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+    >
+      로그인
+    </button>
+  );
+};
+
+// Header 컴포넌트
+export const Header: React.FC = () => {
+  renderLog("Header rendered");
+  const { user } = useUserContext();
+  const { theme, toggleTheme } = useThemeContext();
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -31,24 +61,8 @@ export const Header: React.FC = () => {
           >
             {theme === "light" ? "다크 모드" : "라이트 모드"}
           </button>
-          {user ? (
-            <div className="flex items-center">
-              <span className="mr-2">{user?.name}님 환영합니다!</span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              >
-                로그아웃
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
-              로그인
-            </button>
-          )}
+
+          {user ? <LogoutButton /> : <LoginButton />}
         </div>
       </div>
     </header>
