@@ -1,13 +1,13 @@
-import { useRef } from "react";
+import { DependencyList, useRef } from "react";
 
 export function useMemo<T>(
   factory: () => T,
-  deps: unknown[],
-  equals: (a: unknown[], b: unknown[]) => boolean = (a, b) =>
-    a.every((v, i) => v === b[i]),
+  deps: DependencyList,
+  equals: (a: DependencyList, b: DependencyList) => boolean = (a, b) =>
+    a.length === b.length && a.every((v, i) => v === b[i]),
 ): T {
   // 이전 의존성 저장
-  const previousDepsRef = useRef<unknown[] | null>(null);
+  const previousDepsRef = useRef<DependencyList | null>(null);
   // 메모이제이션된 값 저장
   const memoizedValueRef = useRef<T | null>(null);
 
