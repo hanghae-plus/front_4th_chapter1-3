@@ -1,5 +1,5 @@
 export function shallowEquals<T>(objA: T, objB: T): boolean {
-  if (objA === objB) return true;
+  if (Object.is(objA, objB)) return true;
   if (!objA || !objB || typeof objA !== "object" || typeof objB !== "object")
     return false;
 
