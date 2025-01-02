@@ -21,19 +21,23 @@ export function shallowEquals<T>(objA: T, objB: T): boolean {
   }
 
   // 4. 모든 키에 대해 얕은 비교 수행
+
+  // 1) for ...in
+  // 객체의 각 속성들을 하나씩 순회하고 객체의 key값을 가져올 수 있다.
+  // 객체의 프로퍼티를 직접 순회하여 타입스크립트가 객체의 키가 유효한지를 보장할 수 있다.
   for (const key in objA) {
     if (objA[key] !== objB[key]) {
       return false;
     }
   }
 
-  // 4. 모든 키에 대해 얕은 비교 수행
-  // if (Array.isArray(objA) && Array.isArray(objB)) {
-  //   return aKeys.every((v, i) => objA[i] === objB[i]);
-  // }
-
-  // if (!Array.isArray(objA) && !Array.isArray(objB)) {
-  //   return aKeys.every((v) => objA[v as keyof T] === objB[v as keyof T]);
+  // 2) for ...of
+  // 반복 가능한(iterable) 데이터 구조의 값들을 순회한다.
+  // 별도의 배열을 순회하므로 타입스크립트는 키가 실제로 객체의 유효한지 보장할 수 없다.
+  // for (const key of aKeys) {
+  //   if (objA[key as keyof T] !== objB[key as keyof T]) {
+  //     return false;
+  //   }
   // }
 
   return true;
