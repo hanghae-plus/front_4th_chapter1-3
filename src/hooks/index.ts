@@ -1,3 +1,4 @@
 export * from "./useTheme";
 export * from "./useUser";
-export * from "./useNotification";
+export * from "./useNotificationActions";
+export * from "./useNotificationState";

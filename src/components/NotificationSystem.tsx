@@ -1,11 +1,13 @@
 import React, { useCallback, useMemo } from "react";
 import { renderLog } from "../utils";
-import { useNotification } from "../hooks";
-import { NotificationItem } from "./";
+import { useNotificationState } from "../hooks/useNotificationState";
+import { useNotificationActions } from "../hooks/useNotificationActions";
+import { NotificationItem } from "./NotificationItem";
 
 export const NotificationSystem: React.FC = React.memo(() => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useNotification();
+  const { notifications } = useNotificationState();
+  const { removeNotification } = useNotificationActions();
 
   const handleRemove = useCallback(
     (id: number) => {

@@ -6,7 +6,7 @@ import {
   NotificationSystem,
 } from "./components";
 import { Item } from "./types";
-import { generateItems, renderLog } from "./utils";
+import { generateItems } from "./utils";
 import { ThemeProvider, UserProvider, NotificationProvider } from "./contexts";
 
 const App: React.FC = () => {
@@ -37,7 +37,6 @@ interface MainAppProps {
 
 const MainApp: React.FC<MainAppProps> = React.memo(
   ({ items, onAddItemsClick }) => {
-    renderLog("MainApp rendered");
     return (
       <div className="min-h-screen">
         <Header />

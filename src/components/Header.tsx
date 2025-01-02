@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo } from "react";
 import { renderLog } from "../utils";
-import { useTheme, useUser, useNotification } from "../hooks";
+import { useTheme, useUser } from "../hooks";
+import { useNotificationActions } from "../hooks/useNotificationActions";
 
 export const Header: React.FC = React.memo(() => {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useTheme();
   const { user, login, logout } = useUser();
-  const { addNotification } = useNotification();
+  const { addNotification } = useNotificationActions();
 
   const handleLogin = useCallback(() => {
     login("user@example.com", "123");
