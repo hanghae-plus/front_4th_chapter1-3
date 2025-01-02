@@ -1,15 +1,25 @@
-import { useState } from "react";
-import { Item } from "../types";
-import { renderLog } from "../utils";
+import { useCallback, useState } from "react";
+// import { Item } from "../types";
+import { generateItems, renderLog } from "../utils";
 import { useTheme } from "../context/ThemeContext";
 
-export const ItemList: React.FC<{
-  items: Item[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
   const { theme } = useTheme();
+
+  // () => generateItems(1000): 왜 이렇게하면 괜찮을까?
+  // 화살표 함수를 했을 때는 첫 렌더링 시에만
+  // generateItems, 컴포넌트가 리렌더링 될때마다 호출하게 된다
+  // gus
+  const [items, setItems] = useState(() => generateItems(1000));
+
+  const addItems = useCallback(() => {
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(1000, prevItems.length),
+    ]);
+  }, []);
 
   const filteredItems = items.filter(
     (item) =>
@@ -29,7 +39,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addItems}
           >
             대량추가
           </button>

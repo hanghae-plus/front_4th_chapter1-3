@@ -23,23 +23,6 @@ const ItemContext = createContext<ItemContextType | null>(null);
 
 // 3. provider
 export const ItemContextProvider = ({ children }: PropsWithChildren) => {
-  const [items, setItems] = useState(generateItems(1000));
-
-  const addItems = useCallback(() => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(1000, prevItems.length),
-    ]);
-  }, []);
-
-  const value = useMemo(
-    () => ({
-      items,
-      addItems,
-    }),
-    [items, addItems]
-  );
-
   return <ItemContext.Provider value={value}>{children}</ItemContext.Provider>;
 };
 

@@ -38,11 +38,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
 
   // 5. 모든 키에 대해 깊은 비교 수행
   for (const key of keysA) {
-    if (
-      // Q. hasOwn에 에러가 발생합니다 어떻게 수정해야 좋을까요
-      !Object.hasOwn(objB as object, key) ||
-      !deepEquals((objA as any)[key], (objB as any)[key])
-    ) {
+    if (!deepEquals(objA[key as keyof T], objB[key as keyof T])) {
       return false;
     }
   }
