@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { ComplexForm, Header, ItemList, NotificationSystem } from "../App";
+
 import { useThemeContext } from "../providers/theme-provider";
 import { generateItems } from "../utils";
+import Header from "./common/header";
+import ComplexForm from "./complex-form";
+import { ItemList } from "./item-list";
+import NotificationSystem from "./notification-system";
 
 const CommonLayout = () => {
   const theme = useThemeContext();
