@@ -1,6 +1,5 @@
-import { useCallback, useMemo } from "../hooks";
+import { ThemeContext, useCallback, useMemo } from "../hooks";
 import { useState } from "react";
-import { ThemeContext } from "../hooks/useContext";
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

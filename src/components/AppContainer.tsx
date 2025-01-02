@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { useThemeContext } from "../@lib/hooks/useContext.ts";
-import { generateItems } from "../utils.ts";
-import { useCallback } from "../@lib";
+import React from "react";
 import { AppLayout } from "./AppLayout.tsx";
+import { useThemeContext } from "../@lib";
 
 /**
  * AppContainer 컴포넌트
@@ -11,13 +9,5 @@ import { AppLayout } from "./AppLayout.tsx";
 export const AppContainer: React.FC = () => {
   const { theme } = useThemeContext();
 
-  const [items, setItems] = useState(() => generateItems(1000));
-  const addItems = useCallback(() => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(1000, prevItems.length),
-    ]);
-  }, []);
-
-  return <AppLayout theme={theme} items={items} onAddItems={addItems} />;
+  return <AppLayout theme={theme} />;
 };
