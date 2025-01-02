@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React from "react";
 import ThemeProvider from "./store/ThemeContext";
 import Home from "./components/Home";

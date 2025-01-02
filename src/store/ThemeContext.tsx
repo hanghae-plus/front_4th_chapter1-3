@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-/* eslint-disable prettier/prettier */
+
 import { createContext, ReactNode, useState } from "react";
 import { memo } from "../@lib";
 
@@ -11,7 +11,7 @@ export interface ThemeContextType {
 }
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
+  undefined,
 );
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {

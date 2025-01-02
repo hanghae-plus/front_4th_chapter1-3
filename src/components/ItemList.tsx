@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { useState } from "react";
 import { renderLog } from "../utils";
 import { memo, useMemo } from "../@lib";
@@ -24,9 +23,9 @@ const ItemList: React.FC<{
       items.filter(
         (item) =>
           item.name.toLowerCase().includes(filter.toLowerCase()) ||
-          item.category.toLowerCase().includes(filter.toLowerCase())
+          item.category.toLowerCase().includes(filter.toLowerCase()),
       ),
-    [items, filter]
+    [items, filter],
   );
 
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);

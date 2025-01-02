@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { createContext, ReactNode, useState } from "react";
 import { memo, useCallback, useMemo } from "../@lib";
 
@@ -22,7 +21,7 @@ export const NotificationContext = createContext<
 
 const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notificationsState, setNotificationsState] = useState<Notification[]>(
-    []
+    [],
   );
 
   const addNotification = useCallback(
@@ -35,12 +34,12 @@ const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
       setNotificationsState((prev) => [...prev, newNotification]);
     },
-    []
+    [],
   );
 
   const removeNotification = useCallback((id: number) => {
     setNotificationsState((prev) =>
-      prev.filter((notification) => notification.id !== id)
+      prev.filter((notification) => notification.id !== id),
     );
   }, []);
 

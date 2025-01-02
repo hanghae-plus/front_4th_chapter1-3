@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
+
 import { createContext, ReactNode, useState } from "react";
 import { memo, useCallback, useMemo } from "../@lib";
 
@@ -16,7 +16,7 @@ export interface UserContextType {
 }
 
 export const UserContext = createContext<UserContextType | undefined>(
-  undefined
+  undefined,
 );
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
