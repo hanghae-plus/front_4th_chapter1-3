@@ -9,3 +9,10 @@ export interface Notification {
   message: string;
   type: "info" | "success" | "warning" | "error";
 }
+
+export interface Item {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+}

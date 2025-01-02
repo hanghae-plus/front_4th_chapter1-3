@@ -1,6 +1,6 @@
-import { memo } from "../../@lib";
-import { renderLog } from "../../utils";
-import { useNotificationContext } from "../contexts/NotificationContext";
+import { renderLog } from "@/utils";
+import { memo } from "@lib/hocs";
+import { useNotificationContext } from "../contexts/notification";
 
 export const NotificationSystem = memo(() => {
   renderLog("NotificationSystem rendered");

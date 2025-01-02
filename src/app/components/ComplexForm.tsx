@@ -1,9 +1,9 @@
+import { renderLog } from "@/utils";
+import { memo } from "@lib/hocs";
 import { useState } from "react";
-import { renderLog } from "../../utils";
-import { memo } from "../../@lib";
-import { useNotificationContext } from "../contexts";
+import { useNotificationContext } from "../contexts/notification";
 
-export const ComplexForm: React.FC = memo(() => {
+export const ComplexForm = memo(() => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useNotificationContext();
   const [formData, setFormData] = useState({

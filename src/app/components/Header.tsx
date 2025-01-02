@@ -1,7 +1,7 @@
-import { useThemeContext } from "../contexts/ThemeContext";
-import { useUserContext } from "../contexts/UserContext";
-import { renderLog } from "../../utils";
-import { memo } from "../../@lib";
+import { renderLog } from "@/utils";
+import { memo } from "@lib/hocs";
+import { useThemeContext } from "../contexts/theme";
+import { useUserContext } from "../contexts/user";
 
 export const Header = memo(() => {
   renderLog("Header rendered");
