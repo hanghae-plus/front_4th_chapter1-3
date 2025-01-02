@@ -1,9 +1,9 @@
 import { ReactNode, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { User } from "../../features/user/entity";
-import { Notification } from "../../features/notification/entity";
 import { useCallback, useMemo } from "../../@lib";
 import { AuthContextType } from "./type";
+import { useAppContext } from "../app/useAppContext";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -11,29 +11,7 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const addNotification = useCallback(
-    (message: string, type: Notification["type"]) => {
-      const newNotification: Notification = {
-        id: Date.now(),
-        message,
-        type,
-      };
-      setNotifications((prev) => [...prev, newNotification]);
-    },
-    [setNotifications],
-  );
-
-  const removeNotification = useCallback(
-    (id: number) => {
-      setNotifications((prev) =>
-        prev.filter((notification) => notification.id !== id),
-      );
-    },
-    [setNotifications],
-  );
-
+  const { addNotification } = useAppContext();
   const login = useCallback(
     (email: string) => {
       setUser({ id: 1, name: "홍길동", email });
@@ -49,14 +27,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const value: AuthContextType = useMemo(
     () => ({
-      notifications,
-      addNotification,
-      removeNotification,
       user,
       login,
       logout,
     }),
-    [notifications, addNotification, removeNotification, user, login, logout],
+    [user, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { renderLog } from "../utils";
 import { memo } from "../@lib";
-import { useAuthContext } from "../contexts/auth/useAuthContext";
+import { useAppContext } from "../contexts/app/useAppContext";
 
 export const ComplexForm = memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAuthContext();
+  const { addNotification } = useAppContext();
   const [formData, setFormData] = useState({
     name: "",
     email: "",

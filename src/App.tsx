@@ -2,12 +2,12 @@ import { Header } from "./components/Header";
 import { NotificationSystem } from "./features/notification/System";
 import { ComplexForm } from "./components/ComplexForm";
 import { ItemList } from "./features/product/ItemList";
-import { useAppContext } from "./contexts/app/useAppContext";
 import { useThemeContext } from "./contexts/theme/useThemeContext";
 import { memo } from "./@lib";
+import { useProductContext } from "./contexts/product/useProductContext";
 
 const App = memo(() => {
-  const { items, addItems } = useAppContext();
+  const { items, addItems } = useProductContext();
   const { theme } = useThemeContext();
 
   return (

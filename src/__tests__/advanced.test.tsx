@@ -6,6 +6,7 @@ import * as utils from "../utils";
 import { AppProvider } from "../contexts/app/AppProvider";
 import { AuthProvider } from "../contexts/auth/AuthProvider";
 import { ThemeProvider } from "../contexts/theme/ThemeProvider";
+import { ProductProvider } from "../contexts/product/ProductProvider";
 
 const renderLogMock = vi.spyOn(utils, "renderLog");
 const generateItemsSpy = vi.spyOn(utils, "generateItems");
@@ -15,13 +16,15 @@ describe("최적화된 App 컴포넌트 테스트", () => {
     renderLogMock.mockClear();
     generateItemsSpy.mockClear();
     render(
-      <ThemeProvider>
-        <AuthProvider>
-          <AppProvider>
-            <App />
-          </AppProvider>
-        </AuthProvider>
-      </ThemeProvider>,
+      <AppProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <ProductProvider>
+              <App />
+            </ProductProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </AppProvider>,
     );
   });
 
