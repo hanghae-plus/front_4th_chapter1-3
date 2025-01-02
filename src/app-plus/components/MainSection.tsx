@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ItemList } from "./ItemList";
-import { generateItems } from "../../utils";
-import { useCallback } from "../../@lib";
 import { ComplexForm } from "./ComplexForm";
+import { generateItems } from "@/utils";
+import { useCallback } from "@lib/hooks";
 
 export const MainSection = () => {
   const [items, setItems] = useState(() => generateItems(1000));

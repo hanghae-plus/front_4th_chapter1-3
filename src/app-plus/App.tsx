@@ -4,7 +4,9 @@ import {
   MainSection,
   NotificationSystem,
 } from "./components";
-import { NotificationProvider, ThemeProvider, UserProvider } from "./contexts";
+import { NotificationProvider } from "./contexts/notification";
+import { ThemeProvider } from "./contexts/theme";
+import { UserProvider } from "./contexts/user";
 
 const App = () => {
   return (

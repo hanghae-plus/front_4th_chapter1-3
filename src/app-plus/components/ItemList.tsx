@@ -1,14 +1,8 @@
+import { renderLog } from "@/utils";
 import { useState } from "react";
-import { renderLog } from "../../utils";
-import { useThemeStore } from "../contexts";
-import { useMemo } from "../../@lib";
-
-interface Item {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-}
+import { useThemeStore } from "../contexts/theme";
+import { useMemo } from "@lib/hooks";
+import { Item } from "@/types";
 
 interface ItemListProps {
   items: Item[];

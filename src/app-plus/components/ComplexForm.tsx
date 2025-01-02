@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { renderLog } from "../../utils";
-import { useNotificationStore } from "../contexts";
+import { useNotificationStore } from "../contexts/notification";
+import { renderLog } from "@/utils";
 
 export const ComplexForm = () => {
   renderLog("ComplexForm rendered");

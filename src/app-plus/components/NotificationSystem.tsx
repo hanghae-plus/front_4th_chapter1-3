@@ -1,14 +1,13 @@
-import { useNotificationStore } from "../contexts";
-import { renderLog } from "../../utils";
+import { renderLog } from "@/utils";
+import { useNotificationStore } from "../contexts/notification";
 
 export const NotificationSystem = () => {
+  renderLog("NotificationSystem rendered");
   const notifications = useNotificationStore((state) => state.notifications);
 
   const removeNotification = useNotificationStore(
     (state) => state.removeNotification,
   );
-
-  renderLog("NotificationSystem rendered");
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">

@@ -1,5 +1,7 @@
-import { useNotificationStore, useThemeStore, useUserStore } from "../contexts";
-import { renderLog } from "../../utils";
+import { renderLog } from "@/utils";
+import { useThemeStore } from "../contexts/theme";
+import { useUserStore } from "../contexts/user";
+import { useNotificationStore } from "../contexts/notification";
 
 export const Header = () => {
   renderLog("Header rendered");

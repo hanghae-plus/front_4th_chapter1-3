@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { useThemeStore } from "../contexts";
+import { useThemeStore } from "../contexts/theme";
 
 export const MainLayout = ({ children }: PropsWithChildren) => {
   const theme = useThemeStore((state) => state.theme);
