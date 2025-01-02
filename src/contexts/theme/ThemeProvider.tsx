@@ -12,7 +12,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const themeContextValue = useMemo(
     () => ({ theme, toggleTheme }),
-    [theme, toggleTheme]
+    [theme, toggleTheme],
   );
 
   return (

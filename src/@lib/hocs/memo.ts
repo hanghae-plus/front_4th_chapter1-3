@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { shallowEquals } from "../equalities";
 import { ComponentType, createElement, ReactElement } from "react";
 import { useRef } from "../hooks";
@@ -6,7 +5,7 @@ import { Equatable } from "../equalities/types";
 
 export function memo<P extends object & Equatable>(
   Component: ComponentType<P>,
-  equals = shallowEquals
+  equals = shallowEquals,
 ) {
   return (props: P) => {
     const previousProps = useRef<P | null>(null);

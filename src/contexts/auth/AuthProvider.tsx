@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const authContextValue = useMemo(
     () => ({ user, login, logout }),
-    [user, login, logout]
+    [user, login, logout],
   );
 
   return (
