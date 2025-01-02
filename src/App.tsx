@@ -46,6 +46,7 @@ const App: React.FC = () => {
             <div className="flex flex-col md:flex-row">
               <div className="w-full md:w-1/2 md:pr-4">
                 <ItemList items={items} onAddItemsClick={addItems} />
+                {/* ItemList는 메모된 items, addItems가 있기 때문에 provider로 인해 리렌더링 트리거되어도 리렌더링 안되는거 */}
               </div>
               <div className="w-full md:w-1/2 md:pl-4">
                 <ComplexForm />
