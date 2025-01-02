@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
-import { DependencyList } from "react";
 import { useMemo } from "./useMemo";
 
-export function useCallback<T extends Function>(
+export function useCallback<T extends Function, D extends []>(
   factory: T,
-  _deps: DependencyList,
+  _deps: D,
 ) {
   return useMemo(() => factory, _deps);
 }
