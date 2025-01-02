@@ -15,8 +15,8 @@ export function useMemo<T>(
   if (!memoizedRef.current || !_equals(memoizedRef.current.deps, _deps)){
     memoizedRef.current = {
       // 3. 의존성이 변경된 경우 factory 함수 실행 및 결과 저장
-      value: factory(),
-      deps: _deps,
+      value: factory(), // factory 함수 실행하여 새 값을 계산
+      deps: _deps,      // 현재 의존성을 저장
     };
   }
   // 4. 메모이제이션된 값 반환
