@@ -294,7 +294,11 @@ export const NotificationSystem: React.FC = memo(() => {
 // 메인 App 컴포넌트
 const App: React.FC = () => {
   const [theme, setTheme] = useState("light");
-  const [items, setItems] = useState(generateItems(1000));
+  // useMemo에 초기값 설정
+  const initialItems = useMemo(() => generateItems(1000), []);
+  //const [items, setItems] = useState(generateItems(1000));
+  const [items, setItems] = useState(initialItems);
+
   const [user, setUser] = useState<User | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -351,7 +355,7 @@ const App: React.FC = () => {
   );
   const notificationValue: NotificationContextType = useMemo(
     () => ({ notifications, addNotification, removeNotification }),
-    [notifications, addNotification, removeNotification],
+    [notifications],
   );
 
   return (
