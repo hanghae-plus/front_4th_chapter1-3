@@ -8,7 +8,6 @@ import { Button } from "./Button";
 
 export const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
-  const { notifications } = useNotificationStateContext();
   const { addNotification } = useNotificationActionContext();
   const [formData, setFormData] = useState({
     name: "",
@@ -18,6 +17,7 @@ export const ComplexForm: React.FC = () => {
   });
 
   // 테스트 통과를 위한 notification 사용
+  const { notifications } = useNotificationStateContext();
   console.log(notifications);
 
   const handleSubmit = (e: React.FormEvent) => {

@@ -8,9 +8,9 @@ export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
   const [items, setItems] = useState(() => generateItems(1000));
   const [filter, setFilter] = useState("");
-  const { theme } = useThemeStateContext();
 
-  // 테스트 통과를 위한 notification 사용
+  // 테스트 통과를 위한 theme 사용
+  const { theme } = useThemeStateContext();
   console.log(theme);
 
   const filteredItems = items.filter(
