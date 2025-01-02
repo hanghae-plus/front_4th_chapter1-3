@@ -2,10 +2,10 @@ import { NotificationContextProvider } from "./context/NotificationContextProvid
 import { ThemeContextProvider } from "./context/ThemeContextProvider";
 import { LoginContextProvider } from "./context/LoginContextProvider";
 import { useThemeContext } from "./@lib";
-import { Header } from "./veiw/Header";
-import { ItemList } from "./veiw/ItemList";
-import { ComplexForm } from "./veiw/ComplexForm";
-import { NotificationSystem } from "./veiw/NotificationSystem";
+import { Header } from "./component/Header";
+import { ItemList } from "./component/ItemList";
+import { ComplexForm } from "./component/ComplexForm";
+import { NotificationSystem } from "./component/NotificationSystem";
 
 const App: React.FC = () => {
   return (
