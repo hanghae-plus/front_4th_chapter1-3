@@ -20,12 +20,7 @@ export function deepEquals<T, G>(objA: T, objB: G): boolean {
     if (objA.length !== objB.length) {
       return false;
     }
-    for (let i = 0; i < objA.length; i++) {
-      if (!deepEquals(objA[i], objB[i])) {
-        return false;
-      }
-    }
-    return true;
+    return objA.every((item, index) => deepEquals(item, objB[index]));
   }
 
   // 객체 비교
@@ -37,12 +32,6 @@ export function deepEquals<T, G>(objA: T, objB: G): boolean {
   if (keysA.length !== keysB.length) {
     return false;
   }
-  for (let i = 0; i < keysA.length; i++) {
-    const key = keysA[i];
-    if (!deepEquals(objA[key], objB[key])) {
-      return false;
-    }
-  }
 
-  return true;
+  return keysA.every((key) => deepEquals(objA[key], objB[key]));
 }

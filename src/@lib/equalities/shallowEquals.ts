@@ -21,12 +21,7 @@ export function shallowEquals<T, G>(objA: T, objB: G): boolean {
     if (objA.length !== objB.length) {
       return false;
     }
-    for (let i = 0; i < objA.length; i++) {
-      if (objA[i] !== objB[i]) {
-        return false;
-      }
-    }
-    return true;
+    return objA.every((item, index) => item === objB[index]);
   }
 
   // 객체 비교
@@ -41,11 +36,6 @@ export function shallowEquals<T, G>(objA: T, objB: G): boolean {
   ) {
     return false;
   }
-  for (const key of keysA) {
-    if (objA[key] !== objB[key]) {
-      return false;
-    }
-  }
 
-  return true;
+  return keysA.every((key) => objA[key] === objB[key]);
 }
