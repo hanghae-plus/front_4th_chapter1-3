@@ -1,13 +1,21 @@
-import { useState } from "react";
-import { renderLog } from "../utils";
-import { Item } from "../types/Item";
+import { useCallback, useMemo, useState } from "react";
+import { generateItems, renderLog } from "../utils";
 import { useTheme } from "../hooks/useTheme";
 
-export const ItemList: React.FC<{
-  items: Item[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+const ITEMS_LENGTH = 1000;
+
+export const ItemList = () => {
   renderLog("ItemList rendered");
+  const memoizedItems = useMemo(() => generateItems(ITEMS_LENGTH), []);
+  const [items, setItems] = useState(memoizedItems);
+
+  const addItems = useCallback(() => {
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(1000, prevItems.length),
+    ]);
+  }, []);
+
   const [filter, setFilter] = useState("");
   const { theme } = useTheme();
 
@@ -29,7 +37,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addItems}
           >
             대량추가
           </button>
