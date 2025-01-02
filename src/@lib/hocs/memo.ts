@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { shallowEquals } from "../equalities";
 import { ComponentType, createElement, ReactElement } from "react";
 
 export function memo<P extends object>(
   Component: ComponentType<P>,
-  _equals = shallowEquals
+  _equals = shallowEquals,
 ) {
   let previousProps: P | undefined;
   let previousComponent: ReactElement | undefined;

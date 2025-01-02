@@ -27,8 +27,7 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
   return !keyListOfA.some(
     (keyOfA) =>
       !Object.hasOwnProperty.call(objB, keyOfA) ||
-      // eslint-disable-next-line prettier/prettier
-      !deepEquals(objA[keyOfA], objB[keyOfA])
+      !deepEquals(objA[keyOfA], objB[keyOfA]),
   );
 
   return true;

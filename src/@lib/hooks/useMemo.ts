@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DependencyList, useState } from "react";
 import { shallowEquals } from "../equalities";
@@ -19,7 +18,7 @@ import { useRef } from "./useRef";
 export function useMemo<T>(
   factory: () => T,
   _deps: DependencyList,
-  _equals = shallowEquals
+  _equals = shallowEquals,
 ) {
   // 직접 작성한 useRef를 통해서 만들어보세요.
   const stateRef = useRef<{ deps: DependencyList; value: T }>(() => {
