@@ -1,4 +1,4 @@
-import { useThemeContext } from "../contexts/themeContext";
+import { useThemeContext } from "../contexts/ThemeContext";
 import { Header } from "./Header";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {

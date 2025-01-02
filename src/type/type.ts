@@ -1,20 +1,20 @@
-interface User {
+interface IUser {
   id: number;
   name: string;
   email: string;
 }
 
-interface Notification {
+interface INotification {
   id: number;
   message: string;
   type: "info" | "success" | "warning" | "error";
 }
 
-interface Item {
+interface IItem {
   id: number;
   name: string;
   category: string;
   price: number;
 }
 
-export type { User, Notification, Item };
+export type { IUser, INotification, IItem };

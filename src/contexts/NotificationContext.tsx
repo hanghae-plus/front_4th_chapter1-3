@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
-import { Notification } from "../type/type";
+import { INotification } from "../type/type";
+import { useCallback, useMemo } from "../@lib";
 
 interface NotificationContextType {
-  notifications: Notification[];
-  addNotification: (message: string, type: Notification["type"]) => void;
+  notifications: INotification[];
+  addNotification: (message: string, type: INotification["type"]) => void;
   removeNotification: (id: number) => void;
 }
 
@@ -26,28 +27,34 @@ export const NotificationContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<INotification[]>([]);
 
-  const addNotification = (message: string, type: Notification["type"]) => {
-    const newNotification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-    };
-    setNotifications((prev) => [...prev, newNotification]);
-  };
+  const addNotification = useCallback(
+    (message: string, type: INotification["type"]) => {
+      const newNotification: INotification = {
+        id: Date.now(),
+        message,
+        type,
+      };
+      setNotifications((prev) => [...prev, newNotification]);
+    },
+    [],
+  );
 
-  const removeNotification = (id: number) => {
+  const removeNotification = useCallback((id: number) => {
     setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id),
     );
-  };
+  }, []);
 
-  const notificationContextValue: NotificationContextType = {
-    notifications,
-    addNotification,
-    removeNotification,
-  };
+  const notificationContextValue: NotificationContextType = useMemo(
+    () => ({
+      notifications,
+      addNotification,
+      removeNotification,
+    }),
+    [notifications],
+  );
 
   return (
     <NotificationContext.Provider value={notificationContextValue}>

@@ -1,16 +1,11 @@
-import { useThemeContext } from "../contexts/themeContext";
-import { useUserContext } from "../contexts/userContext";
+import { useThemeContext } from "../contexts/ThemeContext";
+import { useUserContext } from "../contexts/UserContext";
 import { renderLog } from "../utils";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useThemeContext();
   const { user, login, logout } = useUserContext();
-
-  const handleLogin = () => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
-  };
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -35,7 +30,7 @@ export const Header: React.FC = () => {
             </div>
           ) : (
             <button
-              onClick={handleLogin}
+              onClick={() => login("user@example.com", "password")}
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
               로그인

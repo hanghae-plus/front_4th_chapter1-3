@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Item } from "../type/type";
 import { renderLog } from "../utils";
-import { useThemeContext } from "../contexts/themeContext";
+import { Item } from "./Item";
+import { useThemeContext } from "../contexts/ThemeContext";
+import { IItem } from "../type/type";
 
 export const ItemList: React.FC<{
-  items: Item[];
+  items: IItem[];
   onAddItemsClick: () => void;
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
@@ -16,9 +17,7 @@ export const ItemList: React.FC<{
       item.name.toLowerCase().includes(filter.toLowerCase()) ||
       item.category.toLowerCase().includes(filter.toLowerCase()),
   );
-
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
-
   const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
 
   return (
@@ -49,12 +48,7 @@ export const ItemList: React.FC<{
       </ul>
       <ul className="space-y-2">
         {filteredItems.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
-          >
-            {item.name} - {item.category} - {item.price.toLocaleString()}원
-          </li>
+          <Item key={index} item={item} theme={theme} />
         ))}
       </ul>
     </div>
