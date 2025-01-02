@@ -14,13 +14,5 @@ export interface User {
 export interface Notification {
   id: number;
   message: string;
-  type: "info" | "success" | "warning" | "error";
-}
-
-export interface Order {
-  id: number;
-  userId: number;
-  itemId: number;
-  quantity: number;
-  totalPrice: number;
+  type: string;
 }

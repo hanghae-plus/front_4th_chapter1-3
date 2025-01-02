@@ -41,7 +41,7 @@ describe("최적화된 App 컴포넌트 테스트", () => {
     const loginButton = await screen.findByText("로그인");
     await fireEvent.click(loginButton);
 
-    // Header가 변경 되면 알림이 발생하고, 알림 정보를 CompleteForm과 NotificationSystem이 가져다 사용 중
+    // Header가 변경되면 알림이 발생하고, 알림 정보를 CompleteForm과 NotificationSystem이 가져다 사용 중
     expect(renderLogMock).toHaveBeenCalledWith("Header rendered");
     expect(renderLogMock).toHaveBeenCalledWith("ComplexForm rendered");
     expect(renderLogMock).toHaveBeenCalledWith("NotificationSystem rendered");

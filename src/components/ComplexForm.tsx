@@ -1,11 +1,15 @@
-import { useState } from "react";
-import { useAppContext } from "../context/AppContext";
+import { memo, useState } from "react";
+// import { useAppContext } from "../context/AppContext";
 import { renderLog } from "../utils";
+import { useNotification } from "../context/NotificationContext";
+import { useUserContext } from "../context/UserContext";
 
-// ComplexForm 컴포넌트
-export const ComplexForm: React.FC = () => {
+// theme을 props로 받아와야 theme을 기준으로 변경 사항을 인식
+export const ComplexForm = memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotification();
+  useUserContext();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -85,4 +89,4 @@ export const ComplexForm: React.FC = () => {
       </form>
     </div>
   );
-};
+});

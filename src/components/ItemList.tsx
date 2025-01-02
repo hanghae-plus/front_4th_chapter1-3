@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Item } from "../types";
 import { renderLog } from "../utils";
-import { useAppContext } from "../context/AppContext";
+import { useTheme } from "../context/ThemeContext";
 
 export const ItemList: React.FC<{
   items: Item[];
@@ -9,12 +9,12 @@ export const ItemList: React.FC<{
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
+  const { theme } = useTheme();
 
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
+      item.category.toLowerCase().includes(filter.toLowerCase())
   );
 
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);

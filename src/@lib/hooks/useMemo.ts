@@ -9,7 +9,7 @@ import { useRef } from "./useRef";
 export function useMemo<T>(
   factory: () => T,
   deps: DependencyList,
-  equals = shallowEquals,
+  equals = shallowEquals
 ): T {
   // 1. 이전 의존성과 계산된 값을 저장하는 ref를 생성
   const ref = useRef<{ deps: DependencyList; value: T } | null>(null);
