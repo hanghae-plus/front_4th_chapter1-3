@@ -2,13 +2,11 @@ import { useState } from "react";
 import { renderLog } from "../utils";
 import { Item } from "./Item";
 import { useThemeContext } from "../contexts/ThemeContext";
-import { IItem } from "../type/type";
+import { useItemContext } from "../contexts/ItemContext";
 
-export const ItemList: React.FC<{
-  items: IItem[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
+  const { items, addItems } = useItemContext();
   const [filter, setFilter] = useState("");
   const { theme } = useThemeContext();
 
@@ -28,7 +26,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addItems}
           >
             대량추가
           </button>
