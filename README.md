@@ -1,50 +1,141 @@
-# React + TypeScript + Vite
+## 과제 체크포인트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 기본과제
 
-Currently, two official plugins are available:
+- [ ] shallowEquals 구현 완료
+- [ ] deepEquals 구현 완료
+- [ ] memo 구현 완료
+- [ ] deepMemo 구현 완료
+- [ ] useRef 구현 완료
+- [ ] useMemo 구현 완료
+- [ ] useDeepMemo 구현 완료
+- [ ] useCallback 구현 완료
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 심화 과제
 
-## Expanding the ESLint configuration
+- [ ] 기본과제에서 작성한 hook을 이용하여 렌더링 최적화를 진행하였다.
+- [ ] Context 코드를 개선하여 렌더링을 최소화하였다.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+  <br/>
+  <br/>
 
-- Configure the top-level `parserOptions` property like this:
+## 과제 셀프 회고
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
+### 👩‍💻 기술적 성장
+
+**1. React와 Fiber Node**
+
+  ```JavaScript
+  // Fiber Node
+  {
+    memoizedState: {
+      // Hook의 상태가 배열 형태로 저장됨
+      // 첫 번째 값: useRef
+      // 두 번째 값: useState 등
+      current: { current: null }, // useRef 데이터
+      next: { value: 0 },        // useState 데이터
     },
-  },
-})
-```
+    stateNode: {}, // 실제 DOM이나 컴포넌트 인스턴스 참조
+    child: {},     // 자식 Fiber Node
+    sibling: {},   // 형제 Fiber Node
+    return: Fiber, // 부모 Fiber Node
+  }
+  ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+  - React는 각 컴포넌트마다 **Fiber Node**를 생성하고, 이 Node에 해당 컴포넌트와 관련된 모든 데이터를 저장한다. **<u>Fiber Node는 리렌더링 시 기존 상태를 새 Fiber Node로 복사하여 상태를 초기화하지 않고 유지</u>** 한다. 이를 통해 컴포넌트가 리렌더링되더라도 초기화되지 않고 이전 상태와 참조를 유지할 수 있다.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+    1. **초기 렌더링**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+        - 컴포넌트별로 Fiber Node가 생성된다.
+
+        - Hook 데이터(초기값)는 Fiber Node의 memoizedState에 저장된다.
+
+    2. **리렌더링**
+        
+        - React는 새로운 Fiber Node를 생성하고 기존 Fiber Node를 새로운 Fiber Node로 복사한다. memoizedState를 참조하여 `useRef`, `useState` 등의 데이터를 그대로 유지한다.
+
+    3. **언마운트**
+        - 컴포넌트가 언마운트되면 React는 해당 Fiber Node를 삭제하고, 관련 데이터를 메모리에서 정리한다.
+
+  <br/>
+
+### 🧾 코드 품질
+
+**1. 얕은 비교(shallowEquals)를 구현할 때 왜 네 가지 케이스를 체크하는가?**
+
+  - 과제를 진행하면서 왜 얕은 비교(`shallowEquals`)에서 크게 네 가지 케이스를 체크하는지가 궁금했다. 얕은 비교에서 네 가지 케이스를 비교하는 이유는 객체의 동작 특성과 JavaScript의 데이터 타입때문이었다.
+
+    1. **동일한 참조인지 확인**
+      
+        - 객체는 참조 타입이기때문에 동일한 참조를 가진 경우 이미 동일한 객체임이 보장되므로 더 이상 비교를 진행할 필요가 없다. 따라서 빠르게 true를 반환해 불필요한 계산을 방지한다.
+
+    2. **하나라도 객체가 아닌 경우 처리**
+
+        - 얕은 비교는 기본적으로 객체(타입)를 비교하기 위한 것이므로, 원시 값(문자열, 숫자 등)은 비교를 진행하지 않음으로써 로직의 일관성을 유지한다.
+
+        - 단, null의 경우 `typeof null === 'object'`이므로 null은 별도로 처리해야 한다.
+        (JS의 설계상 실수..!)
+
+
+    3. **키 배열의 길이가 다른 경우 처리**
+
+        - 객체의 키 개수가 다른 경우는 곧 내용이 다르다는 뜻이므로 비교를 진행할 필요가 없다.
+
+
+    4. **각 키의 값을 비교**
+
+        - 얕은 비교의 본질은 **'객체의 키와 값이 동일한지'** 를 확인하는 것이다. 그러므로 키의 값이 하나라도 다르면 객체가 다르다는 뜻이므로 더 이상 비교를 진행할 필요가 없다.
+
+
+  <br/>
+
+### 📊 학습 효과 분석
+
+**1. 배움이 있었던 부분**
+
+  - **utils의 함수들이 함수 선언문과 화살표 함수로 나뉘어진 이유**
+    - 코드에서 `renderLog`는 함수 선언문으로 작성되었고, `generateItems`는 화살표 함수로 작성되었다. 이 두 함수의 작성 방식이 다른 이유는 JavaScript의 함수 스코프와 실행 컨텍스트에 대한 이해와 특정 상황에 맞는 적합한 함수 유형 선택에 있다고 판단된다.
+
+    1. **`renderLog`에서 함수 선언문을 선택한 이유**
+
+        - 해당 함수는 단순히 메시지를 출력하는 유틸리티 함수로, 코드 전체에서 언제든 호출될 수 있다. 함수 선언문을 사용함으로써 호이스팅 덕분에 코드 위치와 상관없이 사용할 수 있다.
+
+    2. **`generateItems`에서 화살표 함수를 선택한 이유**
+
+        - 화살표 함수는 this를 고정된 컨텍스트로 유지하므로, 콜백 함수로 사용될 때도 의도한 대로 동작한다. 그래서 콜백 함수를 정의할 때 적합하다.
+
+
+**2. 추가 학습이 필요한 영역**
+
+- **TypeScript 개념 학습**
+
+  - 아직 TypeScript의 기본 개념이 미숙하여 TypeScript에 대한 추가 학습이 필요하다. 예를 들어, HOC와 같은 고차 함수에 타입을 더 유연하게 지정하고 싶다.
+
+  <br/>
+
+### ✍ 과제 피드백
+
+- `useMemo`와 `useCallback`의 올바른 사용 사례를 학습하며, 종속성 배열 관리의 중요성을 깨달을 수 있었습니다. 특히 `useDeepMemo`와 같은 커스텀 Hook을 제작하며 React Hook의 확장 가능성을 경험할 수 있었던 것이 좋았습니다.
+
+  <br/>
+  <br/>
+
+## 🙋‍♀️ 리뷰 받고 싶은 내용
+
+- 현재는 각 Context 파일 내부에 useTheme, useUser, useNotification 같은 커스텀 훅들을 정의하고 있습니다.
+
+  - **Q1.1.** 이 훅들을 @lib > hooks와 같은 별도의 디렉토리로 분리하는 것이 코드의 유지보수성과 재사용성에 더 유리할지 궁금합니다.
+
+  - **Q1.2.** Context와 관련된 훅을 분리할 경우, Context와 훅 간의 연관성을 유지하기 위한 실무적인 파일 구조나 네이밍 규칙에 대한 팁이 있다면 듣고 싶습니다.
+
+- 제가 작업 중 커밋을 자주 하는 편인데, 혹시 커밋이 너무 자잘해서 협업에 불편함을 줄 수 있는지 고민이 됩니다.
+
+  - **Q2.1.** 실무에서는 커밋 단위를 어떻게 정하는 것이 바람직한지, 특히 협업 환경에서 효율적인 커밋 작성 방법에 대해 조언을 받고 싶습니다.
+
+- 제 코드에서 추가적으로 개선할 부분이 보인다면 구체적으로 조언 부탁드립니다. 특히 다음과 같은 부분에 대한 의견을 듣고 싶습니다:
+
+  - **Q3.1.** 현재 코드베이스에서 모듈화나 파일 구조를 더 효율적으로 개선할 수 있는 방안이 있을까요?
+
+  - **Q3.2.** 현재 코드에서 렌더링 최적화(`useMemo`, `useCallback`, `memo`)를 위해 적용한 부분이 적절한지, 혹은 추가적으로 개선할 수 있는 부분이 있을까요? 
+
+  - **Q3.3.** 팀원들이 코드를 읽고 이해하기 쉽게 하기 위해 개선해야 할 네이밍, 주석 작성 방식, 혹은 다른 컨벤션 관련 피드백이 있으면 말씀 부탁드립니다!

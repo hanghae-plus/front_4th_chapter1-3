@@ -1,18 +1,15 @@
-import { PropsWithChildren, useContext, createContext, useState } from "react";
+import { useContext, createContext, useState } from "react";
 import { useCallback, useMemo } from "../@lib";
 
 type Theme = "light" | "dark";
 
-// Context 타입 분리
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
 }
 
-// Context 생성
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// 커스텀 Hook으로 Context 에러 처리
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
@@ -21,7 +18,9 @@ export const useTheme = () => {
   return context;
 };
 
-export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const ThemeProvider: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const [theme, setTheme] = useState<Theme>("light");
 
   const toggleTheme = useCallback(() => {

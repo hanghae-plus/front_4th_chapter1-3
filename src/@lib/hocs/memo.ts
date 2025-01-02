@@ -1,9 +1,10 @@
+import { createElement } from "react";
 import { shallowEquals } from "../equalities";
-import { ComponentType, ReactElement, createElement, useRef } from "react";
+import { useRef } from "../hooks";
 
 // 🎯 컴포넌트의 props를 얕은 비교하여 불필요한 리렌더링을 방지.
 export function memo<P extends object>(
-  Component: ComponentType<P>,
+  Component: React.ComponentType<P>,
   _equals = shallowEquals,
 ) {
   return function MemoizedComponent(props: P) {
@@ -11,7 +12,7 @@ export function memo<P extends object>(
     const memoizedProps = useRef<P | null>(null);
 
     // 2. 메모이제이션된 컴포넌트(=이전 렌더링 결과(ReactElement)) 생성
-    const memoizedComponent = useRef<ReactElement | null>(null);
+    const memoizedComponent = useRef<React.ReactElement | null>(null);
 
     // 3. equals 함수를 사용하여 props 비교
     if (!_equals(memoizedProps.current, props)) {
@@ -20,6 +21,6 @@ export function memo<P extends object>(
       memoizedComponent.current = createElement(Component, props);
     }
 
-    return memoizedComponent.current; // ReactElement 반환.
+    return memoizedComponent.current; // ReactElement 반환
   };
 }

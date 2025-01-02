@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { useCallback, useMemo } from "../@lib";
 
 interface Notification {
@@ -13,12 +13,10 @@ interface NotificationContextType {
   removeNotification: (id: number) => void;
 }
 
-// Context 생성
 const NotificationContext = createContext<NotificationContextType | undefined>(
   undefined,
 );
 
-// 커스텀 Hook으로 Context 에러 처리
 export const useNotification = () => {
   const context = useContext(NotificationContext);
   if (!context) {
@@ -29,7 +27,7 @@ export const useNotification = () => {
   return context;
 };
 
-export const NotificationProvider: React.FC<PropsWithChildren> = ({
+export const NotificationProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
