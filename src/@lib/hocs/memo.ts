@@ -18,7 +18,7 @@ export function memo<P extends object>(
     const prevPropsRef = useRef<P | null>(null);
     const prevMemorized = useRef<ReactNode | null>(null);
 
-    if (!_equals(props, prevPropsRef.current)) {
+    if (!prevMemorized.current || !_equals(props, prevPropsRef.current)) {
       prevPropsRef.current = props;
       prevMemorized.current = createElement(Component, props);
     }
