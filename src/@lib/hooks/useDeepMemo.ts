@@ -1,9 +1,17 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { DependencyList } from "react";
-import { useMemo } from "./useMemo";
+import { DependencyList, useRef } from "react";
 import { deepEquals } from "../equalities";
 
 export function useDeepMemo<T>(factory: () => T, deps: DependencyList): T {
-  // 직접 작성한 useMemo를 참고해서 만들어보세요.
-  return useMemo(factory, deps, deepEquals);
+  const lastDepsRef = useRef<DependencyList | undefined>(undefined);
+  const lastValueRef = useRef<T | undefined>(undefined);
+
+  const dependenciesChanged =
+    !lastDepsRef.current || !deepEquals(lastDepsRef.current, deps);
+
+  if (dependenciesChanged) {
+    lastValueRef.current = factory();
+    lastDepsRef.current = deps;
+  }
+
+  return lastValueRef.current as T;
 }
