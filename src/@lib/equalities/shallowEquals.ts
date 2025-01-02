@@ -1,4 +1,7 @@
-export function shallowEquals<T>(objA: T, objB: T): boolean {
+export function shallowEquals<T extends Record<string, unknown>>(
+  objA: T,
+  objB: T,
+): boolean {
   // 1. 두 값이 정확히 같은지 확인 (참조가 같은 경우)
   if (objA === objB) {
     return true;
