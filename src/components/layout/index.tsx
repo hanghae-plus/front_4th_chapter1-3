@@ -1,4 +1,4 @@
-import { useTheme } from "../../contexts/theme";
+import { useTheme } from "@contexts";
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({
   children,

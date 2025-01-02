@@ -1,8 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { AuthContext } from "./AuthContext";
-
 import { User } from "./types";
-import { useNotification } from "../notification/hooks";
+import { useNotification } from "@contexts";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -22,7 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const authContextValue = useMemo(
     () => ({ user, login, logout }),
-    [user, login, logout],
+    [user, login, logout]
   );
 
   return (

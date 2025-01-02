@@ -1,6 +1,5 @@
-import { useAuth } from "../../contexts/auth/hooks/useAuth";
-import { useTheme } from "../../contexts/theme/hooks";
-import { renderLog } from "../../utils";
+import { useAuth, useTheme } from "@contexts";
+import { renderLog } from "@utils";
 
 // Header 컴포넌트
 export const Header: React.FC = () => {

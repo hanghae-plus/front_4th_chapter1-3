@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from "react";
-
 import { ThemeContext } from "./ThemeContext";
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -13,7 +12,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const themeContextValue = useMemo(
     () => ({ theme, toggleTheme }),
-    [theme, toggleTheme],
+    [theme, toggleTheme]
   );
 
   return (

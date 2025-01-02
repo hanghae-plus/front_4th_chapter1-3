@@ -1,5 +1,5 @@
-import { useNotification } from "../../contexts/notification/hooks";
-import { renderLog } from "../../utils";
+import { useNotification } from "@contexts";
+import { renderLog } from "@utils";
 
 // NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = () => {

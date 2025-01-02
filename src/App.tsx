@@ -1,15 +1,14 @@
 import React from "react";
 
-import { ComplexForm } from "./components/complexForm";
-import { ItemList } from "./components/ItemList";
-import { Header } from "./components/header";
-import { NotificationSystem } from "./components/notificationSystem";
-import { ThemeProvider } from "./contexts/theme";
-import { NotificationProvider } from "./contexts/notification/NotificationProvider";
-import { AuthProvider } from "./contexts/auth";
-import { Layout } from "./components/layout";
+import {
+  ComplexForm,
+  ItemList,
+  Header,
+  NotificationSystem,
+  Layout,
+} from "@components";
+import { ThemeProvider, NotificationProvider, AuthProvider } from "@contexts";
 
-// ThemeProvider 내부에서 사용할 컴포넌트를 분리
 const AppContent: React.FC = () => {
   return (
     <Layout>
