@@ -5,3 +5,11 @@
 export function isNonNullObject(target: unknown): target is object {
   return typeof target === "object" && target !== null;
 }
+
+export function hasOwnKey(
+  object: unknown,
+  key: string,
+): object is Record<string, unknown> {
+  if (!isNonNullObject(object)) return false;
+  return Object.prototype.hasOwnProperty.call(object, key);
+}
