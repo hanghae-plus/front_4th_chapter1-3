@@ -9,7 +9,6 @@ export function useMemo<T>(
 ): T {
   const ref = useRef<null | { deps: DependencyList; value: T }>(null);
 
-  // deps에 변화가 생기면 값을 리턴
   if (!ref.current || !_equals(_deps, ref.current.deps)) {
     ref.current = {
       deps: _deps,
