@@ -18,11 +18,11 @@ export function deepEquals(objA: unknown, objB: unknown): boolean {
 
   //    - 객체의 키 개수가 다른 경우 처리
   //    - 객체 null 인지 확인
-  if (
-    isRecord(objA) &&
-    isRecord(objB) &&
-    Object.keys(objA).length === Object.keys(objB).length
-  ) {
+  if (isRecord(objA) && isRecord(objB)) {
+    // 3. 키 개수 비교
+    if (Object.keys(objA).length !== Object.keys(objB).length) {
+      return false;
+    }
     return Object.keys(objA).every((key) => deepEquals(objA[key], objB[key]));
   }
 
