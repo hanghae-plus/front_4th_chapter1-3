@@ -1,3 +1,5 @@
+import "core-js/features/object/is";
+import "core-js/features/object/has-own-property";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
