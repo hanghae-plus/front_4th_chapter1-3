@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext } from "react";
 import { generateItems, renderLog } from "./utils";
 import { memo, useCallback, useMemo } from "./@lib";
 
@@ -97,7 +97,7 @@ export const ItemList: React.FC<{
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase())
+      item.category.toLowerCase().includes(filter.toLowerCase()),
   );
 
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
@@ -299,7 +299,7 @@ const App: React.FC = () => {
       const newNotification: Notification = { id: Date.now(), message, type };
       setNotifications((prev) => [...prev, newNotification]);
     },
-    []
+    [],
   );
 
   const removeNotification = useCallback((id: number) => {
@@ -326,9 +326,8 @@ const App: React.FC = () => {
       notifications,
       addNotification,
       removeNotification,
-    ]
+    ],
   );
-
   return (
     <AppContext.Provider value={contextValue}>
       <div

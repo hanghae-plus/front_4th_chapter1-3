@@ -1,6 +1,7 @@
-import { DependencyList } from "react";
-import { useMemo } from "./useMemo";
+import { DependencyList, useMemo } from "react";
 
-export function useCallback<T>(factory: T, deps: DependencyList): T {
+export function useCallback<
+  F extends (...args: Parameters<F>) => ReturnType<F>,
+>(factory: F, deps: DependencyList): F {
   return useMemo(() => factory, deps);
 }

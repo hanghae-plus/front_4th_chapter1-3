@@ -1,28 +1,25 @@
-import { FC, ReactNode, createElement } from "react";
-import { shallowEquals } from "../equalities";
-import { useRef } from "../hooks";
+import { useRef } from "react";
 
-export function memo<P extends object>(
-  Component: FC<P>,
-  equals = shallowEquals,
-): FC<P> {
-  const MemoizedComponent: FC<P> = (props) => {
-    // 이전 props를 저장할 ref 생성
-    const prevPropsRef = useRef<P | null>(null);
-    const renderedRef = useRef<ReactNode>(null);
+export function useMemo<T>(
+  factory: () => T,
+  deps: unknown[],
+  equals: (a: unknown[], b: unknown[]) => boolean = (a, b) =>
+    a.every((v, i) => v === b[i]),
+): T {
+  // 이전 의존성 저장
+  const previousDepsRef = useRef<unknown[] | null>(null);
+  // 메모이제이션된 값 저장
+  const memoizedValueRef = useRef<T | null>(null);
 
-    // props 비교
-    if (
-      prevPropsRef.current === null ||
-      !equals(prevPropsRef.current, props) ||
-      renderedRef.current === null
-    ) {
-      prevPropsRef.current = props;
-      renderedRef.current = createElement(Component, props);
-    }
+  // 의존성 변경 감지
+  const dependenciesChanged =
+    !previousDepsRef.current || !equals(previousDepsRef.current, deps);
 
-    return renderedRef.current as ReactNode;
-  };
+  if (dependenciesChanged) {
+    // 의존성이 변경되었을 경우 재계산
+    memoizedValueRef.current = factory();
+    previousDepsRef.current = deps;
+  }
 
-  return MemoizedComponent;
+  return memoizedValueRef.current as T;
 }
