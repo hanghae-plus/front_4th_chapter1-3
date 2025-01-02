@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { useCallback } from "../useCallback";
-import { useMemo } from "../useMemo";
+import { useCallback, useMemo } from "../index";
 
 export interface ThemeContextType {
   theme: string;

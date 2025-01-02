@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { Notification } from "../../components";
-import { useCallback } from "../useCallback";
-import { useMemo } from "../useMemo";
+import { useCallback, useMemo } from "../index";
 
 export interface NotiContextType {
   notifications: Notification[];
