@@ -5,6 +5,12 @@ import react from "@vitejs/plugin-react-swc";
 export default mergeConfig(
   defineConfig({
     plugins: [react()],
+    resolve: {
+      alias: [
+        { find: "@", replacement: "/src" },
+        { find: "@lib", replacement: "/src/@lib" },
+      ],
+    },
   }),
   defineTestConfig({
     test: {
@@ -15,6 +21,10 @@ export default mergeConfig(
         reportsDirectory: "./.coverage",
         reporter: ["lcov", "json", "json-summary"],
       },
+      alias: [
+        { find: "@", replacement: "/src" },
+        { find: "@lib", replacement: "/src/@lib" },
+      ],
     },
   }),
 );
