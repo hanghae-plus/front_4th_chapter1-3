@@ -1,42 +1,40 @@
-import {
-  KeyValueObject,
-  isPrimitive,
-  isKeyValueType,
-} from "./isKeyValueObject";
-
 export function deepEquals<T>(objA: T, objB: T): boolean {
-  // 1. 기본 타입이거나 null인 경우 처리
-  if (isPrimitive(objA) && isPrimitive(objB)) {
-    return objA === objB;
+  // primitive
+  if (objA === objB) {
+    return true;
   }
 
-  if (Array.isArray(objA) && Array.isArray(objB)) {
-    const arrA = objA as Array<unknown>;
-    const arrB = objB as Array<unknown>;
+  // uncomparable
+  if (
+    objA === null ||
+    objB === null ||
+    typeof objA !== "object" ||
+    typeof objB !== "object"
+  ) {
+    return false;
+  }
 
-    if (arrA.length !== arrB.length) {
+  // array
+  if (Array.isArray(objA) && Array.isArray(objB)) {
+    if (objA.length !== objB.length) {
+      return false;
+    }
+    return objA.every((itemA, index) => deepEquals(itemA, objB[index]));
+  }
+
+  // Object Literal
+  if (!Array.isArray(objA) && !Array.isArray(objB)) {
+    const keysA = Object.keys(objA);
+    const keysB = Object.keys(objB);
+
+    if (keysA.length !== keysB.length) {
       return false;
     }
 
-    for (let i = 0; i < arrA.length; i++) {
-      if (deepEquals(arrA[i], arrB[i]) === false) {
-        return false;
-      }
-    }
-    return true;
-  }
-  if (isKeyValueType(objA) && isKeyValueType(objB)) {
-    const keyValueA = objA as KeyValueObject;
-    const keyValueB = objB as KeyValueObject;
-
-    const keys = Object.keys(keyValueA);
-    for (const key of keys) {
-      if (deepEquals(keyValueA[key], keyValueB[key]) === false) {
-        return false;
-      }
-    }
-    return true;
+    return keysA.every((key) =>
+      deepEquals(objA[key as keyof T], objB[key as keyof T]),
+    );
   }
 
-  return objA === objB;
+  return false;
 }
