@@ -14,7 +14,7 @@ interface NotificationAction {
 export type NotificationType = NotificationState & NotificationAction;
 export type NotificationStore = Store<NotificationType>;
 
-export const notificationStore: NotificationStore =
+export const createNotificationStore: () => NotificationStore = () =>
   createStore<NotificationType>((set) => ({
     notifications: [],
     addNotification: (message, type) => {

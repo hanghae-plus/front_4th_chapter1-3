@@ -12,14 +12,15 @@ interface ThemeAction {
 export type ThemeType = ThemeState & ThemeAction;
 export type ThemeStore = Store<ThemeType>;
 
-export const themeStore: ThemeStore = createStore<ThemeType>((set) => ({
-  theme: "light",
-  toggleTheme: () => {
-    set((prev) => ({
-      ...prev,
-      theme: prev.theme === "light" ? "dark" : "light",
-    }));
-  },
-}));
+export const createThemeStore: () => ThemeStore = () =>
+  createStore<ThemeType>((set) => ({
+    theme: "light",
+    toggleTheme: () => {
+      set((prev) => ({
+        ...prev,
+        theme: prev.theme === "light" ? "dark" : "light",
+      }));
+    },
+  }));
 
 export const ThemeContext = createContext<ThemeStore | undefined>(undefined);

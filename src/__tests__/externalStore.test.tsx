@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as utils from "../utils";
 import App from "../app-plus/App";
 
@@ -11,14 +11,6 @@ describe("최적화된 App 컴포넌트 테스트", () => {
   beforeEach(() => {
     renderLogMock.mockClear();
     generateItemsSpy.mockClear();
-  });
-
-  afterEach(() => {
-    try {
-      screen.getAllByText("닫기").forEach((button) => fireEvent.click(button));
-    } catch {
-      console.log("닫기 버튼 없음");
-    }
   });
 
   it("초기 렌더링 시 모든 컴포넌트가 한 번씩 렌더링되어야 한다", () => {
