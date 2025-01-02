@@ -12,3 +12,9 @@ export const generateItems = (count: number, start = 0) => {
     price: Math.floor(Math.random() * 100000) + 1000,
   }));
 };
+
+export function assertObject(obj: unknown): asserts obj is object {
+  if (typeof obj !== "object") {
+    throw new Error("[assertObject] 해당 변수는 객체가 아닙니다.");
+  }
+}
