@@ -27,9 +27,6 @@ interface AppContextType {
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
-  notifications: Notification[];
-  addNotification: (message: string, type: Notification["type"]) => void;
-  removeNotification: (id: number) => void;
 }
 
 interface ThemeContextType {
@@ -37,8 +34,17 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
+interface NotificationContextType {
+  notifications: Notification[];
+  addNotification: (message: string, type: Notification["type"]) => void;
+  removeNotification: (id: number) => void;
+}
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined,
+);
 
 // 커스텀 훅: useAppContext
 const useAppContext = () => {
@@ -50,6 +56,13 @@ const useAppContext = () => {
 };
 const useThemeContext = () => {
   const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error("useAppContext must be used within an AppProvider");
+  }
+  return context;
+};
+const useNotificationContext = () => {
+  const context = useContext(NotificationContext);
   if (context === undefined) {
     throw new Error("useAppContext must be used within an AppProvider");
   }
@@ -163,7 +176,7 @@ export const ItemList: React.FC<{
 // ComplexForm 컴포넌트
 export const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useAppContext();
+  const { addNotification } = useNotificationContext();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -248,7 +261,7 @@ export const ComplexForm: React.FC = memo(() => {
 // NotificationSystem 컴포넌트
 export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
-  const { notifications, removeNotification } = useAppContext();
+  const { notifications, removeNotification } = useNotificationContext();
 
   return (
     <div className="fixed bottom-4 right-4 space-y-2">
@@ -329,36 +342,39 @@ const App: React.FC = () => {
       user,
       login,
       logout,
-      notifications,
-      addNotification,
-      removeNotification,
     }),
-    [user, login, logout, notifications, addNotification, removeNotification],
+    [user, login, logout],
   );
   const themeValue: ThemeContextType = useMemo(
     () => ({ theme, toggleTheme }),
     [theme],
   );
+  const notificationValue: NotificationContextType = useMemo(
+    () => ({ notifications, addNotification, removeNotification }),
+    [notifications, addNotification, removeNotification],
+  );
 
   return (
     <ThemeContext.Provider value={themeValue}>
       <AppContext.Provider value={contextValue}>
-        <div
-          className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
-        >
-          <Header />
-          <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col md:flex-row">
-              <div className="w-full md:w-1/2 md:pr-4">
-                <ItemList items={items} onAddItemsClick={addItems} />
-              </div>
-              <div className="w-full md:w-1/2 md:pl-4">
-                <ComplexForm />
+        <NotificationContext.Provider value={notificationValue}>
+          <div
+            className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+          >
+            <Header />
+            <div className="container mx-auto px-4 py-8">
+              <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2 md:pr-4">
+                  <ItemList items={items} onAddItemsClick={addItems} />
+                </div>
+                <div className="w-full md:w-1/2 md:pl-4">
+                  <ComplexForm />
+                </div>
               </div>
             </div>
+            <NotificationSystem />
           </div>
-          <NotificationSystem />
-        </div>
+        </NotificationContext.Provider>
       </AppContext.Provider>
     </ThemeContext.Provider>
   );
