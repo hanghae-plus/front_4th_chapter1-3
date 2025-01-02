@@ -11,7 +11,7 @@ import { generateItems } from "./utils";
 // 메인 App 컴포넌트
 const AppContent: React.FC = () => {
   const { theme } = useTheme();
-  const [items, setItems] = useState(generateItems(1000));
+  const [items, setItems] = useState(() => generateItems(1000));
 
   const addItems = () => {
     setItems((prevItems) => [
