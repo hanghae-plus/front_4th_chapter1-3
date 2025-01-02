@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { memo, useMemo, useThemeContext } from "../@lib";
+import { memo, useCallback, useMemo, useThemeContext } from "../@lib";
 import { generateItems, renderLog } from "../utils";
 
 interface Item {
@@ -12,18 +12,18 @@ interface Item {
 export const ItemList: React.FC = memo(() => {
   renderLog("ItemList rendered");
 
+  const { theme } = useThemeContext();
+
   const [filter, setFilter] = useState("");
   const initialItems = useMemo(() => generateItems(1000), []);
   const [items, setItems] = useState<Array<Item>>(initialItems);
 
-  const onAddItemsClick = () => {
+  const onAddItemsClick = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
       ...generateItems(1000, prevItems.length),
     ]);
-  };
-
-  const { theme } = useThemeContext();
+  }, []);
 
   const filteredItems = useMemo(() => {
     return items.filter(
@@ -33,9 +33,13 @@ export const ItemList: React.FC = memo(() => {
     );
   }, [filter, items]);
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = useMemo(() => {
+    return filteredItems.reduce((sum, item) => sum + item.price, 0);
+  }, [filteredItems]);
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+  const averagePrice = useMemo(() => {
+    return Math.round(totalPrice / filteredItems.length) || 0;
+  }, [filteredItems.length, totalPrice]);
 
   return (
     <div className="mt-8">

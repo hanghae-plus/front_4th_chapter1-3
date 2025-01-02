@@ -3,6 +3,7 @@ import { renderLog } from "../utils";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
+
   const { theme, toggleTheme } = useThemeContext();
   const { user, login, logout } = useLoginContext();
 

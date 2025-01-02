@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { DependencyList } from "react";
-import { useMemo } from "./useMemo"; // Assuming custom useMemo is available
+import { useMemo } from "./useMemo";
 import { shallowEquals } from "../equalities";
 import { useRef } from "./useRef";
 
-export function useCallback<T extends Function>(
-  factory: T,
-  _deps: DependencyList,
-) {
+export function useCallback<T>(factory: T, _deps: DependencyList) {
   const cachedDeps = useRef<DependencyList | null>(null);
 
   const cachedCallback = useMemo(() => {
