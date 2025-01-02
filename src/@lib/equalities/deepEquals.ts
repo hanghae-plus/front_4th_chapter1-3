@@ -7,7 +7,7 @@ import { isRecord } from "../validation/isRecord";
  * @param objB
  * @returns {boolean}
  */
-export function deepEquals<T>(objA: T, objB: T): boolean {
+export function deepEquals<T, G>(objA: T, objB: G): boolean {
   if (Object.is(objA, objB)) {
     return true;
   }
