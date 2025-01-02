@@ -6,7 +6,6 @@ import { ThemeContextProvider } from "./contexts/ThemeContext";
 import { NotificationContextProvider } from "./contexts/NotificationContext";
 import { UserContextProvider } from "./contexts/UserContext";
 import { Layout } from "./components/Layout";
-import { ItemContextProvider } from "./contexts/ItemContext";
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
@@ -14,21 +13,19 @@ const App: React.FC = () => {
     <ThemeContextProvider>
       <NotificationContextProvider>
         <UserContextProvider>
-          <ItemContextProvider>
-            <Layout>
-              <div className="container mx-auto px-4 py-8">
-                <div className="flex flex-col md:flex-row">
-                  <div className="w-full md:w-1/2 md:pr-4">
-                    <ItemList />
-                  </div>
-                  <div className="w-full md:w-1/2 md:pl-4">
-                    <ComplexForm />
-                  </div>
+          <Layout>
+            <div className="container mx-auto px-4 py-8">
+              <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2 md:pr-4">
+                  <ItemList />
+                </div>
+                <div className="w-full md:w-1/2 md:pl-4">
+                  <ComplexForm />
                 </div>
               </div>
-            </Layout>
-            <NotificationSystem />
-          </ItemContextProvider>
+            </div>
+          </Layout>
+          <NotificationSystem />
         </UserContextProvider>
       </NotificationContextProvider>
     </ThemeContextProvider>

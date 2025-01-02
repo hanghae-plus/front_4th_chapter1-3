@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { renderLog } from "../utils";
+import { generateItems, renderLog } from "../utils";
 import { Item } from "./Item";
 import { useThemeContext } from "../contexts/ThemeContext";
-import { useItemContext } from "../contexts/ItemContext";
 
 export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
-  const { items, addItems } = useItemContext();
+  const [items, setItems] = useState(() => generateItems(1000));
   const [filter, setFilter] = useState("");
   const { theme } = useThemeContext();
 
@@ -17,6 +16,13 @@ export const ItemList: React.FC = () => {
   );
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
   const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+
+  const addItems = () => {
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(1000, prevItems.length),
+    ]);
+  };
 
   return (
     <div className="mt-8">
