@@ -11,7 +11,7 @@ export const NotificationSystem: React.FC = React.memo(() => {
     (id: number) => {
       removeNotification(id);
     },
-    [removeNotification]
+    [removeNotification],
   );
 
   // useMemo를 사용하여 알림 목록을 메모이제이션

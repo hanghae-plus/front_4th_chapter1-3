@@ -22,7 +22,7 @@ export const ComplexForm: React.FC = React.memo(() => {
       }
       addNotification("폼이 성공적으로 제출되었습니다", "success");
     },
-    [addNotification, formData.name, formData.email]
+    [addNotification, formData.name, formData.email],
   );
 
   const handleInputChange = useCallback(
@@ -33,7 +33,7 @@ export const ComplexForm: React.FC = React.memo(() => {
         [name]: name === "age" ? parseInt(value) || 0 : value,
       }));
     },
-    []
+    [],
   );
 
   const handlePreferenceChange = useCallback((preference: string) => {

@@ -3,7 +3,7 @@ import { User } from "../types";
 import type { UserContextType } from "../types";
 
 export const UserContext = createContext<UserContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({

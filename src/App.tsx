@@ -54,7 +54,7 @@ const MainApp: React.FC<MainAppProps> = React.memo(
         <NotificationSystem />
       </div>
     );
-  }
+  },
 );
 
 export default App;
