@@ -32,7 +32,10 @@ const ItemList = () => {
   const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
 
   const handleAddItemsClick = useCallback(() => {
-    setItems(generateItems(NUMBER_OF_ITEMS));
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(NUMBER_OF_ITEMS, prevItems.length),
+    ]);
   }, []);
 
   return (
