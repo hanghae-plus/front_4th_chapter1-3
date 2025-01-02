@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { User } from "../types";
+import { useNotification } from "./NotificationContext";
 
 // 1. type
 interface UserContextType {
@@ -24,14 +25,20 @@ export const UserContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const { addNotification } = useNotification();
 
-  const login = useCallback((name: string, email: string) => {
-    setUser({ id: 1, name, email });
-  }, []);
+  const login = useCallback(
+    (name: string, email: string) => {
+      setUser({ id: 1, name, email });
+      addNotification("성공적으로 로그인되었습니다", "success");
+    },
+    [addNotification]
+  );
 
   const logout = useCallback(() => {
     setUser(null);
-  }, []);
+    addNotification("로그아웃되었습니다", "info");
+  }, [addNotification]);
 
   const value = useMemo(() => {
     return {
