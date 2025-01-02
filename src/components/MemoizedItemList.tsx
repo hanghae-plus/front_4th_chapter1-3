@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
-import { useDebounce, useMemo } from "../@lib";
+import { memo, useDebounce, useMemo } from "../@lib";
 import { ThemeContext } from "../context/ThemeContext";
 import { useContextValue } from "../context/useContextValue";
 import { Item } from "../types/Item";
 import { renderLog } from "../utils";
 
-export const ItemList: React.FC<{
+export const MemoizedItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+}> = memo(({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
   const debouncedFilter = useDebounce(filter);
@@ -71,9 +71,9 @@ export const ItemList: React.FC<{
         <li>평균가격: {averagePrice.toLocaleString()}원</li>
       </ul>
       <ul className="space-y-2">
-        {filteredItems.map((item) => (
+        {filteredItems.map((item, index) => (
           <li
-            key={item.id}
+            key={index}
             className={`p-2 rounded shadow ${theme === "light" ? "bg-white text-black" : "bg-gray-700 text-white"}`}
           >
             {item.name} - {item.category} - {item.price.toLocaleString()}원
@@ -82,4 +82,4 @@ export const ItemList: React.FC<{
       </ul>
     </div>
   );
-};
+});
