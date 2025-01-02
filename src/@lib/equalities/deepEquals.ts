@@ -1,4 +1,6 @@
-export function deepEquals<T extends object>(objA: T, objB: T): boolean {
+import isObject from "./isObject.ts";
+
+export function deepEquals<T>(objA: T, objB: T): boolean {
   if (typeof objA !== typeof objB) {
     return false;
   }
@@ -28,7 +30,11 @@ export function deepEquals<T extends object>(objA: T, objB: T): boolean {
     }
 
     return Object.keys(objA).every((key) => {
-      return deepEquals(objA[key], objB[key]);
+      return (
+        isObject(objA, key) &&
+        isObject(objB, key) &&
+        deepEquals(objA[key], objB[key])
+      );
     });
   }
 

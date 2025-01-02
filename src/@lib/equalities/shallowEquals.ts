@@ -1,4 +1,6 @@
-export function shallowEquals<T extends object>(objA: T, objB: T): boolean {
+import isObject from "./isObject.ts";
+
+export function shallowEquals<T>(objA: T, objB: T): boolean {
   if (typeof objA !== typeof objB) {
     return false;
   }
@@ -27,7 +29,10 @@ export function shallowEquals<T extends object>(objA: T, objB: T): boolean {
       return false;
     }
 
-    return Object.keys(objA).every((key) => objA[key] === objB[key]);
+    return Object.keys(objA).every(
+      (key) =>
+        isObject(objA, key) && isObject(objB, key) && objA[key] === objB[key],
+    );
   }
 
   return objA === objB;
