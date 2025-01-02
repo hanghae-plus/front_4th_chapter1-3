@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { renderLog } from "../../utils";
 import { useTheme } from "../contexts";
+import { memo } from "../hocs";
 
 interface Item {
   id: number;
@@ -9,10 +10,12 @@ interface Item {
   price: number;
 }
 
-export const ItemList: React.FC<{
+interface ItemListProps {
   items: Item[];
   onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+}
+
+export const ItemList = memo<ItemListProps>(({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
   const { theme } = useTheme();
@@ -65,4 +68,4 @@ export const ItemList: React.FC<{
       </ul>
     </div>
   );
-};
+});
