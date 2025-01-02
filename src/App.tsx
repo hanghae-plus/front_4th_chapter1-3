@@ -1,8 +1,6 @@
-import React, {useState, createContext, useContext, useEffect} from "react";
+import React, {useState, createContext, useContext } from "react";
 import { generateItems, renderLog } from "./utils";
 import {memo,  useCallback, useMemo } from "./@lib";
-// import {memo} from "react";
-import {deepEquals} from "./@lib";
 
 // 타입 정의
 interface Item {
@@ -37,9 +35,9 @@ interface AppContextType {
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
-const ThemeContext = createContext<any>(undefined);
-const AuthContext = createContext<any>(undefined);
-const NotificationContext = createContext<any>(undefined);
+const ThemeContext = createContext<string | undefined>(undefined);
+const AuthContext = createContext<User | undefined>(undefined);
+const NotificationContext = createContext<Notification | undefined>(undefined);
 
 // 커스텀 훅들
 const useTheme = () => {

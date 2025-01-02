@@ -2,6 +2,6 @@ import {useState} from "react";
 
 export function useRef<T>(initialValue: T): { current: T } {
   // React의 useState를 이용해서 만들어보세요.
-  const [data, setData] = useState<any>({current : initialValue});
+  const [data, setData] = useState<T>({current : initialValue});
   return data;
 }
