@@ -1,8 +1,8 @@
-import { useThemeContext } from "../contexts/ThemeContext";
+import { useThemeStateContext } from "../contexts/ThemeContext";
 import { Header } from "./Header";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { theme } = useThemeContext();
+  const { theme } = useThemeStateContext();
 
   return (
     <div

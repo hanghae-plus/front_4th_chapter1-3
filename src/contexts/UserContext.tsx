@@ -1,21 +1,38 @@
 import React, { createContext, useContext, useState } from "react";
 import { IUser } from "../type/type";
 import { useCallback, useMemo } from "../@lib";
-import { useNotificationContext } from "./NotificationContext";
+import { useNotificationActionContext } from "./NotificationContext";
 
-interface UserContextType {
+interface UserStateContextType {
   user: IUser | null;
+}
+
+interface UserActionContextType {
   login: (email: string, password: string) => void;
   logout: () => void;
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+const UserStateContext = createContext<UserStateContextType | undefined>(
+  undefined,
+);
+const UserActionContext = createContext<UserActionContextType | undefined>(
+  undefined,
+);
 
-export const useUserContext = () => {
-  const context = useContext(UserContext);
+export const useUserStateContext = () => {
+  const context = useContext(UserStateContext);
   if (context === undefined) {
     throw new Error(
-      "useUserContext must be used within an UserContextProvider",
+      "useUserStateContext must be used within an UserContextProvider",
+    );
+  }
+  return context;
+};
+export const useUserActionContext = () => {
+  const context = useContext(UserActionContext);
+  if (context === undefined) {
+    throw new Error(
+      "useUserActionContext must be used within an UserContextProvider",
     );
   }
   return context;
@@ -27,7 +44,7 @@ export const UserContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [user, setUser] = useState<IUser | null>(null);
-  const { addNotification } = useNotificationContext();
+  const { addNotification } = useNotificationActionContext();
 
   const login = useCallback((email: string) => {
     setUser({ id: 1, name: "홍길동", email });
@@ -39,18 +56,26 @@ export const UserContextProvider = ({
     addNotification("로그아웃되었습니다", "info");
   }, []);
 
-  const userContextValue: UserContextType = useMemo(
+  const userStateContextValue: UserStateContextType = useMemo(
     () => ({
       user,
-      login,
-      logout,
     }),
     [user],
   );
 
+  const userActionContextValue: UserActionContextType = useMemo(
+    () => ({
+      login,
+      logout,
+    }),
+    [login, logout],
+  );
+
   return (
-    <UserContext.Provider value={userContextValue}>
-      {children}
-    </UserContext.Provider>
+    <UserActionContext.Provider value={userActionContextValue}>
+      <UserStateContext.Provider value={userStateContextValue}>
+        {children}
+      </UserStateContext.Provider>
+    </UserActionContext.Provider>
   );
 };

@@ -2,21 +2,36 @@ import React, { createContext, useContext, useState } from "react";
 import { INotification } from "../type/type";
 import { useCallback, useMemo } from "../@lib";
 
-interface NotificationContextType {
+interface NotificationStateContextType {
   notifications: INotification[];
+}
+
+interface NotificationActionContextType {
   addNotification: (message: string, type: INotification["type"]) => void;
   removeNotification: (id: number) => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined,
-);
+const NotificationStateContext = createContext<
+  NotificationStateContextType | undefined
+>(undefined);
+const NotificationActionContext = createContext<
+  NotificationActionContextType | undefined
+>(undefined);
 
-export const useNotificationContext = () => {
-  const context = useContext(NotificationContext);
+export const useNotificationStateContext = () => {
+  const context = useContext(NotificationStateContext);
   if (context === undefined) {
     throw new Error(
-      "useNotificationContext must be used within an NotificationContext",
+      "useNotificationStateContext must be used within an NotificationContext",
+    );
+  }
+  return context;
+};
+export const useNotificationActionContext = () => {
+  const context = useContext(NotificationActionContext);
+  if (context === undefined) {
+    throw new Error(
+      "useNotificationActionContext must be used within an NotificationContext",
     );
   }
   return context;
@@ -47,18 +62,26 @@ export const NotificationContextProvider = ({
     );
   }, []);
 
-  const notificationContextValue: NotificationContextType = useMemo(
+  const notificationStateContextValue: NotificationStateContextType = useMemo(
     () => ({
       notifications,
-      addNotification,
-      removeNotification,
     }),
     [notifications],
   );
 
+  const notificationActionContextValue: NotificationActionContextType = useMemo(
+    () => ({
+      addNotification,
+      removeNotification,
+    }),
+    [addNotification, removeNotification],
+  );
+
   return (
-    <NotificationContext.Provider value={notificationContextValue}>
-      {children}
-    </NotificationContext.Provider>
+    <NotificationActionContext.Provider value={notificationActionContextValue}>
+      <NotificationStateContext.Provider value={notificationStateContextValue}>
+        {children}
+      </NotificationStateContext.Provider>
+    </NotificationActionContext.Provider>
   );
 };

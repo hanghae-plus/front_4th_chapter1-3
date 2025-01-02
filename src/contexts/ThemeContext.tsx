@@ -1,17 +1,36 @@
 import { createContext, useContext, useState } from "react";
 import { useCallback, useMemo } from "../@lib";
 
-interface ThemeContextType {
+interface ThemeStateContextType {
   theme: string;
+}
+
+interface ThemeActionContextType {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeStateContext = createContext<ThemeStateContextType | undefined>(
+  undefined,
+);
+const ThemeActionContext = createContext<ThemeActionContextType | undefined>(
+  undefined,
+);
 
-export const useThemeContext = () => {
-  const context = useContext(ThemeContext);
+export const useThemeStateContext = () => {
+  const context = useContext(ThemeStateContext);
   if (context === undefined) {
-    throw new Error("useThemeContext must be used within an ThemeProvider");
+    throw new Error(
+      "useThemeStateContext must be used within an ThemeProvider",
+    );
+  }
+  return context;
+};
+export const useThemeActionContext = () => {
+  const context = useContext(ThemeActionContext);
+  if (context === undefined) {
+    throw new Error(
+      "useThemeActionContext must be used within an ThemeProvider",
+    );
   }
   return context;
 };
@@ -26,16 +45,24 @@ export const ThemeContextProvider = ({
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   }, []);
 
-  const themeContextValue: ThemeContextType = useMemo(
+  const themeStateContextValue: ThemeStateContextType = useMemo(
     () => ({
       theme,
-      toggleTheme,
     }),
     [theme],
   );
+  const themeActionContextValue: ThemeActionContextType = useMemo(
+    () => ({
+      toggleTheme,
+    }),
+    [toggleTheme],
+  );
+
   return (
-    <ThemeContext.Provider value={themeContextValue}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeActionContext.Provider value={themeActionContextValue}>
+      <ThemeStateContext.Provider value={themeStateContextValue}>
+        {children}
+      </ThemeStateContext.Provider>
+    </ThemeActionContext.Provider>
   );
 };

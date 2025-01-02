@@ -1,11 +1,19 @@
-import { useThemeContext } from "../contexts/ThemeContext";
-import { useUserContext } from "../contexts/UserContext";
+import {
+  useThemeActionContext,
+  useThemeStateContext,
+} from "../contexts/ThemeContext";
+import {
+  useUserActionContext,
+  useUserStateContext,
+} from "../contexts/UserContext";
 import { renderLog } from "../utils";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme } = useThemeContext();
-  const { user, login, logout } = useUserContext();
+  const { theme } = useThemeStateContext();
+  const { toggleTheme } = useThemeActionContext();
+  const { user } = useUserStateContext();
+  const { login, logout } = useUserActionContext();
 
   return (
     <header className="bg-gray-800 text-white p-4">

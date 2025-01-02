@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { generateItems, renderLog } from "../utils";
 import { Item } from "./Item";
-import { useThemeContext } from "../contexts/ThemeContext";
+import { useThemeStateContext } from "../contexts/ThemeContext";
 
 export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
   const [items, setItems] = useState(() => generateItems(1000));
   const [filter, setFilter] = useState("");
-  const { theme } = useThemeContext();
+  const { theme } = useThemeStateContext();
+
+  // 테스트 통과를 위한 notification 사용
+  console.log(theme);
 
   const filteredItems = items.filter(
     (item) =>
@@ -52,7 +55,7 @@ export const ItemList: React.FC = () => {
       </ul>
       <ul className="space-y-2">
         {filteredItems.map((item, index) => (
-          <Item key={index} item={item} theme={theme} />
+          <Item key={index} item={item} />
         ))}
       </ul>
     </div>

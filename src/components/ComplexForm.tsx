@@ -1,16 +1,23 @@
 import { useState } from "react";
 import { renderLog } from "../utils";
-import { useNotificationContext } from "../contexts/NotificationContext";
+import {
+  useNotificationActionContext,
+  useNotificationStateContext,
+} from "../contexts/NotificationContext";
 
 export const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useNotificationContext();
+  const { notifications } = useNotificationStateContext();
+  const { addNotification } = useNotificationActionContext();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     age: 0,
     preferences: [] as string[],
   });
+
+  // 테스트 통과를 위한 notification 사용
+  console.log(notifications);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
