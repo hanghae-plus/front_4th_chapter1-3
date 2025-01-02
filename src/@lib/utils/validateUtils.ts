@@ -5,6 +5,10 @@ export const isObject = <T>(obj: T) => {
   return typeof obj === "object";
 };
 
+/**
+ * Form 값을 검증하는 함수
+ * TODO: 본래 제네릭한 순수 함수로 설계하는 것이 목적이었으나 현재 FormValues 타입에만 대응
+ */
 export function validateForm(values: FormValues): ValidationError<FormValues> {
   const errors: ValidationError<FormValues> = {};
 
