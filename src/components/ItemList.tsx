@@ -19,19 +19,19 @@ export const ItemList: React.FC<{
       items.filter(
         (item) =>
           item.name.toLowerCase().includes(filter.toLowerCase()) ||
-          item.category.toLowerCase().includes(filter.toLowerCase())
+          item.category.toLowerCase().includes(filter.toLowerCase()),
       ),
-    [items, filter]
+    [items, filter],
   );
 
   const totalPrice = useMemo(
     () => filteredItems.reduce((sum, item) => sum + item.price, 0),
-    [filteredItems]
+    [filteredItems],
   );
 
   const averagePrice = useMemo(
     () => Math.round(totalPrice / filteredItems.length) || 0,
-    [totalPrice, filteredItems.length]
+    [totalPrice, filteredItems.length],
   );
 
   return (
