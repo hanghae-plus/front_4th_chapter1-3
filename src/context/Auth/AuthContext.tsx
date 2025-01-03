@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     addNotification("로그아웃되었습니다", "info");
   }, [addNotification]);
 
-  const authInfo: AuthContextType = useMemo(() => {
+  const value: AuthContextType = useMemo(() => {
     return {
       user,
       login,
@@ -33,7 +33,5 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [user, login, logout]);
 
-  return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

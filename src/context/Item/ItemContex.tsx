@@ -16,11 +16,9 @@ export const ItemProvider = ({ children }: { children: React.ReactNode }) => {
     ]);
   };
 
-  const itemInfo: ItemContextType = {
+  const value: ItemContextType = {
     items,
     addItems,
   };
-  return (
-    <ItemContext.Provider value={itemInfo}>{children}</ItemContext.Provider>
-  );
+  return <ItemContext.Provider value={value}>{children}</ItemContext.Provider>;
 };

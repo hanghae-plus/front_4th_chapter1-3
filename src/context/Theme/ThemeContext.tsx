@@ -13,9 +13,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const CurrentTheme = theme === "light" ? "dark" : "light";
     setTheme(CurrentTheme);
   };
+
+  const value: ThemeContextType = {
+    theme,
+    toggleTheme,
+  };
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
