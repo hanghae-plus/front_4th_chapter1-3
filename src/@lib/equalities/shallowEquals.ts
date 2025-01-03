@@ -5,16 +5,12 @@ export function shallowEquals<T extends object>(objA: T, objB: T): boolean {
     return true;
   }
 
-  // 2. 둘 중 하나라도 객체가 아닌 경우 처리
-  if (
-    typeof objA !== "object" ||
-    objA === null ||
-    typeof objB !== "object" ||
-    objB === null
-  ) {
+  // 2. 타입 체크 - null도 함께 처리
+  // (typeof null === "object"이지만, null은 falsy value이므로
+  // 조건문에서 false로 평가됩니다)
+  if (!objA || !objB || typeof objA !== "object" || typeof objB !== "object") {
     return false;
   }
-
   // 3. 객체의 키 개수가 다른 경우 처리
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
@@ -24,8 +20,7 @@ export function shallowEquals<T extends object>(objA: T, objB: T): boolean {
 
   // 4. 모든 키에 대해 얕은 비교 수행
   for (const key of keysA) {
-    // Q. hasOwn에 에러가 발생합니다. 어떻게 수정해야 좋을까요?
-    if (!Object.hasOwn(objB, key) || objA[key] !== objB[key]) {
+    if (objA[key as keyof T] !== objB[key as keyof T]) {
       return false;
     }
   }

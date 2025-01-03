@@ -32,7 +32,7 @@ export const UserContextProvider = ({
       setUser({ id: 1, name, email });
       addNotification("성공적으로 로그인되었습니다", "success");
     },
-    [addNotification]
+    [addNotification],
   );
 
   const logout = useCallback(() => {

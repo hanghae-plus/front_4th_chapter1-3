@@ -33,7 +33,7 @@ export const NotificationContextProvider = ({
 
   const removeNotification = useCallback((id: number) => {
     setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id)
+      prev.filter((notification) => notification.id !== id),
     );
   }, []);
 
@@ -43,7 +43,7 @@ export const NotificationContextProvider = ({
       addNotification,
       removeNotification,
     }),
-    [notifications, addNotification, removeNotification]
+    [notifications, addNotification, removeNotification],
   );
 
   return (
@@ -58,7 +58,7 @@ export const useNotification = () => {
   const context = useContext(NotificationContext);
   if (!context)
     throw new Error(
-      "useNotification must be used within a NotificationProvider"
+      "useNotification must be used within a NotificationProvider",
     );
   return context;
 };

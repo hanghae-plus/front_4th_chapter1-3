@@ -32,7 +32,7 @@ export const ThemeContextProvider = ({ children }: PropsWithChildren) => {
       theme,
       toggleTheme,
     }),
-    [theme, toggleTheme]
+    [theme, toggleTheme],
   );
 
   return (

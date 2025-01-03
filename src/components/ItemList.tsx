@@ -8,10 +8,8 @@ export const ItemList: React.FC = () => {
   const [filter, setFilter] = useState("");
   const { theme } = useTheme();
 
-  // () => generateItems(1000): 왜 이렇게하면 괜찮을까?
-  // 화살표 함수를 했을 때는 첫 렌더링 시에만
-  // generateItems, 컴포넌트가 리렌더링 될때마다 호출하게 된다
-  // gus
+  // () => generateItems(1000): 화살표 함수를 했을 때는 첫 렌더링 시에만
+  // generateItems, 컴포넌트가 리렌더링될때마다 호출하게 된다
   const [items, setItems] = useState(() => generateItems(1000));
 
   const addItems = useCallback(() => {
@@ -24,7 +22,7 @@ export const ItemList: React.FC = () => {
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase())
+      item.category.toLowerCase().includes(filter.toLowerCase()),
   );
 
   const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
