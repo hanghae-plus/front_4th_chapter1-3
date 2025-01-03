@@ -7,7 +7,7 @@ export const ItemList: React.FC = memo(() => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
 
-  const [items, setItems] = useState(generateItems(1000));
+  const [items, setItems] = useState(() => generateItems(1000));
   const { theme } = useThemeContext();
   const addItems = useCallback(() => {
     setItems((prevItems) => [
