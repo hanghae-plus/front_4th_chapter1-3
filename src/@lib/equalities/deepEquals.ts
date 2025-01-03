@@ -1,17 +1,15 @@
 // 두 값의 깊은 비교를 수행합니다
 export function deepEquals<T>(objA: T, objB: T): boolean {
   // 1. 두 값이 정확히 같은지 확인 (참조가 같은 경우)
-  if (objA === objB) {
+  // Object.is를 사용하면 NaN이나 +0, -0도 정확하게 구분할 수 있는 장점이 있다
+  // === 보다는 더 정밀한 비교가 가능한 방식이라고 생각합니다
+  if (Object.is(objA, objB)) {
     return true;
   }
 
-  // 2. 둘 중 하나라도 객체가 아닌 경우 처리
-  if (
-    typeof objA !== "object" ||
-    objA === null ||
-    typeof objB !== "object" ||
-    objB === null
-  ) {
+  // 2. 타입 체크 - null도 함께 처리
+  // typeof null은 Objectdlrl 때문에 null 체크를 따로 할 필요는 없음
+  if (typeof objA !== "object" || typeof objB !== "object") {
     return false;
   }
 

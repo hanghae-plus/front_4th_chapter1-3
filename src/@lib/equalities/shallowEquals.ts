@@ -1,16 +1,18 @@
 // 두 값의 얕은 비교를 수행합니다
 export function shallowEquals<T extends object>(objA: T, objB: T): boolean {
   // 1. 두 값이 정확히 같은지 확인 (참조가 같은 경우)
-  if (objA === objB) {
+  // Object.is를 사용하면 NaN이나 +0, -0도 정확하게 구분할 수 있는 장점이 있다
+  // === 보다는 더 정밀한 비교가 가능한 방식이라고 생각합니다
+  if (Object.is(objA, objB)) {
     return true;
   }
 
   // 2. 타입 체크 - null도 함께 처리
-  // (typeof null === "object"이지만, null은 falsy value이므로
-  // 조건문에서 false로 평가됩니다)
-  if (!objA || !objB || typeof objA !== "object" || typeof objB !== "object") {
+  // typeof null은 Objectdlrl 때문에 null 체크를 따로 할 필요는 없음
+  if (typeof objA !== "object" || typeof objB !== "object") {
     return false;
   }
+
   // 3. 객체의 키 개수가 다른 경우 처리
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
