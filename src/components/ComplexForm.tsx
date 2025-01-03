@@ -3,6 +3,7 @@ import { renderLog } from "../utils";
 import { useAppContext } from "../context/App/useAppContext";
 
 // ComplexForm 컴포넌트
+const PREFERENCES = ["독서", "운동", "음악", "여행"] as const;
 export const ComplexForm: React.FC = () => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useAppContext();
@@ -72,7 +73,7 @@ export const ComplexForm: React.FC = () => {
           className="w-full p-2 border border-gray-300 rounded text-black"
         />
         <div className="space-x-4">
-          {["독서", "운동", "음악", "여행"].map((pref) => (
+          {PREFERENCES.map((pref) => (
             <label key={pref} className="inline-flex items-center">
               <input
                 type="checkbox"
