@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
-import { AppContextType, Notification } from "../../types";
+import { Notification } from "../../types";
 import { useCallback } from "../../@lib";
+import { AppContextType } from "./types";
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
