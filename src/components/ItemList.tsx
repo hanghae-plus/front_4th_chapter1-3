@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { renderLog } from "../utils";
 import { useThemeContext } from "../context";
 import { useItemContext } from "../context/Item/useItemContext";
@@ -9,21 +9,14 @@ export const ItemList: React.FC = () => {
   const [filter, setFilter] = useState("");
   const { items, addItems } = useItemContext();
   const { theme } = useThemeContext();
-  const filteredItems = useMemo(() => {
-    return items.filter(
-      (item) =>
-        item.name.toLowerCase().includes(filter.toLowerCase()) ||
-        item.category.toLowerCase().includes(filter.toLowerCase()),
-    );
-  }, [items, filter]);
+  const filteredItems = items.filter(
+    (item) =>
+      item.name.toLowerCase().includes(filter.toLowerCase()) ||
+      item.category.toLowerCase().includes(filter.toLowerCase()),
+  );
 
-  const { totalPrice, averagePrice } = useMemo(() => {
-    const total = filteredItems.reduce((sum, item) => sum + item.price, 0);
-    return {
-      totalPrice: total,
-      averagePrice: Math.round(total / filteredItems.length) || 0,
-    };
-  }, [filteredItems]);
+  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
 
   return (
     <div className="mt-8">
