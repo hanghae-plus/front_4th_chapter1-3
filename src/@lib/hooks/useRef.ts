@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 export function useRef<T>(initialValue: T): { current: T } {
-  // React의 useState를 이용해서 만들어보세요.
-  return { current: initialValue };
+  // useState를 사용하여 ref 객체를 생성하고 유지
+  const [ref] = useState({ current: initialValue });
+  return ref;
 }
