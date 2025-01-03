@@ -1,10 +1,10 @@
-import React from "react";
+import { memo } from "../@lib/hocs/memo";
 import { Notification } from "../types";
 
 export const NotificationItem: React.FC<{
   notification: Notification;
   onRemove: (id: number) => void;
-}> = React.memo(({ notification, onRemove }) => {
+}> = memo(({ notification, onRemove }) => {
   return (
     <div
       className={`p-4 rounded shadow-lg ${

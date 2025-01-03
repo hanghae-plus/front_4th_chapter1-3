@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo } from "react";
+import { memo } from "../@lib/hocs";
+import { useCallback, useMemo } from "../@lib/hooks";
 import { renderLog } from "../utils";
 import { useTheme, useUser } from "../hooks";
 import { useNotificationActions } from "../hooks/useNotificationActions";
 
-export const Header: React.FC = React.memo(() => {
+export const Header: React.FC = memo(() => {
   renderLog("Header rendered");
   const { theme, toggleTheme } = useTheme();
   const { user, login, logout } = useUser();

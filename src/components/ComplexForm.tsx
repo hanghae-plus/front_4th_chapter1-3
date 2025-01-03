@@ -1,8 +1,10 @@
-import React, { useState, useCallback, useMemo } from "react";
+import { useState } from "react";
+import { useCallback, useMemo } from "../@lib/hooks";
+import { memo } from "../@lib/hocs";
 import { renderLog } from "../utils";
 import { useNotificationActions, useNotificationState } from "../hooks";
 
-export const ComplexForm: React.FC = React.memo(() => {
+export const ComplexForm: React.FC = memo(() => {
   renderLog("ComplexForm rendered");
   const { addNotification } = useNotificationActions();
 
@@ -27,7 +29,7 @@ export const ComplexForm: React.FC = React.memo(() => {
       }
       addNotification("폼이 성공적으로 제출되었습니다", "success");
     },
-    [addNotification, formData.name, formData.email],
+    [addNotification, formData.name, formData.email]
   );
 
   const handleInputChange = useCallback(
@@ -38,7 +40,7 @@ export const ComplexForm: React.FC = React.memo(() => {
         [name]: name === "age" ? parseInt(value) || 0 : value,
       }));
     },
-    [],
+    []
   );
 
   const handlePreferenceChange = useCallback((preference: string) => {

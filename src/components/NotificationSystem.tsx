@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo } from "react";
+import { memo } from "../@lib/hocs/memo";
+import { useCallback, useMemo } from "../@lib/hooks";
 import { renderLog } from "../utils";
 import { useNotificationState } from "../hooks/useNotificationState";
 import { useNotificationActions } from "../hooks/useNotificationActions";
 import { NotificationItem } from "./NotificationItem";
 
-export const NotificationSystem: React.FC = React.memo(() => {
+export const NotificationSystem: React.FC = memo(() => {
   renderLog("NotificationSystem rendered");
   const { notifications } = useNotificationState();
   const { removeNotification } = useNotificationActions();
@@ -13,7 +14,7 @@ export const NotificationSystem: React.FC = React.memo(() => {
     (id: number) => {
       removeNotification(id);
     },
-    [removeNotification],
+    [removeNotification]
   );
 
   // useMemo를 사용하여 알림 목록을 메모이제이션
