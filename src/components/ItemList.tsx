@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Item } from "../types/item";
 import { renderLog } from "../utils";
-import { useAppContext } from "../contexts/app";
+import { useAppContext } from "../contexts/AppContext";
 import { memo } from "../@lib";
 
 export const ItemList: React.FC<{

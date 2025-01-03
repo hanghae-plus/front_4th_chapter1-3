@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { generateItems } from "./utils";
-import { AppContext, AppContextType } from "./contexts/app";
+import { AppContext, AppContextType } from "./contexts/AppContext";
 import { Header } from "./components/Header";
 import { ItemList } from "./components/ItemList";
 import { ComplexForm } from "./components/ComplexForm";
