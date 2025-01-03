@@ -16,6 +16,14 @@ export const ComplexForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     addNotification("폼이 성공적으로 제출되었습니다", "success");
+
+    // 폼 초기화
+    setFormData({
+      name: "",
+      email: "",
+      age: 0,
+      preferences: [] as string[],
+    });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
