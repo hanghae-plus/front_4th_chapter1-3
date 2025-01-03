@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-// import { Item } from "../types";
 import { generateItems, renderLog } from "../utils";
 import { useTheme } from "../context/ThemeContext";
+import { ITEMS_LENGTH } from "../const";
 
 export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
@@ -10,12 +10,12 @@ export const ItemList: React.FC = () => {
 
   // () => generateItems(1000): 화살표 함수를 했을 때는 첫 렌더링 시에만
   // generateItems, 컴포넌트가 리렌더링될때마다 호출하게 된다
-  const [items, setItems] = useState(() => generateItems(1000));
+  const [items, setItems] = useState(() => generateItems(ITEMS_LENGTH));
 
   const addItems = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
-      ...generateItems(1000, prevItems.length),
+      ...generateItems(ITEMS_LENGTH, prevItems.length),
     ]);
   }, []);
 
