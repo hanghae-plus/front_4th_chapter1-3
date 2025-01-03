@@ -6,9 +6,10 @@ import {
   NotificationSystem,
 } from "./components";
 import ItemListContainer from "./components/ItemListContainer";
-import { AppProvider, ThemeProvider } from "./context";
-import { AuthProvider } from "./context/Auth/AuthContext";
-import { ItemProvider } from "./context/Item/ItemContex";
+import { AppProvider } from "./context/App/AppProvider";
+import { ThemeProvider } from "./context/Theme/ThemeProvider";
+import { AuthProvider } from "./context/Auth/AuthProvider";
+import { ItemProvider } from "./context/Item/ItemProvider";
 
 // 메인 App 컴포넌트
 const App: React.FC = () => {
