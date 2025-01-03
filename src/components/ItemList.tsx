@@ -1,26 +1,39 @@
 import { useState } from "react";
-import { IItem } from "../types/Item";
-import { renderLog } from "../utils";
-import { useAppContext } from "../utils/AppContext";
-import { memo } from "../@lib";
+import { generateItems, renderLog } from "../utils";
+import { memo, useCallback, useMemo } from "../@lib";
+import { useThemeContext } from "../@context/themeContext";
 
-export const ItemList: React.FC<{
-  items: IItem[];
-  onAddItemsClick: () => void;
-}> = memo(({ items, onAddItemsClick }) => {
+export const ItemList: React.FC = memo(() => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  const { theme } = useAppContext();
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase())
+  const [items, setItems] = useState(generateItems(1000));
+  const { theme } = useThemeContext();
+  const addItems = useCallback(() => {
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(1000, prevItems.length)
+    ]);
+  }, []);
+  const filteredItems = useMemo(
+    () =>
+      items.filter(
+        (item) =>
+          item.name.toLowerCase().includes(filter.toLowerCase()) ||
+          item.category.toLowerCase().includes(filter.toLowerCase())
+      ),
+    [items, filter]
   );
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = useMemo(
+    () => filteredItems.reduce((sum, item) => sum + item.price, 0),
+    [filteredItems]
+  );
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+  const averagePrice = useMemo(
+    () => Math.round(totalPrice / filteredItems.length) || 0,
+    [totalPrice, filteredItems.length]
+  );
 
   return (
     <div className="mt-8">
@@ -30,7 +43,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addItems}
           >
             대량추가
           </button>

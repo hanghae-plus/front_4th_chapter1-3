@@ -15,7 +15,7 @@ export const useNotiContext = () => {
   return context;
 };
 
-export const NotiProvider = (children: ReactNode) => {
+export const NotiProvider = ({ children }: { children: ReactNode }) => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
 
   const addNotification = useCallback(

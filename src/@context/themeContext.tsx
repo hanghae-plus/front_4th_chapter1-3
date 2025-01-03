@@ -30,7 +30,11 @@ export const ThemeProvider = ({ children }: IContextProps) => {
 
   return (
     <ThemeContext.Provider value={contextValue}>
-      {children}
+      <div
+        className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900 text-white"}`}
+      >
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };
