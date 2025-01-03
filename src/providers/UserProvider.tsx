@@ -1,23 +1,14 @@
-import { createContext, ReactNode, useContext, useState } from "react";
-import { User } from "../types/user";
+import { ReactNode, useState } from "react";
+import { useNotificationContext } from "../contexts/NotificationContext";
 import { useCallback, useMemo } from "../@lib";
-import { useNotificationContext } from "./NotificationContext";
-
-export interface UserContextType {
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-}
-
-export const UserContext = createContext<UserContextType | undefined>(
-  undefined,
-);
+import { UserContext } from "../contexts/UserContext";
+import { User } from "../types/user";
 
 type Props = {
   children: ReactNode;
 };
 
-export const UserProvider = ({ children }: Props) => {
+const UserProvider = ({ children }: Props) => {
   const [user, setUser] = useState<User | null>(null);
   const { addNotification } = useNotificationContext(); // 얘를 Header 컴포넌트 안에서 썼을 때는 요구사항 충족 못함. 이유가 뭘까? : 여기서 Header까지 가는 리렌더링 트리거를 막아야하는데 그러지 못하니까..
 
@@ -46,10 +37,4 @@ export const UserProvider = ({ children }: Props) => {
   );
 };
 
-export const useUserContext = () => {
-  const context = useContext(UserContext);
-  if (context === undefined) {
-    throw new Error("useUserContext must be used within an UserProvider");
-  }
-  return context;
-};
+export default UserProvider;

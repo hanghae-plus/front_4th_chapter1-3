@@ -6,8 +6,8 @@ import { ItemList } from "./components/ItemList";
 import { ComplexForm } from "./components/ComplexForm";
 import { NotificationSystem } from "./components/NotificationSystem";
 import { useCallback, useMemo } from "./@lib";
-import { NotificationProvider } from "./contexts/NotificationContext";
-import { UserProvider } from "./contexts/UserContext";
+import NotificationProvider from "./providers/NotificationProvider";
+import UserProvider from "./providers/UserProvider";
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState("light");
