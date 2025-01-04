@@ -1,33 +1,13 @@
-import { useCallback, useState } from "react";
-import { generateItems, renderLog } from "../utils";
+import { renderLog } from "../utils";
 import { useTheme } from "../context/ThemeContext";
-import { ITEMS_LENGTH } from "../const";
+import { useItem } from "../@lib/hooks/useItem";
+import { usePrice } from "../@lib/hooks/usePrice";
 
 export const ItemList: React.FC = () => {
   renderLog("ItemList rendered");
-  const [filter, setFilter] = useState("");
+  const { filter, setFilter, addItems, filteredItems } = useItem();
+  const { totalPrice, averagePrice } = usePrice();
   const { theme } = useTheme();
-
-  // () => generateItems(1000): 화살표 함수를 했을 때는 첫 렌더링 시에만
-  // generateItems, 컴포넌트가 리렌더링될때마다 호출하게 된다
-  const [items, setItems] = useState(() => generateItems(ITEMS_LENGTH));
-
-  const addItems = useCallback(() => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(ITEMS_LENGTH, prevItems.length),
-    ]);
-  }, []);
-
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
-  );
-
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
-
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
 
   return (
     <div className="mt-8">
