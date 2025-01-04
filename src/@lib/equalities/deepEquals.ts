@@ -34,11 +34,17 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
     return false;
   }
 
-  // 5. 모든 키에 대해 깊은 비교 수행
-  for (const key of keysA) {
-    if (!deepEquals(objA[key as keyof T], objB[key as keyof T])) {
-      return false;
-    }
-  }
-  return true;
+  // 5. 모든 키에 대해 깊은 비교 수행, every를 이용한 방식으로 변경
+  return keysA.every(
+    (key) =>
+      Object.prototype.hasOwnProperty.call(objB, key) &&
+      deepEquals(objA[key as keyof T], objB[key as keyof T])
+  );
+
+  // for (const key of keysA) {
+  //   if (!deepEquals(objA[key as keyof T], objB[key as keyof T])) {
+  //     return false;
+  //   }
+  // }
+  // return true;
 }

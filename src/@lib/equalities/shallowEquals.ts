@@ -21,10 +21,18 @@ export function shallowEquals<T extends object>(objA: T, objB: T): boolean {
   }
 
   // 4. 모든 키에 대해 얕은 비교 수행
-  for (const key of keysA) {
-    if (objA[key as keyof T] !== objB[key as keyof T]) {
-      return false;
-    }
-  }
-  return true;
+  // 4-1. 방식1: every 사용(권장): hasOwnProperty 안전장치가 있기 때문: prototype 체인에서 상속된 속성과의 충돌 방지
+  return keysA.every(
+    (item) =>
+      Object.prototype.hasOwnProperty.call(objB, item) &&
+      (objA as { [key: string]: unknown })[item] ===
+        (objB as { [key: string]: unknown })[item]
+  );
+  // // 4-2. 방식2: for-of 사용
+  // for (const key of keysA) {
+  //   if (objA[key as keyof T] !== objB[key as keyof T]) {
+  //     return false;
+  //   }
+  // }
+  // return true;
 }
